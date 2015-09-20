@@ -1,0 +1,9 @@
+{
+    "name": "time-manager",
+    "require": {
+        "slim/slim": "~2.0"
+    },
+    "autoload": {
+        "psr-4": { "TimeManager\\": "lib/" }
+    }
+}

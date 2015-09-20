@@ -1,1 +1,4 @@
 .vagrant/
+bin/
+vendor/
+composer.lock
