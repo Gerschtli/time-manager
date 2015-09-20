@@ -92,6 +92,13 @@ class httpserver {
     require => File["vhostconf"],
     notify  => Service["apache2"]
   }
+  
+  exec { "enable-apache-rewrite":
+    command => "a2enmod rewrite",
+    unless  => "test -L /etc/apache2/mods-enabled/rewrite.load",
+    notify  => Service["apache2"],
+    require => Package["apache2"]
+  }
 }
 
 class dbserver {
