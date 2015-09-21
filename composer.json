@@ -1,9 +1,20 @@
 {
     "name": "time-manager",
     "require": {
-        "slim/slim": "~2.0"
+        "php"      : ">=5.5.0",
+        "slim/slim": "~2.0",
+        "slim/pdo" : "~1.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit"         : "4.*",
+        "there4/slim-test-helpers": "0.*"
     },
     "autoload": {
-        "psr-4": { "TimeManager\\": "lib/" }
+        "psr-4": {
+            "TimeManager\\": "lib/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin/"
     }
 }
