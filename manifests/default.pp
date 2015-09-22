@@ -57,7 +57,8 @@ class basePackage {
 class httpserver {
   package { [
     "apache2",
-    "php5-mysql"
+    "php5-mysql",
+    "php5-xdebug"
   ]:
     ensure  => "latest",
     require => Exec["apt_update"]
