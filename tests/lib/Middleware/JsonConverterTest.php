@@ -19,11 +19,11 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCall($method)
     {
-        \Slim\Environment::mock(array(
+        \Slim\Environment::mock([
             'REQUEST_METHOD' => $method,
             'CONTENT_TYPE'   => 'application/json',
             'slim.input'     => '{"foo":"bar"}'
-        ));
+        ]);
         $slim = new \Slim\Slim();
         $slim->add(new \TimeManager\Middleware\JsonConverter());
         $slim->run();
@@ -37,11 +37,11 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCallInvalidJson($method)
     {
-        \Slim\Environment::mock(array(
+        \Slim\Environment::mock([
             'REQUEST_METHOD' => $method,
             'CONTENT_TYPE'   => 'application/json',
             'slim.input'     => '{"foo":"bar"'
-        ));
+        ]);
         
         $slim = new \Slim\Slim();
         $slim->add(new \TimeManager\Middleware\JsonConverter());
@@ -62,11 +62,11 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCallUnsupportedMediaType($method)
     {
-        \Slim\Environment::mock(array(
+        \Slim\Environment::mock([
             'REQUEST_METHOD' => $method,
             'CONTENT_TYPE'   => 'application/xml',
             'slim.input'     => 'irgendwas'
-        ));
+        ]);
 
         $slim = new \Slim\Slim();
         $slim->add(new \TimeManager\Middleware\JsonConverter());
@@ -87,6 +87,31 @@ class JsonConverterTest extends \LocalWebTestCase
         return [
             ['POST'],
             ['PUT'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderForTestCallNoCheck
+     */
+    public function testCallNoCheck($method)
+    {
+        \Slim\Environment::mock([
+            'REQUEST_METHOD' => $method,
+            'CONTENT_TYPE'   => 'application/xml',
+            'slim.input'     => 'irgendwas'
+        ]);
+
+        $slim = new \Slim\Slim();
+        $slim->add(new \TimeManager\Middleware\JsonConverter());
+        $slim->run();
+
+        $this->assertEquals('irgendwas', $slim->request->getBody());
+    }
+
+    public function dataProviderForTestCallNoCheck()
+    {
+        return [
+            ['GET'],
             ['DELETE'],
         ];
     }

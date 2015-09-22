@@ -9,19 +9,24 @@ class JsonConverter extends Middleware
 {
     public function call()
     {
-        $mediaType = $this->app->request()->getMediaType();
-        if ($mediaType == 'application/json') {
-            $env = $this->app->environment();
-            $result = json_decode($env['slim.input']);
-
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $env['slim.input'] = $result;
-                $this->next->call();
-            } else {
-                $this->_printError(ErrorDecorator::UNPROCESSABLE_ENTITY);
-            }
+        $request = $this->app->request;
+        if (in_array($request->getMethod(), ['GET', 'DELETE'])) {
+            $this->next->call();
         } else {
-            $this->_printError(ErrorDecorator::UNSUPPORTED_MEDIA_TYPE);
+            $mediaType = $request->getMediaType();
+            if ($mediaType == 'application/json') {
+                $env = $this->app->environment();
+                $result = json_decode($env['slim.input']);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $env['slim.input'] = $result;
+                    $this->next->call();
+                } else {
+                    $this->_printError(ErrorDecorator::UNPROCESSABLE_ENTITY);
+                }
+            } else {
+                $this->_printError(ErrorDecorator::UNSUPPORTED_MEDIA_TYPE);
+            }
         }
     }
 
