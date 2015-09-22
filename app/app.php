@@ -2,4 +2,6 @@
 
 require_once 'dic.php';
 
-$app->add(new \TimeManager\Middleware\JsonConverter());
+use TimeManager\Middleware\JsonConverter;
+
+$app->add(new JsonConverter());
