@@ -18,6 +18,7 @@ class DicTest extends \LocalWebTestCase
     public function testDic()
     {
         $dependencies = [
+            'config'         => ['_instanceOf', '\stdClass'],
             'errorDecorator' => ['_instanceOf', '\TimeManager\Decorator\Error'],
             'pdo'            => ['_exists', '\Slim\PDO\Database'],
         ];
