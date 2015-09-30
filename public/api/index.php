@@ -6,13 +6,17 @@ if (!defined('PROJECT_ROOT')) {
     define('PROJECT_ROOT', realpath(__DIR__ . '/../..'));
 }
 if (!defined('APPLICATION_ENV')) {
-    define('APPLICATION_ENV', 'production');
+    define(
+        'APPLICATION_ENV',
+        getenv('APPLICATION_ENV') ?: 'production'
+    );
 }
 
 require PROJECT_ROOT . '/vendor/autoload.php';
 
 $app = new Slim([
     'debug' => false,
+    'mode'  => APPLICATION_ENV,
 ]);
 
 require PROJECT_ROOT . '/app/app.php';
