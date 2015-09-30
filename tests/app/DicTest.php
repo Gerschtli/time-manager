@@ -21,6 +21,7 @@ class DicTest extends \LocalWebTestCase
             'config'         => ['_instanceOf', '\stdClass'],
             'errorDecorator' => ['_instanceOf', '\TimeManager\Decorator\Error'],
             'pdo'            => ['_exists', '\Slim\PDO\Database'],
+            'taskController' => ['_instanceOf', '\TimeManager\Controller\Task'],
         ];
 
         $this->_allDependencies = $this->app->container->all();
