@@ -4,9 +4,9 @@ class ErrorTest extends \LocalWebTestCase
 {
     private $_object;
 
-    public function setup()
+    public function setUp()
     {
-        parent::setup();
+        parent::setUp();
         $this->_object = new \TimeManager\Decorator\Error($this->app);
     }
 
