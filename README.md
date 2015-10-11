@@ -4,8 +4,6 @@
 
 | URL           | Method | Input         | Description    |
 |---------------|--------|---------------|----------------|
-| /api/config   | GET    | Config Object | Get config     |
-| /api/config   | PUT    | Config Object | Update config  |
 | /api/mail     | POST   | -             | Send mail      |
 | /api/mail     | GET    | -             | Get mail text  |
 | /api/task     | POST   | Task Object   | Add a new task |
@@ -14,19 +12,6 @@
 | /api/task/:id | DELETE | -             | Delete task    |
 
 ## API Objects
-
-#### Config
-
-```json
-{
-    "mail": {
-        "from": "send.from@mail.com",
-        "to": ["send.to@mail.com"],
-        "subject": "Subject",
-        "body": "Body"
-    }
-}
-```
 
 #### Task
 
