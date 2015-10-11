@@ -12,7 +12,10 @@ if (!defined('PROJECT_ROOT')) {
     define('PROJECT_ROOT', realpath(__DIR__ . '/..'));
 }
 if (!defined('APPLICATION_ENV')) {
-    define('APPLICATION_ENV', 'development');
+    define(
+        'APPLICATION_ENV',
+        getenv('APPLICATION_ENV') ?: 'development'
+    );
 }
 require_once PROJECT_ROOT . '/vendor/autoload.php';
 
