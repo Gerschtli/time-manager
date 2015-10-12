@@ -6,5 +6,6 @@ return (object)[
         'host'     => 'localhost',
         'username' => 'root',
         'password' => 'root',
+        'prefix'   => '',
     ],
 ];
