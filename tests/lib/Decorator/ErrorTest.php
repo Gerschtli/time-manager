@@ -1,5 +1,7 @@
 <?php
 
+namespace TimeManager\Decorator;
+
 class ErrorTest extends \LocalWebTestCase
 {
     private $_object;
@@ -7,7 +9,7 @@ class ErrorTest extends \LocalWebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new \TimeManager\Decorator\Error($this->app);
+        $this->_object = new Error($this->app);
     }
 
     /**

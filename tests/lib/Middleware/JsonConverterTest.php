@@ -1,5 +1,7 @@
 <?php
 
+namespace TimeManager\Middleware;
+
 class JsonConverterTest extends \LocalWebTestCase
 {
     public function setUp()
@@ -25,7 +27,7 @@ class JsonConverterTest extends \LocalWebTestCase
             'slim.input'     => '{"foo":"bar"}'
         ]);
         $slim = new \Slim\Slim();
-        $slim->add(new \TimeManager\Middleware\JsonConverter());
+        $slim->add(new JsonConverter());
         $slim->run();
 
         $this->assertTrue(is_object($slim->request->getBody()));
