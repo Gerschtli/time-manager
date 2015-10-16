@@ -15,7 +15,7 @@ if (!defined('APPLICATION_ENV')) {
 require PROJECT_ROOT . '/vendor/autoload.php';
 
 $app = new Slim([
-    'debug' => false,
+    'debug' => (APPLICATION_ENV != 'production'),
     'mode'  => APPLICATION_ENV,
 ]);
 
