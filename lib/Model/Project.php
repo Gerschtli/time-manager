@@ -3,7 +3,7 @@
 namespace TimeManager\Model;
 
 /**
- * @Entity @Table(name="projects")
+ * @Entity @Table(name="tm_projects")
  */
 class Project
 {
