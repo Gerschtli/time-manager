@@ -4,8 +4,13 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 use TimeManager\Controller\Task as TaskController;
+
 use TimeManager\Decorator\Error as ErrorDecorator;
+
+use TimeManager\Model\Task as TaskModel;
+use TimeManager\Model\Time as TimeModel;
 use TimeManager\Model\Project as ProjectModel;
+
 use TimeManager\Service\Project as ProjectService;
 
 $app->container->singleton(
@@ -46,6 +51,20 @@ $app->container->singleton(
     'decoratorError',
     function () use ($app) {
         return new ErrorDecorator($app);
+    }
+);
+
+$app->container->set(
+    'modelTask',
+    function () {
+        return new TaskModel();
+    }
+);
+
+$app->container->set(
+    'modelTime',
+    function () {
+        return new TimeModel();
     }
 );
 
