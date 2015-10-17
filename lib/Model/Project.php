@@ -2,9 +2,35 @@
 
 namespace TimeManager\Model;
 
+/**
+ * @Entity @Table(name="projects")
+ */
 class Project
 {
-    public $projectId;
+    /**
+     * @Id @GeneratedValue @Column(type="integer")
+     * @var int
+     */
+    protected $projectId;
 
-    public $name;
+    /**
+     * @Column(type="string")
+     * @var string
+     */
+    protected $name;
+
+    public function getProjectId()
+    {
+        return $this->projectId;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }
