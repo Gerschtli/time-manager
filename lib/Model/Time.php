@@ -2,6 +2,8 @@
 
 namespace TimeManager\Model;
 
+use DateTime;
+
 /**
  * @Entity @Table(name="tm_time")
  */
@@ -47,7 +49,7 @@ class Time
         return $this->task;
     }
 
-    public function setStart(\DateTime $start)
+    public function setStart(DateTime $start)
     {
         $this->start = $start;
     }
@@ -57,7 +59,7 @@ class Time
         return $this->start;
     }
 
-    public function setEnd(\DateTime $end)
+    public function setEnd(DateTime $end)
     {
         $this->end = $end;
     }
