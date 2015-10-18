@@ -46,7 +46,7 @@ class JsonConverterTest extends \LocalWebTestCase
         ]);
         
         $slim = new \Slim\Slim();
-        $slim->add(new \TimeManager\Middleware\JsonConverter());
+        $slim->add(new JsonConverter());
         $slim->errorDecorator = $this
             ->getMockBuilder('\TimeManager\Decorator\Error')
             ->disableOriginalConstructor()
@@ -71,7 +71,7 @@ class JsonConverterTest extends \LocalWebTestCase
         ]);
 
         $slim = new \Slim\Slim();
-        $slim->add(new \TimeManager\Middleware\JsonConverter());
+        $slim->add(new JsonConverter());
         $slim->errorDecorator = $this
             ->getMockBuilder('\TimeManager\Decorator\Error')
             ->disableOriginalConstructor()
@@ -104,7 +104,7 @@ class JsonConverterTest extends \LocalWebTestCase
         ]);
 
         $slim = new \Slim\Slim();
-        $slim->add(new \TimeManager\Middleware\JsonConverter());
+        $slim->add(new JsonConverter());
         $slim->run();
 
         $this->assertEquals('irgendwas', $slim->request->getBody());
