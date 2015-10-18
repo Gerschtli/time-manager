@@ -1,11 +1,9 @@
 <?php
 
-require_once 'dic.php';
+require PROJECT_ROOT . '/app/dic.php';
 
-use TimeManager\Middleware\JsonConverter;
-
-$app->add(new JsonConverter());
+$app->add($app->middlewareJsonConverter);
 
 $app->post('/task', function () use ($app) {
-    $app->taskController->addAction();
+    $app->controllerTask->addAction();
 });
