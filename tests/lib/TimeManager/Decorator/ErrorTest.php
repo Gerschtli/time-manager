@@ -12,6 +12,28 @@ class ErrorTest extends \LocalWebTestCase
         $this->_object = new Error($this->app);
     }
 
+    public function testInstance()
+    {
+        $this->assertInstanceOf('\TimeManager\Decorator\Error', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
+    }
+
+    public function testConstants()
+    {
+        $object = new \ReflectionClass('\TimeManager\Decorator\Error');
+        $parent = new \ReflectionClass('\TimeManager\Decorator\Base');
+
+        $this->assertEquals(
+            [
+                'STATUS_UNSUPPORTED_MEDIA_TYPE'  => 415,
+                'STATUS_UNPROCESSABLE_ENTITY'    => 422,
+                'MESSAGE_UNSUPPORTED_MEDIA_TYPE' => 'only JSON is allowed',
+                'MESSAGE_UNPROCESSABLE_ENTITY'   => 'invalid JSON',
+            ],
+            $object->getConstants() + $parent->getConstants()
+        );
+    }
+
     /**
      * @dataProvider dataProviderForTestProcess
      */

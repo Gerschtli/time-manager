@@ -6,10 +6,10 @@ use Slim\Http\Response;
 
 class Error extends Base
 {
-    const UNSUPPORTED_MEDIA_TYPE         = 415;
-    const UNPROCESSABLE_ENTITY           = 422;
-    const UNSUPPORTED_MEDIA_TYPE_MESSAGE = 'only JSON is allowed';
-    const UNPROCESSABLE_ENTITY_MESSAGE   = 'invalid JSON';
+    const STATUS_UNSUPPORTED_MEDIA_TYPE  = 415;
+    const STATUS_UNPROCESSABLE_ENTITY    = 422;
+    const MESSAGE_UNSUPPORTED_MEDIA_TYPE = 'only JSON is allowed';
+    const MESSAGE_UNPROCESSABLE_ENTITY   = 'invalid JSON';
 
     public function process($errorCode)
     {
@@ -46,11 +46,11 @@ class Error extends Base
     private function _getMessage($errorCode)
     {
         switch ($errorCode) {
-            case self::UNSUPPORTED_MEDIA_TYPE:
-                $message = self::UNSUPPORTED_MEDIA_TYPE_MESSAGE;
+            case self::STATUS_UNSUPPORTED_MEDIA_TYPE:
+                $message = self::MESSAGE_UNSUPPORTED_MEDIA_TYPE;
                 break;
-            case self::UNPROCESSABLE_ENTITY:
-                $message = self::UNPROCESSABLE_ENTITY_MESSAGE;
+            case self::STATUS_UNPROCESSABLE_ENTITY:
+                $message = self::MESSAGE_UNPROCESSABLE_ENTITY;
                 break;
             default:
                 $message = '';

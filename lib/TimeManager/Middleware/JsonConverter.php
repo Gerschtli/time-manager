@@ -22,10 +22,10 @@ class JsonConverter extends Middleware
                     $env['slim.input'] = $result;
                     $this->next->call();
                 } else {
-                    $this->_printError(ErrorDecorator::UNPROCESSABLE_ENTITY);
+                    $this->_printError(ErrorDecorator::STATUS_UNPROCESSABLE_ENTITY);
                 }
             } else {
-                $this->_printError(ErrorDecorator::UNSUPPORTED_MEDIA_TYPE);
+                $this->_printError(ErrorDecorator::STATUS_UNSUPPORTED_MEDIA_TYPE);
             }
         }
     }
