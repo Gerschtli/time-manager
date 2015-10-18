@@ -37,8 +37,14 @@ class TimeTest extends \LocalWebTestCase
 
     public function dataProviderForTestGetterSetter()
     {
-        $task = $this->getMock('\TimeManager\Model\Task');
-        $datetime = $this->getMock('\DateTime');
+        $task     = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $datetime = $this
+            ->getMockBuilder('\DateTime')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         return [
             ['task', $task],

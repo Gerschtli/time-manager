@@ -37,8 +37,14 @@ class TaskTest extends \LocalWebTestCase
 
     public function dataProviderForTestGetterSetter()
     {
-        $project         = $this->getMock('\TimeManager\Model\Project');
-        $arrayCollection = $this->getMock('\Doctrine\Common\Collections\ArrayCollection');
+        $project         = $this
+            ->getMockBuilder('\TimeManager\Model\Project')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $arrayCollection = $this
+            ->getMockBuilder('\Doctrine\Common\Collections\ArrayCollection')
+            ->disableOriginalConstructor()
+            ->getMock();;
 
         return [
             ['project', $project],
@@ -49,7 +55,10 @@ class TaskTest extends \LocalWebTestCase
 
     public function testAddTime()
     {
-        $time = $this->getMock('\TimeManager\Model\Time');
+        $time = $this
+            ->getMockBuilder('\TimeManager\Model\Time')
+            ->disableOriginalConstructor()
+            ->getMock();;
 
         $this->_object->addTime($time);
         $times = $this->_object->getTimes();
