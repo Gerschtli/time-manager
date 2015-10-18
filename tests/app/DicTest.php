@@ -18,14 +18,15 @@ class DicTest extends \LocalWebTestCase
     public function testDic()
     {
         $dependencies = [
-            'config'         => ['_sameInstance', '\stdClass'],
-            'controllerTask' => ['_sameInstance', '\TimeManager\Controller\Task'],
-            'dbal'           => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
-            'decoratorError' => ['_sameInstance', '\TimeManager\Decorator\Error'],
-            'modelTask'      => ['_notSameInstance', '\TimeManager\Model\Task'],
-            'modelTime'      => ['_notSameInstance', '\TimeManager\Model\Time'],
-            'modelProject'   => ['_notSameInstance', '\TimeManager\Model\Project'],
-            'serviceProject' => ['_sameInstance', '\TimeManager\Service\Project'],
+            'config'                  => ['_sameInstance', '\stdClass'],
+            'controllerTask'          => ['_sameInstance', '\TimeManager\Controller\Task'],
+            'dbal'                    => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
+            'decoratorError'          => ['_sameInstance', '\TimeManager\Decorator\Error'],
+            'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],
+            'modelTask'               => ['_notSameInstance', '\TimeManager\Model\Task'],
+            'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],
+            'modelProject'            => ['_notSameInstance', '\TimeManager\Model\Project'],
+            'serviceProject'          => ['_sameInstance', '\TimeManager\Service\Project'],
         ];
 
         $this->_allDependencies = $this->app->container->all();

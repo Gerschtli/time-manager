@@ -7,6 +7,8 @@ use TimeManager\Controller\Task as TaskController;
 
 use TimeManager\Decorator\Error as ErrorDecorator;
 
+use TimeManager\Middleware\JsonConverter;
+
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
 use TimeManager\Model\Project as ProjectModel;
@@ -51,6 +53,13 @@ $app->container->singleton(
     'decoratorError',
     function () use ($app) {
         return new ErrorDecorator($app);
+    }
+);
+
+$app->container->singleton(
+    'middlewareJsonConverter',
+    function () {
+        return new JsonConverter();
     }
 );
 
