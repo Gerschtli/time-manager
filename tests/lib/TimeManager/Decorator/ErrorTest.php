@@ -30,6 +30,7 @@ class ErrorTest extends \LocalWebTestCase
                 'STATUS_UNPROCESSABLE_ENTITY'    => 422,
                 'MESSAGE_UNSUPPORTED_MEDIA_TYPE' => 'only JSON is allowed',
                 'MESSAGE_UNPROCESSABLE_ENTITY'   => 'invalid JSON',
+                'MESSAGE_INVALID_DATA'           => 'invalid data',
             ],
             $object->getConstants() + $parent->getConstants()
         );
