@@ -21,8 +21,8 @@
     "description": "Description",
     "time": [
         {
-            "from": "YYYY-MM-DD HH:MM",
-            "to": "YYYY-MM-DD HH:MM"
+            "start": "YYYY-MM-DD HH:MM:SS",
+            "end": "YYYY-MM-DD HH:MM:SS"
         }
     ]
 }
