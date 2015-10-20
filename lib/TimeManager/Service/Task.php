@@ -21,6 +21,8 @@ class Task
             return null;
         }
 
+        $dbal = $this->_app->dbal;
+
         $task = $this->_app->modelTask;
         $task->setDescription($data->description);
 
@@ -31,6 +33,8 @@ class Task
                 $project = $this->_app->modelProject;
                 $project->setName($data->project);
             }
+
+            $dbal->persist($project);
             $task->setProject($project);
         }
 
@@ -48,10 +52,10 @@ class Task
                 }
 
                 $task->addTime($time);
+                $dbal->persist($time);
             }
         }
 
-        $dbal = $this->_app->dbal;
         $dbal->persist($task);
         $dbal->flush();
 

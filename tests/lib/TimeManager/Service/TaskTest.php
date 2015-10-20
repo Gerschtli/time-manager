@@ -93,9 +93,21 @@ class TaskTest extends \LocalWebTestCase
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
+            ->with($this->equalTo($this->app->modelProject));
         $this->app->dbal
             ->expects($this->at(1))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelTime));
+        $this->app->dbal
+            ->expects($this->at(2))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelTime));
+        $this->app->dbal
+            ->expects($this->at(3))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelTask));
+        $this->app->dbal
+            ->expects($this->at(4))
             ->method('flush');
 
         $this->assertEquals(
@@ -155,9 +167,13 @@ class TaskTest extends \LocalWebTestCase
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
+            ->with($this->equalTo($this->app->modelProject));
         $this->app->dbal
             ->expects($this->at(1))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelTask));
+        $this->app->dbal
+            ->expects($this->at(2))
             ->method('flush');
 
         $this->assertEquals(
@@ -249,9 +265,13 @@ class TaskTest extends \LocalWebTestCase
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
+            ->with($this->equalTo($this->app->modelTime));
         $this->app->dbal
             ->expects($this->at(1))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelTask));
+        $this->app->dbal
+            ->expects($this->at(2))
             ->method('flush');
 
         $this->assertEquals(
