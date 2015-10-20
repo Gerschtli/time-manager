@@ -22,6 +22,7 @@ class DicTest extends \LocalWebTestCase
             'controllerTask'          => ['_sameInstance', '\TimeManager\Controller\Task'],
             'dbal'                    => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
             'decoratorError'          => ['_sameInstance', '\TimeManager\Decorator\Error'],
+            'decoratorSuccess'        => ['_sameInstance', '\TimeManager\Decorator\Success'],
             'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],
             'modelTask'               => ['_notSameInstance', '\TimeManager\Model\Task'],
             'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],

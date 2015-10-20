@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use TimeManager\Controller\Task as TaskController;
 
 use TimeManager\Decorator\Error as ErrorDecorator;
+use TimeManager\Decorator\Success as SuccessDecorator;
 
 use TimeManager\Middleware\JsonConverter;
 
@@ -54,6 +55,13 @@ $app->container->singleton(
     'decoratorError',
     function () use ($app) {
         return new ErrorDecorator($app);
+    }
+);
+
+$app->container->singleton(
+    'decoratorSuccess',
+    function () use ($app) {
+        return new SuccessDecorator($app);
     }
 );
 
