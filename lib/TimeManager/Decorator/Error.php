@@ -9,7 +9,7 @@ class Error extends Base implements Decorator
     const MESSAGE_UNSUPPORTED_MEDIA_TYPE = 'only JSON is allowed';
     const MESSAGE_UNPROCESSABLE_ENTITY   = 'invalid JSON';
 
-    public function process($code, $message = null)
+    public function process($code, $message = '')
     {
         $description = $this->_generateMessage(
             $code,

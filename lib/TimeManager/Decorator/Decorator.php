@@ -4,5 +4,5 @@ namespace TimeManager\Decorator;
 
 interface Decorator
 {
-    public function process($code, $message = null);
+    public function process($code, $message = '');
 }
