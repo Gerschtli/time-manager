@@ -14,7 +14,7 @@ abstract class Base
         $this->_app = $app;
     }
 
-    protected function _print($message)
+    protected function _print($code, $message)
     {
         $this->_app->status($code);
 
