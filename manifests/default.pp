@@ -205,4 +205,15 @@ class dbserver {
     ],
     onlyif  => "test -e ${resourcePath}/tables.sql"
   }
+
+  exec { "insert-testdata":
+    command => "mysql -uroot -p${mysqlPassword} < ${resourcePath}/testdata.sql",
+    require => [
+      Exec["set-mysql-password"],
+      Exec["drop-db"],
+      Exec["create-db"],
+      Exec["create-tables"]
+    ],
+    onlyif  => "test -e ${resourcePath}/testdata.sql"
+  }
 }
