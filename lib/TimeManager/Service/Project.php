@@ -13,9 +13,10 @@ class Project
         $this->_app = $app;
     }
 
-    public function getById($projectId)
+    public function getByName($name)
     {
-        $dbal = $this->_app->dbal;
-        return $dbal->find('\TimeManager\Model\Project', $projectId);
+        return $this->_app->dbal
+            ->getRepository('\TimeManager\Model\Project')
+            ->findOneBy(['name'=> $name]);
     }
 }

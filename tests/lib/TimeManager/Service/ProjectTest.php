@@ -12,22 +12,34 @@ class ProjectTest extends \LocalWebTestCase
         $this->_object = new Project($this->app);
     }
 
-    public function testGetById()
+    public function testGetByName()
     {
-        $projectId = time();
+        $name = time();
+
         $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
+        $repository = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->app->dbal
             ->expects($this->once())
-            ->method('find')
-            ->with(
-                $this->equalTo('\TimeManager\Model\Project'),
-                $this->equalTo($projectId)
-            )
+            ->method('getRepository')
+            ->with($this->equalTo('\TimeManager\Model\Project'))
+            ->will($this->returnValue($repository));
+
+        $repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo(['name' => $name]))
             ->will($this->returnValue('return'));
 
-        $this->assertEquals('return', $this->_object->getById($projectId));
+        $this->assertEquals(
+            'return',
+            $this->_object->getByName($name)
+        );
     }
 }
