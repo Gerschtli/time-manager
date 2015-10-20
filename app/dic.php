@@ -14,6 +14,7 @@ use TimeManager\Model\Time as TimeModel;
 use TimeManager\Model\Project as ProjectModel;
 
 use TimeManager\Service\Project as ProjectService;
+use TimeManager\Service\Task as TaskService;
 
 $app->container->singleton(
     'config',
@@ -88,5 +89,12 @@ $app->container->singleton(
     'serviceProject',
     function () use ($app) {
         return new ProjectService($app);
+    }
+);
+
+$app->container->singleton(
+    'serviceTask',
+    function () use ($app) {
+        return new TaskService($app);
     }
 );

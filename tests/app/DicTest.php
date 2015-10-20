@@ -27,6 +27,7 @@ class DicTest extends \LocalWebTestCase
             'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],
             'modelProject'            => ['_notSameInstance', '\TimeManager\Model\Project'],
             'serviceProject'          => ['_sameInstance', '\TimeManager\Service\Project'],
+            'serviceTask'             => ['_sameInstance', '\TimeManager\Service\Task'],
         ];
 
         $this->_allDependencies = $this->app->container->all();
