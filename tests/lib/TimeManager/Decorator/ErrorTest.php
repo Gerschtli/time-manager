@@ -16,6 +16,7 @@ class ErrorTest extends \LocalWebTestCase
     {
         $this->assertInstanceOf('\TimeManager\Decorator\Error', $this->_object);
         $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Decorator\Decorator', $this->_object);
     }
 
     public function testConstants()
@@ -74,6 +75,55 @@ class ErrorTest extends \LocalWebTestCase
                     "error": {
                         "code": 500,
                         "description": "Internal Server Error"
+                    }
+                }',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderForTestProcessWithMessage
+     */
+    public function testProcessWithMessage($errorCode, $message, $body)
+    {
+        $this->_object->process($errorCode, $message);
+
+        $response = $this->app->response;
+        $this->assertEquals($errorCode, $response->getStatus());
+        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+        $this->assertJsonStringEqualsJsonString($body, $response->getBody());
+    }
+
+    public function dataProviderForTestProcessWithMessage()
+    {
+        return [
+            [
+                415,
+                'bla blub',
+                '{
+                    "error": {
+                        "code": 415,
+                        "description": "Unsupported Media Type, bla blub"
+                    }
+                }',
+            ],
+            [
+                422,
+                'xxx',
+                '{
+                    "error": {
+                        "code": 422,
+                        "description": "Unprocessable Entity, xxx"
+                    }
+                }',
+            ],
+            [
+                500,
+                'xxx',
+                '{
+                    "error": {
+                        "code": 500,
+                        "description": "Internal Server Error, xxx"
                     }
                 }',
             ],

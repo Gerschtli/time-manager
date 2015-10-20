@@ -4,26 +4,26 @@ namespace TimeManager\Decorator;
 
 use Slim\Http\Response;
 
-class Error extends Base
+class Error extends Base implements Decorator
 {
     const STATUS_UNSUPPORTED_MEDIA_TYPE  = 415;
     const STATUS_UNPROCESSABLE_ENTITY    = 422;
     const MESSAGE_UNSUPPORTED_MEDIA_TYPE = 'only JSON is allowed';
     const MESSAGE_UNPROCESSABLE_ENTITY   = 'invalid JSON';
 
-    public function process($errorCode)
+    public function process($code, $message = null)
     {
-        $this->_app->status($errorCode);
+        $this->_app->status($code);
 
-        $message = $this->_generateMessage(
-            $errorCode,
-            $this->_getMessage($errorCode)
+        $description = $this->_generateMessage(
+            $code,
+            ($message ?: $this->_getMessage($code))
         );
         
         $output = [
             'error' => [
-                'code'        => $errorCode,
-                'description' => $message,
+                'code'        => $code,
+                'description' => $description,
             ]
         ];
         $this->_print($output);
