@@ -2,8 +2,6 @@
 
 namespace TimeManager\Decorator;
 
-use Slim\Http\Response;
-
 class Error extends Base implements Decorator
 {
     const STATUS_UNSUPPORTED_MEDIA_TYPE  = 415;
@@ -13,8 +11,6 @@ class Error extends Base implements Decorator
 
     public function process($code, $message = null)
     {
-        $this->_app->status($code);
-
         $description = $this->_generateMessage(
             $code,
             ($message ?: $this->_getMessage($code))
@@ -26,21 +22,7 @@ class Error extends Base implements Decorator
                 'description' => $description,
             ]
         ];
-        $this->_print($output);
-    }
-
-    private function _generateMessage($errorCode, $message = '')
-    {
-        $httpMessage = Response::getMessageForCode($errorCode);
-        $httpMessage = substr($httpMessage, 4);
-
-        if ($message != '') {
-            $result = $httpMessage . ', ' . $message;
-        } else {
-            $result = $httpMessage;
-        }
-
-        return $result;
+        $this->_print($code, $output);
     }
 
     private function _getMessage($errorCode)
