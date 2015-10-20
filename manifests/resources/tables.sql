@@ -8,7 +8,7 @@ CREATE TABLE `tm_projects` (
 
 CREATE TABLE `tm_tasks` (
   `taskId` int(11) NOT NULL AUTO_INCREMENT,
-  `projectId` int(11) NOT NULL,
+  `projectId` int(11) NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`taskId`),
   FOREIGN KEY (`projectId`) REFERENCES `tm_projects` (`projectId`)
@@ -16,9 +16,9 @@ CREATE TABLE `tm_tasks` (
 
 CREATE TABLE `tm_time` (
   `timeId` int(11) NOT NULL AUTO_INCREMENT,
-  `taskId` int(11) NOT NULL,
+  `taskId` int(11) NULL,
   `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
+  `end` datetime NULL,
   PRIMARY KEY (`timeId`),
   FOREIGN KEY (`taskId`) REFERENCES `tm_tasks` (`taskId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
