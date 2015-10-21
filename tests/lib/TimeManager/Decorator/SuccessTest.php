@@ -26,6 +26,7 @@ class SuccessTest extends \LocalWebTestCase
 
         $this->assertEquals(
             [
+                'STATUS_OK'      => 200,
                 'STATUS_CREATED' => 201,
             ],
             $object->getConstants() + $parent->getConstants()

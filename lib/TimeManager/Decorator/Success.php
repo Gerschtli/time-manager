@@ -4,6 +4,7 @@ namespace TimeManager\Decorator;
 
 class Success extends Base implements Decorator
 {
+    const STATUS_OK      = '200';
     const STATUS_CREATED = '201';
 
     public function process($code, $message = '')
