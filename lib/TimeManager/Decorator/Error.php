@@ -4,6 +4,7 @@ namespace TimeManager\Decorator;
 
 class Error extends Base implements Decorator
 {
+    const STATUS_NOT_FOUND               = 404;
     const STATUS_UNSUPPORTED_MEDIA_TYPE  = 415;
     const STATUS_UNPROCESSABLE_ENTITY    = 422;
     const MESSAGE_UNSUPPORTED_MEDIA_TYPE = 'only JSON is allowed';

@@ -26,6 +26,7 @@ class ErrorTest extends \LocalWebTestCase
 
         $this->assertEquals(
             [
+                'STATUS_NOT_FOUND'               => 404,
                 'STATUS_UNSUPPORTED_MEDIA_TYPE'  => 415,
                 'STATUS_UNPROCESSABLE_ENTITY'    => 422,
                 'MESSAGE_UNSUPPORTED_MEDIA_TYPE' => 'only JSON is allowed',
