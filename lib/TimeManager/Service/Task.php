@@ -62,6 +62,12 @@ class Task
         return $task;
     }
 
+    public function getById($taskId)
+    {
+        return $this->_app->dbal
+            ->find('\TimeManager\Model\Task', $taskId);
+    }
+
     private function _isValidDate($date)
     {
         $parsed = date_parse($date);

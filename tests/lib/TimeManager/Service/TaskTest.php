@@ -279,4 +279,25 @@ class TaskTest extends \LocalWebTestCase
             $this->_object->createModel($data)
         );
     }
+
+    public function testGetById()
+    {
+        $taskId = time();
+
+        $this->app->dbal = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->dbal
+            ->expects($this->once())
+            ->method('find')
+            ->with(
+                $this->equalTo('\TimeManager\Model\Task'),
+                $this->equalTo($taskId)
+            )
+            ->will($this->returnValue('bla'));
+
+        $this->assertEquals('bla', $this->_object->getById($taskId));
+    }
 }
