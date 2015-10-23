@@ -45,12 +45,15 @@ class DataTest extends \LocalWebTestCase
             ->getMock();
 
         $task->expects($this->at(0))
+            ->method('getTaskId')
+            ->will($this->returnValue(5));
+        $task->expects($this->at(1))
             ->method('getDescription')
             ->will($this->returnValue('description'));
-        $task->expects($this->at(1))
+        $task->expects($this->at(2))
             ->method('getProject')
             ->will($this->returnValue($project));
-        $task->expects($this->at(2))
+        $task->expects($this->at(3))
             ->method('getTimes')
             ->will($this->returnValue([$time, $time]));
 
@@ -79,6 +82,7 @@ class DataTest extends \LocalWebTestCase
 
         $body = json_encode(
             (object)[
+                'taskId'      => 5,
                 'description' => 'description',
                 'project'     => 'project',
                 'time'        => [

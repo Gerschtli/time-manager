@@ -19,6 +19,7 @@ class Data extends Base implements Decorator
     {
         $data = new stdClass();
 
+        $data->taskId      = $task->getTaskId();
         $data->description = $task->getDescription();
         $data->project     = $task->getProject()->getName();
         $data->time        = [];
