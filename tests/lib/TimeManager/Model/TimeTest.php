@@ -52,4 +52,34 @@ class TimeTest extends \LocalWebTestCase
             ['end', $datetime],
         ];
     }
+
+    /**
+     * @dataProvider dataProviderForTestGetDateTime
+     */
+    public function testGetDateTime($property)
+    {
+        $datetime = $this
+            ->getMockBuilder('\DateTime')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $datetime
+            ->expects($this->once())
+            ->method('format')
+            ->with($this->equalTo('Y-m-d h:i:s'))
+            ->will($this->returnValue('return'));
+
+        $setter = 'set' . ucfirst($property);
+        $getter = 'get' . ucfirst($property);
+
+        $this->_object->$setter($datetime);
+        $this->assertEquals('return', $this->_object->$getter(true));
+    }
+
+    public function dataProviderForTestGetDateTime()
+    {
+        return [
+            ['start'],
+            ['end'],
+        ];
+    }
 }

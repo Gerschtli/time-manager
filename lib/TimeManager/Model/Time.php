@@ -54,9 +54,12 @@ class Time
         $this->start = $start;
     }
 
-    public function getStart()
+    public function getStart($format = false)
     {
-        return $this->start;
+        if (!$format) {
+            return $this->start;
+        }
+        return $this->_formatDate($this->start);
     }
 
     public function setEnd(DateTime $end)
@@ -64,8 +67,16 @@ class Time
         $this->end = $end;
     }
 
-    public function getEnd()
+    public function getEnd($format = false)
     {
-        return $this->end;
+        if (!$format) {
+            return $this->end;
+        }
+        return $this->_formatDate($this->end);
+    }
+
+    private function _formatDate(DateTime $date)
+    {
+        return $date->format('Y-m-d h:i:s');
     }
 }
