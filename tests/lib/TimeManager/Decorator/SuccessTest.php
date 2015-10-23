@@ -87,6 +87,45 @@ class SuccessTest extends \LocalWebTestCase
                     }
                 }',
             ],
+            [
+                201,
+                ['message' => 'bla blub'],
+                '{
+                    "success": {
+                        "code": 201,
+                        "description": "Created, bla blub"
+                    }
+                }',
+            ],
+            [
+                201,
+                ['taskId' => 5],
+                '{
+                    "success": {
+                        "code": 201,
+                        "description": "Created"
+                    },
+                    "result": {
+                        "taskId": 5
+                    }
+                }',
+            ],
+            [
+                201,
+                [
+                    'message' => 'bla blub',
+                    'taskId'  => 5,
+                ],
+                '{
+                    "success": {
+                        "code": 201,
+                        "description": "Created, bla blub"
+                    },
+                    "result": {
+                        "taskId": 5
+                    }
+                }',
+            ],
         ];
     }
 }
