@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 use TimeManager\Controller\Task as TaskController;
 
+use TimeManager\Decorator\Data as DataDecorator;
 use TimeManager\Decorator\Error as ErrorDecorator;
 use TimeManager\Decorator\Success as SuccessDecorator;
 
@@ -48,6 +49,13 @@ $app->container->singleton(
         ];
 
         return EntityManager::create($connectionDetails, $config);
+    }
+);
+
+$app->container->singleton(
+    'decoratorData',
+    function () use ($app) {
+        return new DataDecorator($app);
     }
 );
 
