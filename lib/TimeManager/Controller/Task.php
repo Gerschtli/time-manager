@@ -21,7 +21,8 @@ class Task
 
         if (!is_null($result)) {
             $this->_app->decoratorSuccess->process(
-                Success::STATUS_CREATED
+                Success::STATUS_CREATED,
+                ['taskId' => $result->getTaskId()]
             );
         } else {
             $this->_app->decoratorError->process(

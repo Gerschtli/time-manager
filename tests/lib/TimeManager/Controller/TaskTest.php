@@ -26,6 +26,10 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->app->modelTask        = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->app->decoratorSuccess = $this
             ->getMockBuilder('\TimeManager\Decorator\Success')
             ->disableOriginalConstructor()
@@ -35,12 +39,20 @@ class TaskTest extends \LocalWebTestCase
             ->expects($this->once())
             ->method('createModel')
             ->with($this->equalTo($requestData))
-            ->will($this->returnValue((object)['bla' => 'test']));
+            ->will($this->returnValue($this->app->modelTask));
+
+        $this->app->modelTask
+            ->expects($this->once())
+            ->method('getTaskId')
+            ->will($this->returnValue(5));
 
         $this->app->decoratorSuccess
             ->expects($this->once())
             ->method('process')
-            ->with($this->equalTo(201));
+            ->with(
+                $this->equalTo(201),
+                $this->equalTo(['taskId' => 5])
+            );
 
         $this->_object->addAction();
     }
