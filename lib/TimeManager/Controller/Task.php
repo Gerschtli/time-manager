@@ -30,4 +30,20 @@ class Task
             );
         }
     }
+
+    public function getAction($taskId)
+    {
+        $task = $this->_app->serviceTask->getById((int) $taskId);
+
+        if (!is_null($task)) {
+            $this->_app->decoratorData->process(
+                Success::STATUS_OK,
+                $task
+            );
+        } else {
+            $this->_app->decoratorError->process(
+                Error::STATUS_NOT_FOUND
+            );
+        }
+    }
 }

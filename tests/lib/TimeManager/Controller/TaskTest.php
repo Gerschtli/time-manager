@@ -22,20 +22,21 @@ class TaskTest extends \LocalWebTestCase
             'slim.input' => $requestData,
         ]);
 
-        $this->app->serviceTask = $this
+        $this->app->serviceTask      = $this
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->app->decoratorSuccess = $this
+            ->getMockBuilder('\TimeManager\Decorator\Success')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->app->serviceTask
             ->expects($this->once())
             ->method('createModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue((object)['bla' => 'test']));
 
-        $this->app->decoratorSuccess = $this
-            ->getMockBuilder('\TimeManager\Decorator\Success')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->app->decoratorSuccess
             ->expects($this->once())
             ->method('process')
@@ -54,25 +55,87 @@ class TaskTest extends \LocalWebTestCase
             'slim.input' => $requestData,
         ]);
 
-        $this->app->serviceTask = $this
+        $this->app->serviceTask    = $this
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->app->decoratorError = $this
+            ->getMockBuilder('\TimeManager\Decorator\Error')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->app->serviceTask
             ->expects($this->once())
             ->method('createModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
 
-        $this->app->decoratorError = $this
-            ->getMockBuilder('\TimeManager\Decorator\Error')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->app->decoratorError
             ->expects($this->once())
             ->method('process')
             ->with($this->equalTo(422), $this->equalTo('invalid data'));
 
         $this->_object->addAction();
+    }
+
+    public function testGetAction()
+    {
+        $taskId = time();
+
+        $this->app->serviceTask   = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->modelTask     = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->decoratorData = $this
+            ->getMockBuilder('\TimeManager\Decorator\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('getById')
+            ->with($this->equalTo($taskId))
+            ->will($this->returnValue($this->app->modelTask));
+
+        $this->app->decoratorData
+            ->expects($this->once())
+            ->method('process')
+            ->with(
+                $this->equalTo(200),
+                $this->equalTo($this->app->modelTask)
+            );
+
+        $this->_object->getAction($taskId);
+    }
+
+    public function testGetActionWithoutValidId()
+    {
+        $taskId = time();
+
+        $this->app->serviceTask    = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->decoratorError = $this
+            ->getMockBuilder('\TimeManager\Decorator\Error')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('getById')
+            ->with($this->equalTo($taskId))
+            ->will($this->returnValue(null));
+
+        $this->app->decoratorError
+            ->expects($this->once())
+            ->method('process')
+            ->with($this->equalTo(404));
+
+        $this->_object->getAction($taskId);
     }
 }
