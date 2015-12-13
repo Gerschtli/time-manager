@@ -7,7 +7,9 @@
     },
     "require-dev": {
         "phpunit/phpunit"         : "@stable",
-        "there4/slim-test-helpers": "@stable"
+        "there4/slim-test-helpers": "@stable",
+        "phpmd/phpmd"             : "@stable",
+        "zerkalica/phpcs"         : "dev-master"
     },
     "autoload": {
         "psr-4": {
