@@ -17,6 +17,6 @@ class Project
     {
         return $this->_app->dbal
             ->getRepository('\TimeManager\Model\Project')
-            ->findOneBy(['name'=> $name]);
+            ->findOneBy(['_name'=> $name]);
     }
 }

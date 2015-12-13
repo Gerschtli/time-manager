@@ -18,9 +18,11 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        \Slim\Environment::mock([
-            'slim.input' => $requestData,
-        ]);
+        \Slim\Environment::mock(
+            [
+                'slim.input' => $requestData,
+            ]
+        );
 
         $this->app->serviceTask      = $this
             ->getMockBuilder('\TimeManager\Service\Task')
@@ -63,9 +65,11 @@ class TaskTest extends \LocalWebTestCase
             'test' => 'bla',
         ];
 
-        \Slim\Environment::mock([
-            'slim.input' => $requestData,
-        ]);
+        \Slim\Environment::mock(
+            [
+                'slim.input' => $requestData,
+            ]
+        );
 
         $this->app->serviceTask    = $this
             ->getMockBuilder('\TimeManager\Service\Task')

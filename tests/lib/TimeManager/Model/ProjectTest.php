@@ -16,7 +16,7 @@ class ProjectTest extends \LocalWebTestCase
     {
         $projectId          = time();
         $reflectionClass    = new \ReflectionClass('\TimeManager\Model\Project');
-        $reflectionProperty = $reflectionClass->getProperty('projectId');
+        $reflectionProperty = $reflectionClass->getProperty('_projectId');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($this->_object, $projectId);
 

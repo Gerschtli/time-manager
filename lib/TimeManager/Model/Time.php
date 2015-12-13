@@ -5,74 +5,77 @@ namespace TimeManager\Model;
 use DateTime;
 
 /**
- * @Entity @Table(name="tm_time")
+ * @Entity
+ * @Table(name="tm_time")
  */
 class Time
 {
     /**
-     * @Id @GeneratedValue @Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer", name="timeId")
      * @var int
      */
-    protected $timeId;
+    protected $_timeId;
 
     /**
-     * @ManyToOne(targetEntity="Task", inversedBy="times")
+     * @ManyToOne(targetEntity="Task", inversedBy="_times")
      * @JoinColumn(name="taskId", referencedColumnName="taskId")
      * @var \TimeManager\Model\Task
      */
-    protected $task;
+    protected $_task;
 
     /**
-     * @Column(type="datetime")
+     * @Column(type="datetime", name="start")
      * @var \DateTime
      */
-    protected $start;
+    protected $_start;
 
     /**
-     * @Column(type="datetime")
+     * @Column(type="datetime", name="end")
      * @var \DateTime
      */
-    protected $end;
+    protected $_end;
 
     public function getTimeId()
     {
-        return $this->timeId;
+        return $this->_timeId;
     }
 
     public function setTask(Task $task)
     {
-        $this->task = $task;
+        $this->_task = $task;
     }
 
     public function getTask()
     {
-        return $this->task;
+        return $this->_task;
     }
 
     public function setStart(DateTime $start)
     {
-        $this->start = $start;
+        $this->_start = $start;
     }
 
     public function getStart($format = false)
     {
         if (!$format) {
-            return $this->start;
+            return $this->_start;
         }
-        return $this->_formatDate($this->start);
+        return $this->_formatDate($this->_start);
     }
 
     public function setEnd(DateTime $end)
     {
-        $this->end = $end;
+        $this->_end = $end;
     }
 
     public function getEnd($format = false)
     {
         if (!$format) {
-            return $this->end;
+            return $this->_end;
         }
-        return $this->_formatDate($this->end);
+        return $this->_formatDate($this->_end);
     }
 
     private function _formatDate(DateTime $date)

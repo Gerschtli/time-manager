@@ -5,78 +5,81 @@ namespace TimeManager\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity @Table(name="tm_tasks")
+ * @Entity
+ * @Table(name="tm_tasks")
  */
 class Task
 {
     /**
-     * @Id @GeneratedValue @Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer", name="taskId")
      * @var int
      */
-    protected $taskId;
+    protected $_taskId;
 
     /**
      * @OneToOne(targetEntity="Project")
      * @JoinColumn(name="projectId", referencedColumnName="projectId")
      * @var \TimeManager\Model\Project
      */
-    protected $project;
+    protected $_project;
 
     /**
-     * @Column(type="string")
+     * @Column(type="string", name="description")
      * @var string
      */
-    protected $description;
+    protected $_description;
 
     /**
-     * @OneToMany(targetEntity="Time", mappedBy="task")
+     * @OneToMany(targetEntity="Time", mappedBy="_task")
      * @var \TimeManager\Model\Time[]
      */
-    protected $times;
+    protected $_times;
 
     public function __construct()
     {
-        $this->times = new ArrayCollection();
+        $this->_times = new ArrayCollection();
     }
 
     public function getTaskId()
     {
-        return $this->taskId;
+        return $this->_taskId;
     }
 
     public function setProject(Project $project)
     {
-        $this->project = $project;
+        $this->_project = $project;
     }
 
     public function getProject()
     {
-        return $this->project;
+        return $this->_project;
     }
 
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->_description = $description;
     }
 
     public function getDescription()
     {
-        return $this->description;
+        return $this->_description;
     }
 
     public function setTimes(ArrayCollection $times)
     {
-        $this->times = $times;
+        $this->_times = $times;
     }
 
     public function addTime(Time $time)
     {
         $time->setTask($this);
-        $this->times[] = $time;
+        $this->_times[] = $time;
     }
 
     public function getTimes()
     {
-        return $this->times;
+        return $this->_times;
     }
 }

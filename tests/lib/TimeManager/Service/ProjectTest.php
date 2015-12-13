@@ -34,7 +34,7 @@ class ProjectTest extends \LocalWebTestCase
         $repository
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(['name' => $name]))
+            ->with($this->equalTo(['_name' => $name]))
             ->will($this->returnValue('return'));
 
         $this->assertEquals(

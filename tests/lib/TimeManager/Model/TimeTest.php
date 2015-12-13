@@ -16,7 +16,7 @@ class TimeTest extends \LocalWebTestCase
     {
         $timeId             = time();
         $reflectionClass    = new \ReflectionClass('\TimeManager\Model\Time');
-        $reflectionProperty = $reflectionClass->getProperty('timeId');
+        $reflectionProperty = $reflectionClass->getProperty('_timeId');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($this->_object, $timeId);
 

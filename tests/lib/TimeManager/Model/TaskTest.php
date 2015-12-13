@@ -16,7 +16,7 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId             = time();
         $reflectionClass    = new \ReflectionClass('\TimeManager\Model\Task');
-        $reflectionProperty = $reflectionClass->getProperty('taskId');
+        $reflectionProperty = $reflectionClass->getProperty('_taskId');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($this->_object, $taskId);
 

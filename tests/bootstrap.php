@@ -20,12 +20,14 @@ if (!defined('APPLICATION_ENV')) {
 require_once PROJECT_ROOT . '/vendor/autoload.php';
 
 class LocalWebTestCase extends WebTestCase
-{    
+{
     public function getSlimInstance()
     {
-        $app = new Slim([
-            'debug' => false,
-        ]);
+        $app = new Slim(
+            [
+                'debug' => false,
+            ]
+        );
 
         require PROJECT_ROOT . '/app/app.php';
         return $app;
