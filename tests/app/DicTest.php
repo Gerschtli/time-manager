@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @SuppressWarnings(PMD.UnusedPrivateMethod)
+ * @SuppressWarnings(PMD.UnusedFormalParameter)
+ */
 class DicTest extends \LocalWebTestCase
 {
     private $_allDependencies;
