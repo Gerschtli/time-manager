@@ -44,7 +44,7 @@ class TaskTest extends \LocalWebTestCase
         $arrayCollection = $this
             ->getMockBuilder('\Doctrine\Common\Collections\ArrayCollection')
             ->disableOriginalConstructor()
-            ->getMock();;
+            ->getMock();
 
         return [
             ['project', $project],
@@ -58,7 +58,7 @@ class TaskTest extends \LocalWebTestCase
         $time = $this
             ->getMockBuilder('\TimeManager\Model\Time')
             ->disableOriginalConstructor()
-            ->getMock();;
+            ->getMock();
 
         $this->_object->addTime($time);
         $times = $this->_object->getTimes();
