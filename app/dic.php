@@ -20,9 +20,8 @@ use TimeManager\Service\Task as TaskService;
 
 $app->container->singleton(
     'config',
-    function () use ($app) {
-        $filePath = PROJECT_ROOT . '/app/config/' . APPLICATION_ENV . '.php';
-        return file_exists($filePath) ? include $filePath : new stdClass;
+    function () {
+        return require(PROJECT_ROOT . '/app/config.php');
     }
 );
 
