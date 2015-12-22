@@ -12,6 +12,61 @@ class ProjectTest extends \LocalWebTestCase
         $this->_object = new Project($this->app);
     }
 
+    public function testCreateModel()
+    {
+        $object = $this
+            ->getMockBuilder('\TimeManager\Service\Project')
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['getByName'])
+            ->getMock();
+
+        $object
+            ->expects($this->once())
+            ->method('getByName')
+            ->with($this->equalTo('project'))
+            ->will($this->returnValue('test'));
+
+        $this->assertEquals('test', $object->createModel('project'));
+    }
+
+    public function testCreateModelWithExistingProject()
+    {
+        $object                  = $this
+            ->getMockBuilder('\TimeManager\Service\Project')
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['getByName'])
+            ->getMock();
+        $this->app->modelProject = $this
+            ->getMockBuilder('\TimeManager\Model\Project')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->dbal         = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $object
+            ->expects($this->once())
+            ->method('getByName')
+            ->with($this->equalTo('project'))
+            ->will($this->returnValue(null));
+
+        $this->app->modelProject
+            ->expects($this->once())
+            ->method('setName')
+            ->with($this->equalTo('project'));
+
+        $this->app->dbal
+            ->expects($this->at(0))
+            ->method('persist')
+            ->with($this->equalTo($this->app->modelProject));
+        $this->app->dbal
+            ->expects($this->at(1))
+            ->method('flush');
+
+        $this->assertEquals($this->app->modelProject, $object->createModel('project'));
+    }
+
     public function testGetByName()
     {
         $name = time();

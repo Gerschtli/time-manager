@@ -13,6 +13,21 @@ class Project
         $this->_app = $app;
     }
 
+    public function createModel($name)
+    {
+        $project = $this->getByName($name);
+
+        if (is_null($project)) {
+            $project = $this->_app->modelProject;
+            $project->setName($name);
+
+            $this->_app->dbal->persist($project);
+            $this->_app->dbal->flush();
+        }
+
+        return $project;
+    }
+
     public function getByName($name)
     {
         return $this->_app->dbal
