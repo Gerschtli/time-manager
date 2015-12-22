@@ -3,17 +3,10 @@
 namespace TimeManager\Decorator;
 
 use Slim\Http\Response;
-use Slim\Slim;
+use TimeManager\AppAware;
 
-abstract class Base
+abstract class Base extends AppAware
 {
-    protected $_app;
-
-    public function __construct(Slim $app)
-    {
-        $this->_app = $app;
-    }
-
     protected function _print($code, $message)
     {
         $this->_app->status($code);
