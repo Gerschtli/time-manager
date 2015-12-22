@@ -12,6 +12,12 @@ class ProjectTest extends \LocalWebTestCase
         $this->_object = new Project($this->app);
     }
 
+    public function testInstance()
+    {
+        $this->assertInstanceOf('\TimeManager\Service\Project', $this->_object);
+        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+    }
+
     public function testCreateModel()
     {
         $object = $this
