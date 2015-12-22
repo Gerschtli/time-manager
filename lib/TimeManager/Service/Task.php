@@ -2,18 +2,11 @@
 
 namespace TimeManager\Service;
 
-use Slim\Slim;
 use stdClass;
+use TimeManager\AppAware;
 
-class Task
+class Task extends AppAware
 {
-    private $_app;
-
-    public function __construct(Slim $app)
-    {
-        $this->_app = $app;
-    }
-
     public function createModel(stdClass $data)
     {
         if (empty($data->description)) {

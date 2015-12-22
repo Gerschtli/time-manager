@@ -15,6 +15,12 @@ class TaskTest extends \LocalWebTestCase
         $this->_object = new Task($this->app);
     }
 
+    public function testInstance()
+    {
+        $this->assertInstanceOf('\TimeManager\Service\Task', $this->_object);
+        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+    }
+
     public function testCreateModel()
     {
         $data = (object)[
