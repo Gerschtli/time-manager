@@ -2,6 +2,9 @@
 
 namespace TimeManager\Service;
 
+/**
+ * @SuppressWarnings(PMD.ExcessiveMethodLength)
+ */
 class TaskTest extends \LocalWebTestCase
 {
     private $_object;
@@ -23,9 +26,9 @@ class TaskTest extends \LocalWebTestCase
                 ],
                 (object)[
                     'start' => '2015-10-10 12:00:00',
-                    'end'   => '2015-10-11 12:34:45'
+                    'end'   => '2015-10-11 12:34:45',
                 ],
-            ]
+            ],
         ];
 
         $this->app->modelTask      = $this
@@ -38,6 +41,10 @@ class TaskTest extends \LocalWebTestCase
             ->getMock();
         $this->app->modelProject   = $this
             ->getMockBuilder('\TimeManager\Model\Project')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->serviceTime    = $this
+            ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
             ->getMock();
         $this->app->modelTime      = $this
@@ -68,46 +75,40 @@ class TaskTest extends \LocalWebTestCase
 
         $this->app->serviceProject
             ->expects($this->once())
-            ->method('getByName')
+            ->method('createModel')
             ->with($this->equalTo('project'))
-            ->will($this->returnValue(null));
-
-        $this->app->modelProject
-            ->expects($this->once())
-            ->method('setName')
-            ->with($this->equalTo('project'));
-
-        $this->app->modelTime
+            ->will($this->returnValue($this->app->modelProject));
+        
+        $this->app->serviceTime
             ->expects($this->at(0))
-            ->method('setStart')
-            ->with($this->equalTo(new \DateTime('2015-10-10 12:00:00')));
-        $this->app->modelTime
+            ->method('createModel')
+            ->with(
+                $this->equalTo(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                    ]
+                )
+            )
+            ->will($this->returnValue($this->app->modelTime));
+        $this->app->serviceTime
             ->expects($this->at(1))
-            ->method('setStart')
-            ->with($this->equalTo(new \DateTime('2015-10-10 12:00:00')));
-        $this->app->modelTime
-            ->expects($this->at(2))
-            ->method('setEnd')
-            ->with($this->equalTo(new \DateTime('2015-10-11 12:34:45')));
+            ->method('createModel')
+            ->with(
+                $this->equalTo(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45',
+                    ]
+                )
+            )
+            ->will($this->returnValue($this->app->modelTime));
 
         $this->app->dbal
             ->expects($this->at(0))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelProject));
-        $this->app->dbal
-            ->expects($this->at(1))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTime));
-        $this->app->dbal
-            ->expects($this->at(2))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTime));
-        $this->app->dbal
-            ->expects($this->at(3))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTask));
         $this->app->dbal
-            ->expects($this->at(4))
+            ->expects($this->at(1))
             ->method('flush');
 
         $this->assertEquals(
@@ -123,63 +124,6 @@ class TaskTest extends \LocalWebTestCase
         ];
 
         $this->assertNull($this->_object->createModel($data));
-    }
-
-    public function testCreateModelWithExistingProject()
-    {
-        $data = (object)[
-            'description' => 'description',
-            'project'     => 'project',
-        ];
-
-        $this->app->modelTask      = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->modelProject   = $this
-            ->getMockBuilder('\TimeManager\Model\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->serviceProject = $this
-            ->getMockBuilder('\TimeManager\Service\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->dbal           = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->modelTask
-            ->expects($this->at(0))
-            ->method('setDescription')
-            ->with($this->equalTo('description'));
-        $this->app->modelTask
-            ->expects($this->at(1))
-            ->method('setProject')
-            ->with($this->equalTo($this->app->modelProject));
-
-        $this->app->serviceProject
-            ->expects($this->once())
-            ->method('getByName')
-            ->with($this->equalTo('project'))
-            ->will($this->returnValue($this->app->modelProject));
-
-        $this->app->dbal
-            ->expects($this->at(0))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelProject));
-        $this->app->dbal
-            ->expects($this->at(1))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
-        $this->app->dbal
-            ->expects($this->at(2))
-            ->method('flush');
-
-        $this->assertEquals(
-            $this->app->modelTask,
-            $this->_object->createModel($data)
-        );
     }
 
     public function testCreateModelWithMinimumData()
@@ -235,6 +179,10 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Model\Task')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->app->serviceTime    = $this
+            ->getMockBuilder('\TimeManager\Service\Time')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->app->modelTime      = $this
             ->getMockBuilder('\TimeManager\Model\Time')
             ->disableOriginalConstructor()
@@ -253,25 +201,36 @@ class TaskTest extends \LocalWebTestCase
             ->method('addTime')
             ->with($this->equalTo($this->app->modelTime));
 
-        $this->app->modelTime
+        $this->app->serviceTime
             ->expects($this->at(0))
-            ->method('setStart')
-            ->with($this->equalTo(new \DateTime('2015-10-10 12:00:00')));
-        $this->app->modelTime
+            ->method('createModel')
+            ->with(
+                $this->equalTo(
+                    (object)[
+                        'start' => 'bla',
+                    ]
+                )
+            )
+            ->will($this->returnValue($this->app->modelTime));
+        $this->app->serviceTime
             ->expects($this->at(1))
-            ->method('setEnd')
-            ->with($this->equalTo(new \DateTime('2015-10-11 12:34:45')));
+            ->method('createModel')
+            ->with(
+                $this->equalTo(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45'
+                    ]
+                )
+            )
+            ->will($this->returnValue($this->app->modelTime));
 
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
-            ->with($this->equalTo($this->app->modelTime));
-        $this->app->dbal
-            ->expects($this->at(1))
-            ->method('persist')
             ->with($this->equalTo($this->app->modelTask));
         $this->app->dbal
-            ->expects($this->at(2))
+            ->expects($this->at(1))
             ->method('flush');
 
         $this->assertEquals(
