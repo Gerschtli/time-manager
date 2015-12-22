@@ -10,7 +10,7 @@ echo "${BLUETEXT}######################################################"
 echo "#${CYANBOLDTEXT}          PHPUnit Tests werden ausgefuehrt:         ${STDTEXT}${BLUETEXT}#"
 echo "######################################################${STDTEXT}"
 echo $'\n'
-php -d "error_reporting=E_ALL|E_STRICT" bin/phpunit --color
+php -d "error_reporting=E_ALL|E_STRICT" bin/phpunit
 
 echo $'\n'
 echo "${BLUETEXT}######################################################"
@@ -25,4 +25,3 @@ echo "#${CYANBOLDTEXT}            PMD Check wird durchgefuehrt:           ${STDT
 echo "######################################################${STDTEXT}"
 echo $'\n'
 php -d "date.timezone='Europe/Berlin'" bin/phpmd app,lib,tests text codesize,design,naming,unusedcode
-echo $'\n'
