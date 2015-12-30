@@ -6,14 +6,15 @@
         "doctrine/orm": "@stable"
     },
     "require-dev": {
+        "fabpot/php-cs-fixer"     : "@stable",
+        "phpmd/phpmd"             : "@stable",
         "phpunit/phpunit"         : "@stable",
         "there4/slim-test-helpers": "@stable",
-        "phpmd/phpmd"             : "@stable",
         "zerkalica/phpcs"         : "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "TimeManager\\": "lib/TimeManager/"
+            "": "lib/"
         }
     },
     "config": {
