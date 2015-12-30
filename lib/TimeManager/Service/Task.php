@@ -43,4 +43,11 @@ class Task extends AppAware
         return $this->_app->dbal
             ->find('\TimeManager\Model\Task', $taskId);
     }
+
+    public function getAll()
+    {
+        return $this->_app->dbal
+            ->getRepository('\TimeManager\Model\Task')
+            ->findAll();
+    }
 }
