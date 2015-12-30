@@ -2,6 +2,9 @@
 
 namespace TimeManager\Middleware;
 
+use Slim\Environment;
+use Slim\Slim;
+
 class JsonConverterTest extends \LocalWebTestCase
 {
     public function setUp()
@@ -21,14 +24,14 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCall($method)
     {
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/json',
                 'slim.input'     => '{"foo":"bar"}'
             ]
         );
-        $slim = new \Slim\Slim();
+        $slim = new Slim();
         $slim->add(new JsonConverter());
         $slim->run();
 
@@ -41,7 +44,7 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCallInvalidJson($method)
     {
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/json',
@@ -49,7 +52,7 @@ class JsonConverterTest extends \LocalWebTestCase
             ]
         );
 
-        $slim = new \Slim\Slim();
+        $slim = new Slim();
         $slim->add(new JsonConverter());
         $slim->errorDecorator = $this
             ->getMockBuilder('\TimeManager\Decorator\Error')
@@ -68,7 +71,7 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCallUnsupportedMediaType($method)
     {
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/xml',
@@ -76,7 +79,7 @@ class JsonConverterTest extends \LocalWebTestCase
             ]
         );
 
-        $slim = new \Slim\Slim();
+        $slim = new Slim();
         $slim->add(new JsonConverter());
         $slim->errorDecorator = $this
             ->getMockBuilder('\TimeManager\Decorator\Error')
@@ -103,7 +106,7 @@ class JsonConverterTest extends \LocalWebTestCase
      */
     public function testCallNoCheck($method)
     {
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/xml',
@@ -111,7 +114,7 @@ class JsonConverterTest extends \LocalWebTestCase
             ]
         );
 
-        $slim = new \Slim\Slim();
+        $slim = new Slim();
         $slim->add(new JsonConverter());
         $slim->run();
 

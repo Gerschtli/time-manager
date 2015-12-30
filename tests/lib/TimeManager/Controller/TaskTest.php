@@ -2,6 +2,8 @@
 
 namespace TimeManager\Controller;
 
+use Slim\Environment;
+
 class TaskTest extends \LocalWebTestCase
 {
     private $_object;
@@ -24,7 +26,7 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'slim.input' => $requestData,
             ]
@@ -64,7 +66,7 @@ class TaskTest extends \LocalWebTestCase
             'test' => 'bla',
         ];
 
-        \Slim\Environment::mock(
+        Environment::mock(
             [
                 'slim.input' => $requestData,
             ]

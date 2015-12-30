@@ -2,6 +2,8 @@
 
 namespace TimeManager\Decorator;
 
+use ReflectionClass;
+
 class SuccessTest extends \LocalWebTestCase
 {
     private $_object;
@@ -22,8 +24,8 @@ class SuccessTest extends \LocalWebTestCase
 
     public function testConstants()
     {
-        $object = new \ReflectionClass('\TimeManager\Decorator\Success');
-        $parent = new \ReflectionClass('\TimeManager\Decorator\Base');
+        $object = new ReflectionClass('\TimeManager\Decorator\Success');
+        $parent = new ReflectionClass('\TimeManager\Decorator\Base');
 
         $this->assertEquals(
             [

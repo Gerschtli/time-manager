@@ -3,6 +3,7 @@
 namespace TimeManager\Service;
 
 use DateTime;
+use stdClass;
 
 class TimeTest extends \LocalWebTestCase
 {
@@ -27,7 +28,7 @@ class TimeTest extends \LocalWebTestCase
             'end'   => '2015-01-05 12:00:42',
         ];
 
-        $this->app->modelTime = new \stdClass();
+        $this->app->modelTime = new stdClass();
 
         $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
@@ -43,8 +44,8 @@ class TimeTest extends \LocalWebTestCase
             ->method('flush');
 
         $expected = (object)[
-            'start' => new \DateTime('2015-01-01 12:00:42'),
-            'end'   => new \DateTime('2015-01-05 12:00:42'),
+            'start' => new DateTime('2015-01-01 12:00:42'),
+            'end'   => new DateTime('2015-01-05 12:00:42'),
         ];
 
         $this->assertEquals(
@@ -58,7 +59,7 @@ class TimeTest extends \LocalWebTestCase
      */
     public function testCreateModelWithNoEnd($data, $expected)
     {
-        $this->app->modelTime = new \stdClass();
+        $this->app->modelTime = new stdClass();
 
         $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
@@ -87,7 +88,7 @@ class TimeTest extends \LocalWebTestCase
                     'start' => '2015-01-01 12:00:42',
                 ],
                 (object)[
-                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                    'start' => new DateTime('2015-01-01 12:00:42'),
                 ],
             ],
             [
@@ -96,7 +97,7 @@ class TimeTest extends \LocalWebTestCase
                     'end'   => null,
                 ],
                 (object)[
-                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                    'start' => new DateTime('2015-01-01 12:00:42'),
                 ],
             ],
             [
@@ -105,7 +106,7 @@ class TimeTest extends \LocalWebTestCase
                     'end'   => 5,
                 ],
                 (object)[
-                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                    'start' => new DateTime('2015-01-01 12:00:42'),
                 ],
             ],
             [
@@ -114,7 +115,7 @@ class TimeTest extends \LocalWebTestCase
                     'end'   => '2015-15-40 25:61:123',
                 ],
                 (object)[
-                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                    'start' => new DateTime('2015-01-01 12:00:42'),
                 ],
             ],
         ];

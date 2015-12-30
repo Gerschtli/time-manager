@@ -2,6 +2,8 @@
 
 namespace TimeManager\Service;
 
+use stdClass;
+
 class ProjectTest extends \LocalWebTestCase
 {
     private $_object;
@@ -37,7 +39,7 @@ class ProjectTest extends \LocalWebTestCase
 
     public function testCreateModelWithExistingProject()
     {
-        $this->app->modelProject = new \stdClass();
+        $this->app->modelProject = new stdClass();
 
         $object          = $this
             ->getMockBuilder('\TimeManager\Service\Project')

@@ -2,6 +2,9 @@
 
 namespace TimeManager\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use stdClass;
+
 /**
  * @SuppressWarnings(PMD.ExcessiveMethodLength)
  */
@@ -41,7 +44,7 @@ class TaskTest extends \LocalWebTestCase
         ];
 
         $this->app->modelTask = (object)[
-            'times' => new \Doctrine\Common\Collections\ArrayCollection(),
+            'times' => new ArrayCollection(),
         ];
 
         $this->app->serviceProject = $this
@@ -113,7 +116,7 @@ class TaskTest extends \LocalWebTestCase
             'project'     => (object)[
                 'name' => 'project',
             ],
-            'times'       => new \Doctrine\Common\Collections\ArrayCollection(
+            'times'       => new ArrayCollection(
                 [
                     (object)[
                         'start' => '2015-10-10 12:00:00',
@@ -154,7 +157,7 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'description',
         ];
 
-        $this->app->modelTask = new \stdClass();
+        $this->app->modelTask = new stdClass();
 
         $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
@@ -194,7 +197,7 @@ class TaskTest extends \LocalWebTestCase
         ];
 
         $this->app->modelTask = (object)[
-            'times' => new \Doctrine\Common\Collections\ArrayCollection(),
+            'times' => new ArrayCollection(),
         ];
 
         $this->app->serviceTime    = $this
@@ -247,7 +250,7 @@ class TaskTest extends \LocalWebTestCase
 
         $expected = (object)[
             'description' => 'description',
-            'times'       => new \Doctrine\Common\Collections\ArrayCollection(
+            'times'       => new ArrayCollection(
                 [
                     (object)[
                         'start' => '2015-10-10 12:00:00',

@@ -2,6 +2,10 @@
 
 namespace TimeManager\Decorator;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use TimeManager\Model\Task;
+
 class DataTest extends \LocalWebTestCase
 {
     private $_object;
@@ -32,20 +36,20 @@ class DataTest extends \LocalWebTestCase
 
     public function testProcessWithMessage()
     {
-        $task = new \TimeManager\Model\Task();
+        $task = new Task();
         $task->taskId      = 5;
         $task->description = 'description';
         $task->project     = (object)[
             'name' => 'project',
         ];
-        $task->times       = new \Doctrine\Common\Collections\ArrayCollection(
+        $task->times       = new ArrayCollection(
             [
                 (object)[
-                    'start' => new \DateTime('2015-10-10'),
+                    'start' => new DateTime('2015-10-10'),
                 ],
                 (object)[
-                    'start' => new \DateTime('2015-10-10'),
-                    'end'   => new \DateTime('2015-11-11'),
+                    'start' => new DateTime('2015-10-10'),
+                    'end'   => new DateTime('2015-11-11'),
                 ],
             ]
         );
