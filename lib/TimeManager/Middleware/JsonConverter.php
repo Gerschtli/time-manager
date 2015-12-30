@@ -15,7 +15,7 @@ class JsonConverter extends Middleware
         } else {
             $mediaType = $request->getMediaType();
             if ($mediaType == 'application/json') {
-                $env = $this->app->environment();
+                $env    = $this->app->environment();
                 $result = json_decode($env['slim.input']);
 
                 if (json_last_error() === JSON_ERROR_NONE) {

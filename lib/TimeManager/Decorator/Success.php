@@ -18,12 +18,12 @@ class Success extends Base implements Decorator
             $code,
             $message
         );
-        
+
         $output = [
             'success' => [
                 'code'        => $code,
                 'description' => $description,
-            ]
+            ],
         ];
         if (!empty($data)) {
             $output += [

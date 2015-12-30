@@ -1,20 +1,15 @@
 <?php
 
-use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\Tools\Setup;
 use TimeManager\Controller\Task as TaskController;
-
 use TimeManager\Decorator\Data as DataDecorator;
 use TimeManager\Decorator\Error as ErrorDecorator;
 use TimeManager\Decorator\Success as SuccessDecorator;
-
 use TimeManager\Middleware\JsonConverter;
-
+use TimeManager\Model\Project as ProjectModel;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
-use TimeManager\Model\Project as ProjectModel;
-
 use TimeManager\Service\Project as ProjectService;
 use TimeManager\Service\Task as TaskService;
 use TimeManager\Service\Time as TimeService;
@@ -37,7 +32,7 @@ $app->container->singleton(
     'dbal',
     function () use ($app) {
         $isDevMode = (APPLICATION_ENV != 'production');
-        $config    = Setup::createAnnotationMetadataConfiguration([PROJECT_ROOT .'/lib/Model'], $isDevMode);
+        $config = Setup::createAnnotationMetadataConfiguration([PROJECT_ROOT . '/lib/Model'], $isDevMode);
 
         $mysqlConfig = $app->config->mysql;
         $connectionDetails = [

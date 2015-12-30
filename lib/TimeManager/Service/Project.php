@@ -11,7 +11,7 @@ class Project extends AppAware
         $project = $this->getByName($name);
 
         if (is_null($project)) {
-            $project = $this->_app->modelProject;
+            $project       = $this->_app->modelProject;
             $project->name = $name;
 
             $this->_app->dbal->persist($project);
@@ -25,6 +25,6 @@ class Project extends AppAware
     {
         return $this->_app->dbal
             ->getRepository('\TimeManager\Model\Project')
-            ->findOneBy(['_name'=> $name]);
+            ->findOneBy(['_name' => $name]);
     }
 }

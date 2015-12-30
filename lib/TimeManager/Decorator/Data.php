@@ -5,7 +5,6 @@ namespace TimeManager\Decorator;
 use Closure;
 use DateTime;
 use TimeManager\Model\Task;
-use TimeManager\Model\Time;
 
 class Data extends Base implements Decorator
 {
@@ -44,7 +43,7 @@ class Data extends Base implements Decorator
 
     private function _getFormatClosure()
     {
-        return function(DateTime $date) {
+        return function (DateTime $date) {
             return $date->format('Y-m-d H:i:s');
         };
     }
@@ -54,7 +53,7 @@ class Data extends Base implements Decorator
      */
     private function _getTimeCleanClosure(Closure $format)
     {
-        return function($key, $value) use ($format) {
+        return function ($key, $value) use ($format) {
             unset($value->timeId, $value->task);
 
             $value->start = $format($value->start);

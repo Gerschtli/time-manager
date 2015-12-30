@@ -3,8 +3,8 @@
 namespace TimeManager\Service;
 
 use DateTime;
-use TimeManager\AppAware;
 use stdClass;
+use TimeManager\AppAware;
 
 class Time extends AppAware
 {
@@ -14,7 +14,7 @@ class Time extends AppAware
             return null;
         }
 
-        $time = $this->_app->modelTime;
+        $time        = $this->_app->modelTime;
         $time->start = new DateTime($data->start);
 
         if (!empty($data->end) && $this->_isValidDate($data->end)) {

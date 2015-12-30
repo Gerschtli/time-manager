@@ -63,7 +63,7 @@ class DicTest extends \LocalWebTestCase
     private function _sameInstance($name, $class)
     {
         $this->_instanceOf($name, $class);
-        
+
         $instanceOne = $this->app->$name;
         $instanceTwo = $this->app->$name;
         $this->assertSame($instanceOne, $instanceTwo);
@@ -72,7 +72,7 @@ class DicTest extends \LocalWebTestCase
     private function _notSameInstance($name, $class)
     {
         $this->_instanceOf($name, $class);
-        
+
         $instanceOne = $this->app->$name;
         $instanceTwo = $this->app->$name;
         $this->assertNotSame($instanceOne, $instanceTwo);

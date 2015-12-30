@@ -67,7 +67,7 @@ class DataTest extends \LocalWebTestCase
                         'start' => '2015-10-10 00:00:00',
                         'end'   => '2015-11-11 00:00:00',
                     ],
-                ]
+                ],
             ]
         );
 

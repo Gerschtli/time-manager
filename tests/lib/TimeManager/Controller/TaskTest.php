@@ -207,7 +207,7 @@ class TaskTest extends \LocalWebTestCase
             ->method('getAll')
             ->will($this->returnValue([]));
 
-         $this->app->decoratorError
+        $this->app->decoratorError
             ->expects($this->once())
             ->method('process')
             ->with($this->equalTo(404));

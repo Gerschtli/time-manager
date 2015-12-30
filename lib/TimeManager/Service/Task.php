@@ -15,11 +15,11 @@ class Task extends AppAware
 
         $dbal = $this->_app->dbal;
 
-        $task = $this->_app->modelTask;
+        $task              = $this->_app->modelTask;
         $task->description = $data->description;
 
         if (!empty($data->project)) {
-            $project = $this->_app->serviceProject->createModel($data->project);
+            $project       = $this->_app->serviceProject->createModel($data->project);
             $task->project = $project;
         }
 

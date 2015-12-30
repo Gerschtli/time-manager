@@ -17,12 +17,12 @@ class Error extends Base implements Decorator
             $code,
             ($message ?: $this->_getMessage($code))
         );
-        
+
         $output = [
             'error' => [
                 'code'        => $code,
                 'description' => $description,
-            ]
+            ],
         ];
         $this->_print($code, $output);
     }

@@ -65,7 +65,7 @@ class TaskTest extends \LocalWebTestCase
             ->method('createModel')
             ->with($this->equalTo('project'))
             ->will($this->returnValue((object)['name' => 'project']));
-        
+
         $this->app->serviceTime
             ->expects($this->at(0))
             ->method('createModel')
@@ -116,7 +116,7 @@ class TaskTest extends \LocalWebTestCase
             'project'     => (object)[
                 'name' => 'project',
             ],
-            'times'       => new ArrayCollection(
+            'times' => new ArrayCollection(
                 [
                     (object)[
                         'start' => '2015-10-10 12:00:00',
@@ -130,7 +130,7 @@ class TaskTest extends \LocalWebTestCase
         ];
 
         $expected->times->forAll(
-            function($key, $value) use ($expected) {
+            function ($key, $value) use ($expected) {
                 $value->task = $expected;
                 return true;
             }
@@ -191,9 +191,9 @@ class TaskTest extends \LocalWebTestCase
                 ],
                 (object)[
                     'start' => '2015-10-10 12:00:00',
-                    'end'   => '2015-10-11 12:34:45'
+                    'end'   => '2015-10-11 12:34:45',
                 ],
-            ]
+            ],
         ];
 
         $this->app->modelTask = (object)[
@@ -227,7 +227,7 @@ class TaskTest extends \LocalWebTestCase
                 $this->equalTo(
                     (object)[
                         'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45'
+                        'end'   => '2015-10-11 12:34:45',
                     ]
                 )
             )
@@ -235,7 +235,7 @@ class TaskTest extends \LocalWebTestCase
                 $this->returnValue(
                     (object)[
                         'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45'
+                        'end'   => '2015-10-11 12:34:45',
                     ]
                 )
             );
@@ -254,14 +254,14 @@ class TaskTest extends \LocalWebTestCase
                 [
                     (object)[
                         'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45'
+                        'end'   => '2015-10-11 12:34:45',
                     ],
                 ]
             ),
         ];
 
         $expected->times->forAll(
-            function($key, $value) use ($expected) {
+            function ($key, $value) use ($expected) {
                 $value->task = $expected;
                 return true;
             }

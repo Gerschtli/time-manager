@@ -28,7 +28,7 @@ class JsonConverterTest extends \LocalWebTestCase
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/json',
-                'slim.input'     => '{"foo":"bar"}'
+                'slim.input'     => '{"foo":"bar"}',
             ]
         );
         $slim = new Slim();
@@ -48,7 +48,7 @@ class JsonConverterTest extends \LocalWebTestCase
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/json',
-                'slim.input'     => '{"foo":"bar"'
+                'slim.input'     => '{"foo":"bar"',
             ]
         );
 
@@ -75,7 +75,7 @@ class JsonConverterTest extends \LocalWebTestCase
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/xml',
-                'slim.input'     => 'irgendwas'
+                'slim.input'     => 'irgendwas',
             ]
         );
 
@@ -110,7 +110,7 @@ class JsonConverterTest extends \LocalWebTestCase
             [
                 'REQUEST_METHOD' => $method,
                 'CONTENT_TYPE'   => 'application/xml',
-                'slim.input'     => 'irgendwas'
+                'slim.input'     => 'irgendwas',
             ]
         );
 
