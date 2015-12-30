@@ -17,6 +17,19 @@ class TaskTest extends \LocalWebTestCase
         $this->client->post('/task', $data, ['CONTENT_TYPE' => 'application/json']);
     }
 
+    public function testGetAllAction()
+    {
+        $this->app->controllerTask = $this
+            ->getMockBuilder('\TimeManager\Controller\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->controllerTask
+            ->expects($this->once())
+            ->method('getAllAction');
+
+        $this->client->get('/task');
+    }
+
     public function testGetAction()
     {
         $taskId = time();

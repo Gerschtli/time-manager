@@ -12,6 +12,13 @@ $app->post(
 );
 
 $app->get(
+    '/task',
+    function () use ($app) {
+        $app->controllerTask->getAllAction();
+    }
+);
+
+$app->get(
     '/task/:taskid',
     function ($taskId) use ($app) {
         $app->controllerTask->getAction($taskId);
