@@ -20,7 +20,7 @@
     "taskId": 4,
     "project": "Project",
     "description": "Description",
-    "time": [
+    "times": [
         {
             "start": "YYYY-MM-DD HH:MM:SS",
             "end": "YYYY-MM-DD HH:MM:SS"
