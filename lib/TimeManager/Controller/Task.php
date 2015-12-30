@@ -41,4 +41,20 @@ class Task extends AppAware
             );
         }
     }
+
+    public function getAllAction()
+    {
+        $tasks = $this->_app->serviceTask->getAll();
+
+        if (!empty($tasks)) {
+            $this->_app->decoratorData->process(
+                Success::STATUS_OK,
+                $tasks
+            );
+        } else {
+            $this->_app->decoratorError->process(
+                Error::STATUS_NOT_FOUND
+            );
+        }
+    }
 }

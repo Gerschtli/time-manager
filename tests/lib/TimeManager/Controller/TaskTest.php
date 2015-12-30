@@ -160,4 +160,63 @@ class TaskTest extends \LocalWebTestCase
 
         $this->_object->getAction($taskId);
     }
+
+    public function testGetAllAction()
+    {
+        $this->app->serviceTask   = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $modelTaskOne             = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $modelTaskTwo             = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->decoratorData = $this
+            ->getMockBuilder('\TimeManager\Decorator\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('getAll')
+            ->will($this->returnValue([$modelTaskOne, $modelTaskTwo]));
+
+        $this->app->decoratorData
+            ->expects($this->once())
+            ->method('process')
+            ->with(
+                $this->equalTo(200),
+                $this->equalTo([$modelTaskOne, $modelTaskTwo])
+            );
+
+        $this->_object->getAllAction();
+    }
+
+    public function testGetAllActionWithNoTasks()
+    {
+        $this->app->serviceTask   = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->decoratorError = $this
+            ->getMockBuilder('\TimeManager\Decorator\Error')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('getAll')
+            ->will($this->returnValue([]));
+
+         $this->app->decoratorError
+            ->expects($this->once())
+            ->method('process')
+            ->with($this->equalTo(404));
+
+        $this->_object->getAllAction();
+    }
 }
