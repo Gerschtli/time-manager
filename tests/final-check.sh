@@ -25,3 +25,11 @@ echo "#${CYANBOLDTEXT}            PMD Check wird durchgefuehrt:           ${STDT
 echo "######################################################${STDTEXT}"
 echo $'\n'
 php -d "date.timezone='Europe/Berlin'" bin/phpmd app,lib,tests text codesize,design,naming,unusedcode
+
+echo $'\n'
+echo "${BLUETEXT}######################################################"
+echo "#${CYANBOLDTEXT}            PHP-CS-Fixer wird ausgefuehrt:          ${STDTEXT}${BLUETEXT}#"
+echo "######################################################${STDTEXT}"
+echo $'\n'
+TEST=0 php bin/php-cs-fixer fix
+TEST=1 php bin/php-cs-fixer fix
