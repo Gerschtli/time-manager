@@ -37,21 +37,17 @@ class ProjectTest extends \LocalWebTestCase
 
     public function testCreateModelWithExistingProject()
     {
-        $object                  = $this
+        $this->app->modelProject = new \stdClass();
+
+        $object          = $this
             ->getMockBuilder('\TimeManager\Service\Project')
             ->setConstructorArgs([$this->app])
             ->setMethods(['getByName'])
             ->getMock();
-        $this->app->modelProject = $this
-            ->getMockBuilder('\TimeManager\Model\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->dbal         = $this
+        $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->app->modelProject->name = 'project';
 
         $object
             ->expects($this->once())
@@ -67,7 +63,7 @@ class ProjectTest extends \LocalWebTestCase
             ->expects($this->at(1))
             ->method('flush');
 
-        $this->assertEquals($this->app->modelProject, $object->createModel('project'));
+        $this->assertEquals((object)['name' => 'project'], $object->createModel('project'));
     }
 
     public function testGetByName()

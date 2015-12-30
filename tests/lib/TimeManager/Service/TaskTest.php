@@ -21,12 +21,15 @@ class TaskTest extends \LocalWebTestCase
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
+    /**
+     * @SuppressWarnings(PMD.UnusedLocalVariable)
+     */
     public function testCreateModel()
     {
         $data = (object)[
             'description' => 'description',
             'project'     => 'project',
-            'time'        => [
+            'times'       => [
                 (object)[
                     'start' => '2015-10-10 12:00:00',
                 ],
@@ -37,10 +40,10 @@ class TaskTest extends \LocalWebTestCase
             ],
         ];
 
-        $this->app->modelTask      = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->app->modelTask = (object)[
+            'times' => new \Doctrine\Common\Collections\ArrayCollection(),
+        ];
+
         $this->app->serviceProject = $this
             ->getMockBuilder('\TimeManager\Service\Project')
             ->disableOriginalConstructor()
@@ -53,8 +56,6 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->app->modelTask->times = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->app->serviceProject
             ->expects($this->once())
@@ -72,7 +73,13 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue((object)['time']));
+            ->will(
+                $this->returnValue(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                    ]
+                )
+            );
         $this->app->serviceTime
             ->expects($this->at(1))
             ->method('createModel')
@@ -84,7 +91,14 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue((object)['time']));
+            ->will(
+                $this->returnValue(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45',
+                    ]
+                )
+            );
 
         $this->app->dbal
             ->expects($this->at(0))
@@ -94,8 +108,33 @@ class TaskTest extends \LocalWebTestCase
             ->expects($this->at(1))
             ->method('flush');
 
+        $expected = (object)[
+            'description' => 'description',
+            'project'     => (object)[
+                'name' => 'project',
+            ],
+            'times'       => new \Doctrine\Common\Collections\ArrayCollection(
+                [
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                    ],
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45',
+                    ],
+                ]
+            ),
+        ];
+
+        $expected->times->forAll(
+            function($key, $value) use ($expected) {
+                $value->task = $expected;
+                return true;
+            }
+        );
+
         $this->assertEquals(
-            $this->app->modelTask,
+            $expected,
             $this->_object->createModel($data)
         );
     }
@@ -115,11 +154,9 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'description',
         ];
 
-        $this->app->modelTask = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->dbal      = $this
+        $this->app->modelTask = new \stdClass();
+
+        $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -133,16 +170,19 @@ class TaskTest extends \LocalWebTestCase
             ->method('flush');
 
         $this->assertEquals(
-            $this->app->modelTask,
+            (object)['description' => 'description'],
             $this->_object->createModel($data)
         );
     }
 
+    /**
+     * @SuppressWarnings(PMD.UnusedLocalVariable)
+     */
     public function testCreateModelWithInvalidTime()
     {
         $data = (object)[
             'description' => 'description',
-            'time'        => [
+            'times'       => [
                 (object)[
                     'start' => 'bla',
                 ],
@@ -153,10 +193,10 @@ class TaskTest extends \LocalWebTestCase
             ]
         ];
 
-        $this->app->modelTask      = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->app->modelTask = (object)[
+            'times' => new \Doctrine\Common\Collections\ArrayCollection(),
+        ];
+
         $this->app->serviceTime    = $this
             ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
@@ -165,8 +205,6 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->app->modelTask->times = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->app->serviceTime
             ->expects($this->at(0))
@@ -178,7 +216,7 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue((object)['time']));
+            ->will($this->returnValue(null));
         $this->app->serviceTime
             ->expects($this->at(1))
             ->method('createModel')
@@ -190,7 +228,14 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue((object)['time']));
+            ->will(
+                $this->returnValue(
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45'
+                    ]
+                )
+            );
 
         $this->app->dbal
             ->expects($this->at(0))
@@ -200,8 +245,27 @@ class TaskTest extends \LocalWebTestCase
             ->expects($this->at(1))
             ->method('flush');
 
+        $expected = (object)[
+            'description' => 'description',
+            'times'       => new \Doctrine\Common\Collections\ArrayCollection(
+                [
+                    (object)[
+                        'start' => '2015-10-10 12:00:00',
+                        'end'   => '2015-10-11 12:34:45'
+                    ],
+                ]
+            ),
+        ];
+
+        $expected->times->forAll(
+            function($key, $value) use ($expected) {
+                $value->task = $expected;
+                return true;
+            }
+        );
+
         $this->assertEquals(
-            $this->app->modelTask,
+            $expected,
             $this->_object->createModel($data)
         );
     }

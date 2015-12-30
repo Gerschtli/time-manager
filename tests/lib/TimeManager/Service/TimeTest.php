@@ -27,11 +27,9 @@ class TimeTest extends \LocalWebTestCase
             'end'   => '2015-01-05 12:00:42',
         ];
 
-        $this->app->modelTime = $this
-            ->getMockBuilder('\TimeManager\Model\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->dbal      = $this
+        $this->app->modelTime = new \stdClass();
+
+        $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -44,22 +42,25 @@ class TimeTest extends \LocalWebTestCase
             ->expects($this->at(1))
             ->method('flush');
 
+        $expected = (object)[
+            'start' => new \DateTime('2015-01-01 12:00:42'),
+            'end'   => new \DateTime('2015-01-05 12:00:42'),
+        ];
+
         $this->assertEquals(
-            $this->app->modelTime,
+            $expected,
             $this->_object->createModel($data)
         );
     }
 
     /**
-     * @dataProvider datProviderForTestCreateModelWithNoEnd
+     * @dataProvider dataProviderForTestCreateModelWithNoEnd
      */
-    public function testCreateModelWithNoEnd($data)
+    public function testCreateModelWithNoEnd($data, $expected)
     {
-        $this->app->modelTime = $this
-            ->getMockBuilder('\TimeManager\Model\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->dbal      = $this
+        $this->app->modelTime = new \stdClass();
+
+        $this->app->dbal = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -73,17 +74,20 @@ class TimeTest extends \LocalWebTestCase
             ->method('flush');
 
         $this->assertEquals(
-            $this->app->modelTime,
+            $expected,
             $this->_object->createModel($data)
         );
     }
 
-    public function datProviderForTestCreateModelWithNoEnd()
+    public function dataProviderForTestCreateModelWithNoEnd()
     {
         return [
             [
                 (object)[
                     'start' => '2015-01-01 12:00:42',
+                ],
+                (object)[
+                    'start' => new \DateTime('2015-01-01 12:00:42'),
                 ],
             ],
             [
@@ -91,17 +95,26 @@ class TimeTest extends \LocalWebTestCase
                     'start' => '2015-01-01 12:00:42',
                     'end'   => null,
                 ],
+                (object)[
+                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                ],
             ],
             [
                 (object)[
                     'start' => '2015-01-01 12:00:42',
                     'end'   => 5,
                 ],
+                (object)[
+                    'start' => new \DateTime('2015-01-01 12:00:42'),
+                ],
             ],
             [
                 (object)[
                     'start' => '2015-01-01 12:00:42',
                     'end'   => '2015-15-40 25:61:123',
+                ],
+                (object)[
+                    'start' => new \DateTime('2015-01-01 12:00:42'),
                 ],
             ],
         ];
