@@ -12,7 +12,7 @@ class Project extends AppAware
 
         if (is_null($project)) {
             $project = $this->_app->modelProject;
-            $project->setName($name);
+            $project->name = $name;
 
             $this->_app->dbal->persist($project);
             $this->_app->dbal->flush();

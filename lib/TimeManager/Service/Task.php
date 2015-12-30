@@ -16,18 +16,19 @@ class Task extends AppAware
         $dbal = $this->_app->dbal;
 
         $task = $this->_app->modelTask;
-        $task->setDescription($data->description);
+        $task->description = $data->description;
 
         if (!empty($data->project)) {
             $project = $this->_app->serviceProject->createModel($data->project);
-            $task->setProject($project);
+            $task->project = $project;
         }
 
         if (!empty($data->time) && is_array($data->time)) {
             foreach ($data->time as $timeObject) {
                 $time = $this->_app->serviceTime->createModel($timeObject);
                 if ($time != null) {
-                    $task->addTime($time);
+                    $time->task = $task;
+                    $task->times->add($time);
                 }
             }
         }

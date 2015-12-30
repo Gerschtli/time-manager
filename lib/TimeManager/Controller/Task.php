@@ -16,7 +16,7 @@ class Task extends AppAware
         if (!is_null($result)) {
             $this->_app->decoratorSuccess->process(
                 Success::STATUS_CREATED,
-                ['taskId' => $result->getTaskId()]
+                ['taskId' => $result->taskId]
             );
         } else {
             $this->_app->decoratorError->process(

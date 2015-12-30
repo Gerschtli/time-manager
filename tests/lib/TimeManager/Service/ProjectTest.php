@@ -51,16 +51,13 @@ class ProjectTest extends \LocalWebTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->app->modelProject->name = 'project';
+
         $object
             ->expects($this->once())
             ->method('getByName')
             ->with($this->equalTo('project'))
             ->will($this->returnValue(null));
-
-        $this->app->modelProject
-            ->expects($this->once())
-            ->method('setName')
-            ->with($this->equalTo('project'));
 
         $this->app->dbal
             ->expects($this->at(0))

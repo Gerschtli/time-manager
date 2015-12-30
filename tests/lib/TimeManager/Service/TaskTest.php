@@ -45,16 +45,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Project')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->modelProject   = $this
-            ->getMockBuilder('\TimeManager\Model\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->app->serviceTime    = $this
             ->getMockBuilder('\TimeManager\Service\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->modelTime      = $this
-            ->getMockBuilder('\TimeManager\Model\Time')
             ->disableOriginalConstructor()
             ->getMock();
         $this->app->dbal           = $this
@@ -62,28 +54,13 @@ class TaskTest extends \LocalWebTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->modelTask
-            ->expects($this->at(0))
-            ->method('setDescription')
-            ->with($this->equalTo('description'));
-        $this->app->modelTask
-            ->expects($this->at(1))
-            ->method('setProject')
-            ->with($this->equalTo($this->app->modelProject));
-        $this->app->modelTask
-            ->expects($this->at(2))
-            ->method('addTime')
-            ->with($this->equalTo($this->app->modelTime));
-        $this->app->modelTask
-            ->expects($this->at(3))
-            ->method('addTime')
-            ->with($this->equalTo($this->app->modelTime));
+        $this->app->modelTask->times = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->app->serviceProject
             ->expects($this->once())
             ->method('createModel')
             ->with($this->equalTo('project'))
-            ->will($this->returnValue($this->app->modelProject));
+            ->will($this->returnValue((object)['name' => 'project']));
         
         $this->app->serviceTime
             ->expects($this->at(0))
@@ -95,7 +72,7 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue($this->app->modelTime));
+            ->will($this->returnValue((object)['time']));
         $this->app->serviceTime
             ->expects($this->at(1))
             ->method('createModel')
@@ -107,7 +84,7 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue($this->app->modelTime));
+            ->will($this->returnValue((object)['time']));
 
         $this->app->dbal
             ->expects($this->at(0))
@@ -147,11 +124,6 @@ class TaskTest extends \LocalWebTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->modelTask
-            ->expects($this->at(0))
-            ->method('setDescription')
-            ->with($this->equalTo('description'));
-
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
@@ -189,23 +161,12 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->modelTime      = $this
-            ->getMockBuilder('\TimeManager\Model\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->app->dbal           = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->modelTask
-            ->expects($this->at(0))
-            ->method('setDescription')
-            ->with($this->equalTo('description'));
-        $this->app->modelTask
-            ->expects($this->at(1))
-            ->method('addTime')
-            ->with($this->equalTo($this->app->modelTime));
+        $this->app->modelTask->times = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->app->serviceTime
             ->expects($this->at(0))
@@ -217,7 +178,7 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue($this->app->modelTime));
+            ->will($this->returnValue((object)['time']));
         $this->app->serviceTime
             ->expects($this->at(1))
             ->method('createModel')
@@ -229,7 +190,7 @@ class TaskTest extends \LocalWebTestCase
                     ]
                 )
             )
-            ->will($this->returnValue($this->app->modelTime));
+            ->will($this->returnValue((object)['time']));
 
         $this->app->dbal
             ->expects($this->at(0))

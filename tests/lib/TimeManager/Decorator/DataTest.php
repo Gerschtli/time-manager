@@ -32,67 +32,36 @@ class DataTest extends \LocalWebTestCase
 
     public function testProcessWithMessage()
     {
-        $task    = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $project = $this
-            ->getMockBuilder('\TimeManager\Model\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $time    = $this
-            ->getMockBuilder('\TimeManager\Model\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $task->expects($this->at(0))
-            ->method('getTaskId')
-            ->will($this->returnValue(5));
-        $task->expects($this->at(1))
-            ->method('getDescription')
-            ->will($this->returnValue('description'));
-        $task->expects($this->at(2))
-            ->method('getProject')
-            ->will($this->returnValue($project));
-        $task->expects($this->at(3))
-            ->method('getTimes')
-            ->will($this->returnValue([$time, $time]));
-
-        $project->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('project'));
-
-        $time->expects($this->at(0))
-            ->method('getStart')
-            ->with($this->equalTo(true))
-            ->will($this->returnValue('2015-10-10'));
-        $time->expects($this->at(1))
-            ->method('getEnd')
-            ->will($this->returnValue(null));
-        $time->expects($this->at(2))
-            ->method('getStart')
-            ->with($this->equalTo(true))
-            ->will($this->returnValue('2015-10-10'));
-        $time->expects($this->at(3))
-            ->method('getEnd')
-            ->will($this->returnValue('2015-11-11'));
-        $time->expects($this->at(4))
-            ->method('getEnd')
-            ->with($this->equalTo(true))
-            ->will($this->returnValue('2015-11-11'));
+        $task = new \TimeManager\Model\Task();
+        $task->taskId      = 5;
+        $task->description = 'description';
+        $task->project     = (object)[
+            'name' => 'project',
+        ];
+        $task->times       = new \Doctrine\Common\Collections\ArrayCollection(
+            [
+                (object)[
+                    'start' => new \DateTime('2015-10-10'),
+                ],
+                (object)[
+                    'start' => new \DateTime('2015-10-10'),
+                    'end'   => new \DateTime('2015-11-11'),
+                ],
+            ]
+        );
 
         $body = json_encode(
             (object)[
                 'taskId'      => 5,
                 'description' => 'description',
                 'project'     => 'project',
-                'time'        => [
+                'times'       => [
                     (object)[
-                        'start' => '2015-10-10',
+                        'start' => '2015-10-10 00:00:00',
                     ],
                     (object)[
-                        'start' => '2015-10-10',
-                        'end'   => '2015-11-11',
+                        'start' => '2015-10-10 00:00:00',
+                        'end'   => '2015-11-11 00:00:00',
                     ],
                 ]
             ]

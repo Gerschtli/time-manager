@@ -36,15 +36,6 @@ class TimeTest extends \LocalWebTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->modelTime
-            ->expects($this->at(0))
-            ->method('setStart')
-            ->with($this->equalTo(new DateTime($data->start)));
-        $this->app->modelTime
-            ->expects($this->at(1))
-            ->method('setEnd')
-            ->with($this->equalTo(new DateTime($data->end)));
-
         $this->app->dbal
             ->expects($this->at(0))
             ->method('persist')
@@ -72,14 +63,6 @@ class TimeTest extends \LocalWebTestCase
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->app->modelTime
-            ->expects($this->once())
-            ->method('setStart')
-            ->with($this->equalTo(new DateTime($data->start)));
-        $this->app->modelTime
-            ->expects($this->never())
-            ->method('setEnd');
 
         $this->app->dbal
             ->expects($this->at(0))

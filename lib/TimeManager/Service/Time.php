@@ -15,10 +15,10 @@ class Time extends AppAware
         }
 
         $time = $this->_app->modelTime;
-        $time->setStart(new DateTime($data->start));
+        $time->start = new DateTime($data->start);
 
         if (!empty($data->end) && $this->_isValidDate($data->end)) {
-            $time->setEnd(new DateTime($data->end));
+            $time->end = new DateTime($data->end);
         }
 
         $this->_app->dbal->persist($time);
