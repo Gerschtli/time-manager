@@ -26,9 +26,7 @@ class Success extends Base implements Decorator
             ],
         ];
         if (!empty($data)) {
-            $output += [
-                'result' => $data,
-            ];
+            $output += ['result' => $data];
         }
 
         $this->_print($code, $output);
