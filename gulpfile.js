@@ -33,7 +33,7 @@ gulp.task('default', ['clean'], function() {
   gulp.start('styles', 'scripts');
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', ['default'], function() {
   gulp.watch('public/styles/**/*.sass', ['styles']);
   gulp.watch('public/scripts/**/*.js', ['scripts']);
 });
