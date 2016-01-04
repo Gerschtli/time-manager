@@ -9,3 +9,8 @@ script:
     - ./bin/phpunit
     - ./bin/phpcs --standard=tests/phpcs-ruleset.xml app lib tests
     - ./bin/phpmd app,lib,tests text codesize,design,naming,unusedcode
+after_script:
+    - ./bin/test-reporter
+addons:
+    code_climate:
+        repo_token: 47e35874d6b21d244e6eb4dfaaf7d5194c6621c91233cc0c37e9c15bf96c2060
