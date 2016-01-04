@@ -1,15 +1,17 @@
-var gulp       = require('gulp'),
-    sass       = require('gulp-ruby-sass'),
-    minifycss  = require('gulp-minify-css'),
-    jshint     = require('gulp-jshint'),
-    uglify     = require('gulp-uglify'),
-    rename     = require('gulp-rename'),
-    concat     = require('gulp-concat'),
-    del        = require('del');
+var gulp         = require('gulp'),
+    autoprefixer = require('gulp-autoprefixer'),
+    concat       = require('gulp-concat'),
+    jshint       = require('gulp-jshint'),
+    minifycss    = require('gulp-minify-css'),
+    rename       = require('gulp-rename'),
+    sass         = require('gulp-ruby-sass'),
+    uglify       = require('gulp-uglify'),
+    del          = require('del');
 
 gulp.task('styles', function() {
-  return sass('public/styles/main.sass')
+  return sass('public/styles/main.sass', { loadPath: ['node_modules/foundation-sites/scss'] })
     .pipe(rename({suffix: '.min'}))
+    .pipe(autoprefixer())
     .pipe(minifycss())
     .pipe(gulp.dest('public/assets'));
 });
