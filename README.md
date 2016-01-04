@@ -1,4 +1,4 @@
-# Time Manager [![Build Status](https://travis-ci.org/Gerschtli/time-manager.svg?branch=master)](https://travis-ci.org/Gerschtli/time-manager)
+# Time Manager [![Build Status](https://travis-ci.org/Gerschtli/time-manager.svg?branch=master)](https://travis-ci.org/Gerschtli/time-manager) [![Test Coverage](https://codeclimate.com/github/Gerschtli/time-manager/badges/coverage.svg)](https://codeclimate.com/github/Gerschtli/time-manager/coverage)
 
 ## API Endpoints
 
