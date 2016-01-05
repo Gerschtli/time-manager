@@ -6,13 +6,19 @@ var gulp         = require('gulp'),
     rename       = require('gulp-rename'),
     sass         = require('gulp-ruby-sass'),
     uglify       = require('gulp-uglify'),
-    del          = require('del');
+    del          = require('del'),
+
+    gulpif       = require('gulp-if');
+
+var applicationEnv = process.env.APPLICATION_ENV || 'production',
+    isDevelopment  = applicationEnv == 'development',
+    isProduction   = applicationEnv == 'production';
 
 gulp.task('styles', function() {
   return sass('public/styles/main.sass', { loadPath: ['node_modules/foundation-sites/scss'] })
     .pipe(rename({suffix: '.min'}))
     .pipe(autoprefixer())
-    .pipe(minifycss())
+    .pipe(gulpif(isProduction, minifycss()))
     .pipe(gulp.dest('public/assets'));
 });
 
@@ -21,12 +27,12 @@ gulp.task('scripts', function() {
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(concat('main.min.js'))
-    .pipe(uglify())
+    .pipe(gulpif(isProduction, uglify()))
     .pipe(gulp.dest('public/assets'));
 });
 
 gulp.task('clean', function() {
-  return del(['public/assets/css', 'public/assets/js']);
+  return del(['public/assets/*', '!public/assets/.gitkeep']);
 });
 
 gulp.task('default', ['clean'], function() {
