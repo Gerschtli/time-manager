@@ -11,11 +11,11 @@ var gulp         = require('gulp'),
     gulpif       = require('gulp-if');
 
 var applicationEnv = process.env.APPLICATION_ENV || 'production',
-    isDevelopment  = applicationEnv == 'development',
     isProduction   = applicationEnv == 'production';
 
 gulp.task('styles', function() {
   return sass('public/styles/main.sass', { loadPath: ['node_modules/foundation-sites/scss'] })
+    .on('error', sass.logError)
     .pipe(rename({suffix: '.min'}))
     .pipe(autoprefixer())
     .pipe(gulpif(isProduction, minifycss()))
