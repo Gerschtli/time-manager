@@ -35,11 +35,11 @@ gulp.task('clean', function() {
   return del(['public/assets/*', '!public/assets/.gitkeep']);
 });
 
-gulp.task('default', ['clean'], function() {
-  gulp.start('styles', 'scripts');
-});
+gulp.task('default', ['build', 'watch']);
 
-gulp.task('watch', ['default'], function() {
+gulp.task('build', ['styles', 'scripts', 'clean']);
+
+gulp.task('watch', function() {
   gulp.watch('public/styles/**/*.sass', ['styles']);
   gulp.watch('public/scripts/**/*.js', ['scripts']);
 });
