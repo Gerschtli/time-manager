@@ -29,7 +29,6 @@ $mysqlPassword = "root"
 
 include apt
 include system
-include basePackage
 include httpserver
 include dbserver
 
@@ -44,13 +43,6 @@ class system {
     host_aliases => [
       "${appName}.local"
     ]
-  }
-}
-
-class basePackage {
-  package { "git":
-    ensure  => 'latest',
-    require => Exec["apt_update"]
   }
 }
 
@@ -120,10 +112,10 @@ class dbserver {
     group   => "root",
     mode    => "0600",
     content => "[mysql]
-    database = ${mysqlDatabase}
-    host     = ${mysqlServer}
-    password = ${mysqlPassword}
-    user     = ${mysqlUser}
+      database = ${mysqlDatabase}
+      host     = ${mysqlServer}
+      password = ${mysqlPassword}
+      user     = ${mysqlUser}
     "
   }
 
@@ -133,10 +125,10 @@ class dbserver {
     group   => "vagrant",
     mode    => "0600",
     content => "[mysql]
-    database = ${mysqlDatabase}
-    host     = ${mysqlServer}
-    password = ${mysqlPassword}
-    user     = ${mysqlUser}
+      database = ${mysqlDatabase}
+      host     = ${mysqlServer}
+      password = ${mysqlPassword}
+      user     = ${mysqlUser}
     "
   }
 
