@@ -4,7 +4,7 @@ engines:
     enabled: true
     config:
       languages:
-      - php
+        - php
   phpcodesniffer:
     enabled: true
     config:
@@ -18,6 +18,6 @@ engines:
       rulesets: "codesize,design,naming,unusedcode"
 ratings:
   paths:
-  - "**.php"
+    - "**.php"
 exclude_paths:
-- tests/**/*
+  - tests/**/*
