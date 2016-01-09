@@ -21,7 +21,7 @@ $finder = DefaultFinder::create();
 
 if (!$test) {
     $finder
-        ->exclude(['tests', 'vendor'])
+        ->exclude(['node_modules', 'tests', 'vendor'])
         ->in(__DIR__);
 
     $fixers[] = 'align_equals';
