@@ -28,4 +28,19 @@ abstract class Base extends AppAware
 
         return $result;
     }
+
+    protected function _generateOutput($type, $code, $description, $data = null)
+    {
+        $output = [
+            $type => [
+                'code'        => $code,
+                'description' => $description,
+            ],
+        ];
+        if (!empty($data)) {
+            $output += ['result' => $data];
+        }
+
+        return $output;
+    }
 }

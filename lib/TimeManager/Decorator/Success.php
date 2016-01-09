@@ -9,26 +9,19 @@ class Success extends Base implements Decorator
 
     public function process($code, $message = '')
     {
+        $data = null;
         if (is_array($message)) {
             $data    = $message;
             $message = empty($data['message']) ? '' : $data['message'];
             unset($data['message']);
         }
+
         $description = $this->_generateMessage(
             $code,
             $message
         );
 
-        $output = [
-            'success' => [
-                'code'        => $code,
-                'description' => $description,
-            ],
-        ];
-        if (!empty($data)) {
-            $output += ['result' => $data];
-        }
-
+        $output = $this->_generateOutput('success', $code, $description, $data);
         $this->_print($code, $output);
     }
 }
