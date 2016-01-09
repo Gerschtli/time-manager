@@ -10,16 +10,16 @@ class Task extends AppAware
 {
     public function addAction()
     {
-        $data   = $this->_app->request->getBody();
-        $result = $this->_app->serviceTask->createModel($data);
+        $data = $this->_app->request->getBody();
+        $task = $this->_app->serviceTask->createModel($data);
 
-        if (!is_null($result)) {
-            $this->_app->decoratorSuccess->process(
+        if (!is_null($task)) {
+            $this->_processSuccess(
                 Success::STATUS_CREATED,
-                ['taskId' => $result->taskId]
+                ['taskId' => $task->taskId]
             );
         } else {
-            $this->_app->decoratorError->process(
+            $this->_processError(
                 Error::STATUS_UNPROCESSABLE_ENTITY,
                 Error::MESSAGE_INVALID_DATA
             );
@@ -36,7 +36,7 @@ class Task extends AppAware
                 $task
             );
         } else {
-            $this->_app->decoratorError->process(
+            $this->_processError(
                 Error::STATUS_NOT_FOUND
             );
         }
@@ -47,14 +47,29 @@ class Task extends AppAware
         $tasks = $this->_app->serviceTask->getAll();
 
         if (!empty($tasks)) {
-            $this->_app->decoratorData->process(
+            $this->_processData(
                 Success::STATUS_OK,
                 $tasks
             );
         } else {
-            $this->_app->decoratorError->process(
+            $this->_processError(
                 Error::STATUS_NOT_FOUND
             );
         }
+    }
+
+    private function _processData($code, $data)
+    {
+        $this->_app->decoratorData->process($code, $data);
+    }
+
+    private function _processError($code, $message = '')
+    {
+        $this->_app->decoratorError->process($code, $message);
+    }
+
+    private function _processSuccess($code, $data)
+    {
+        $this->_app->decoratorSuccess->process($code, $data);
     }
 }
