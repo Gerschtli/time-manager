@@ -18,7 +18,6 @@ class ErrorTest extends \LocalWebTestCase
     {
         $this->assertInstanceOf('\TimeManager\Decorator\Error', $this->_object);
         $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Decorator\Decorator', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 

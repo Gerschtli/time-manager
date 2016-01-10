@@ -2,7 +2,7 @@
 
 namespace TimeManager\Decorator;
 
-class Error extends Base implements Decorator
+class Error extends Base
 {
     const STATUS_NOT_FOUND               = 404;
     const STATUS_UNSUPPORTED_MEDIA_TYPE  = 415;
