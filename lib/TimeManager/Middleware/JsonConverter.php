@@ -3,7 +3,7 @@
 namespace TimeManager\Middleware;
 
 use Slim\Middleware;
-use TimeManager\Decorator\Error as ErrorDecorator;
+use TimeManager\Decorator\Error;
 
 class JsonConverter extends Middleware
 {
@@ -22,16 +22,16 @@ class JsonConverter extends Middleware
                     $env['slim.input'] = $result;
                     $this->next->call();
                 } else {
-                    $this->_printError(ErrorDecorator::STATUS_UNPROCESSABLE_ENTITY);
+                    $this->_processError(Error::STATUS_UNPROCESSABLE_ENTITY);
                 }
             } else {
-                $this->_printError(ErrorDecorator::STATUS_UNSUPPORTED_MEDIA_TYPE);
+                $this->_processError(Error::STATUS_UNSUPPORTED_MEDIA_TYPE);
             }
         }
     }
 
-    private function _printError($errorCode)
+    private function _processError($code)
     {
-        $this->app->errorDecorator->process($errorCode);
+        $this->app->errorDecorator->process($code);
     }
 }
