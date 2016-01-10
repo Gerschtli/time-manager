@@ -21,7 +21,7 @@ class Task extends AppAware
         } else {
             $this->_processError(
                 Error::STATUS_UNPROCESSABLE_ENTITY,
-                Error::MESSAGE_INVALID_DATA
+                Error::DESCRIPTION_INVALID_STRUCTURE
             );
         }
     }
@@ -37,7 +37,8 @@ class Task extends AppAware
             );
         } else {
             $this->_processError(
-                Error::STATUS_NOT_FOUND
+                Error::STATUS_NOT_FOUND,
+                Error::DESCRIPTION_NONEXISTING_KEY
             );
         }
     }
@@ -46,16 +47,10 @@ class Task extends AppAware
     {
         $tasks = $this->_app->serviceTask->getAll();
 
-        if (!empty($tasks)) {
-            $this->_processData(
-                Data::STATUS_OK,
-                $tasks
-            );
-        } else {
-            $this->_processError(
-                Error::STATUS_NOT_FOUND
-            );
-        }
+        $this->_processData(
+            Data::STATUS_OK,
+            $tasks
+        );
     }
 
     private function _processData($code, $data)
@@ -63,8 +58,8 @@ class Task extends AppAware
         $this->_app->decoratorData->process($code, $data);
     }
 
-    private function _processError($code, $message = '')
+    private function _processError($code, $description)
     {
-        $this->_app->decoratorError->process($code, $message);
+        $this->_app->decoratorError->process($code, $description);
     }
 }

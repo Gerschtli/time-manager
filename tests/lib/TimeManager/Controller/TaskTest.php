@@ -90,7 +90,10 @@ class TaskTest extends \LocalWebTestCase
         $this->app->decoratorError
             ->expects($this->once())
             ->method('process')
-            ->with($this->equalTo(422), $this->equalTo('invalid data'));
+            ->with(
+                $this->equalTo(422),
+                $this->equalTo('JSON is in invalid data structure')
+            );
 
         $this->_object->addAction();
     }
@@ -151,7 +154,10 @@ class TaskTest extends \LocalWebTestCase
         $this->app->decoratorError
             ->expects($this->once())
             ->method('process')
-            ->with($this->equalTo(404));
+            ->with(
+                $this->equalTo(404),
+                $this->equalTo('No Data with provided Key found')
+            );
 
         $this->_object->getAction($taskId);
     }
@@ -187,30 +193,6 @@ class TaskTest extends \LocalWebTestCase
                 $this->equalTo(200),
                 $this->equalTo([$modelTaskOne, $modelTaskTwo])
             );
-
-        $this->_object->getAllAction();
-    }
-
-    public function testGetAllActionWithNoTasks()
-    {
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->decoratorError = $this
-            ->getMockBuilder('\TimeManager\Decorator\Error')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTask
-            ->expects($this->once())
-            ->method('getAll')
-            ->will($this->returnValue([]));
-
-        $this->app->decoratorError
-            ->expects($this->once())
-            ->method('process')
-            ->with($this->equalTo(404));
 
         $this->_object->getAllAction();
     }

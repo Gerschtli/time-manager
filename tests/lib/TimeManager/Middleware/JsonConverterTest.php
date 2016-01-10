@@ -61,7 +61,10 @@ class JsonConverterTest extends \LocalWebTestCase
         $slim->errorDecorator
             ->expects($this->once())
             ->method('process')
-            ->with($this->equalTo(422));
+            ->with(
+                $this->equalTo(400),
+                $this->equalTo('JSON Parse Error')
+            );
 
         $slim->run();
     }
@@ -88,7 +91,10 @@ class JsonConverterTest extends \LocalWebTestCase
         $slim->errorDecorator
             ->expects($this->once())
             ->method('process')
-            ->with($this->equalTo(415));
+            ->with(
+                $this->equalTo(415),
+                $this->equalTo('Only JSON is allowed')
+            );
 
         $slim->run();
     }

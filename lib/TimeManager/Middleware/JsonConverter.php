@@ -22,16 +22,22 @@ class JsonConverter extends Middleware
                     $env['slim.input'] = $result;
                     $this->next->call();
                 } else {
-                    $this->_processError(Error::STATUS_UNPROCESSABLE_ENTITY);
+                    $this->_processError(
+                        Error::STATUS_BAD_REQUEST,
+                        Error::DESCRIPTION_PARSE_ERROR
+                    );
                 }
             } else {
-                $this->_processError(Error::STATUS_UNSUPPORTED_MEDIA_TYPE);
+                $this->_processError(
+                    Error::STATUS_UNSUPPORTED_MEDIA_TYPE,
+                    Error::DESCRIPTION_ONLY_JSON
+                );
             }
         }
     }
 
-    private function _processError($code)
+    private function _processError($code, $description)
     {
-        $this->app->errorDecorator->process($code);
+        $this->app->errorDecorator->process($code, $description);
     }
 }
