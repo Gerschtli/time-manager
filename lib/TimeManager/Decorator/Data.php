@@ -6,27 +6,30 @@ use Closure;
 use DateTime;
 use TimeManager\Model\Task;
 
-class Data extends Base implements Decorator
+class Data extends Base
 {
-    public function process($code, $message = '')
+    const STATUS_OK      = 200;
+    const STATUS_CREATED = 201;
+
+    public function process($code, $data)
     {
-        if (is_array($message)) {
-            foreach ($message as $key => $value) {
-                $message[$key] = $this->_checkForParsing($value);
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->_checkForParsing($value);
             }
         } else {
-            $message = $this->_checkForParsing($message);
+            $data = $this->_checkForParsing($data);
         }
 
-        $this->_print($code, $message);
+        $this->_print($code, $data);
     }
 
-    private function _checkForParsing($value)
+    private function _checkForParsing($data)
     {
-        if ($value instanceof Task) {
-            $value = $this->_parseTask($value);
+        if ($data instanceof Task) {
+            $data = $this->_parseTask($data);
         }
-        return $value;
+        return $data;
     }
 
     private function _parseTask(Task $task)

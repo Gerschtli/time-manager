@@ -20,21 +20,10 @@ class DataTest extends \LocalWebTestCase
     {
         $this->assertInstanceOf('\TimeManager\Decorator\Data', $this->_object);
         $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Decorator\Decorator', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
     public function testProcess()
-    {
-        $this->_object->process(200);
-
-        $response = $this->app->response;
-        $this->assertEquals(200, $response->getStatus());
-        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
-        $this->assertEquals('""', $response->getBody());
-    }
-
-    public function testProcessWithMessage()
     {
         $task = new Task();
         $task->taskId      = 5;
@@ -79,7 +68,7 @@ class DataTest extends \LocalWebTestCase
         $this->assertJsonStringEqualsJsonString($body, $response->getBody());
     }
 
-    public function testProcessWithArrayMessage()
+    public function testProcessWithDataArray()
     {
         $task = new Task();
         $task->taskId      = 5;
