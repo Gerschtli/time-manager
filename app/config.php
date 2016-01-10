@@ -1,11 +1,10 @@
 <?php
 
-// TODO: Live-Daten eintragen
 $mysql = (object)[
-    'database' => '?',
-    'host'     => '?',
-    'username' => '?',
-    'password' => '?',
+    'database' => '<$= database.name $>',
+    'host'     => '<$= database.host $>',
+    'username' => '<$= database.user $>',
+    'password' => '<$= database.password $>',
 ];
 
 if (APPLICATION_ENV == 'development') {
