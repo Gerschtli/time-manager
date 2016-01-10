@@ -28,12 +28,14 @@ class ErrorTest extends \LocalWebTestCase
 
         $this->assertEquals(
             [
-                'STATUS_NOT_FOUND'               => 404,
-                'STATUS_UNSUPPORTED_MEDIA_TYPE'  => 415,
-                'STATUS_UNPROCESSABLE_ENTITY'    => 422,
-                'MESSAGE_UNSUPPORTED_MEDIA_TYPE' => 'only JSON is allowed',
-                'MESSAGE_UNPROCESSABLE_ENTITY'   => 'invalid JSON',
-                'MESSAGE_INVALID_DATA'           => 'invalid data',
+                'STATUS_BAD_REQUEST'            => 400,
+                'STATUS_NOT_FOUND'              => 404,
+                'STATUS_UNSUPPORTED_MEDIA_TYPE' => 415,
+                'STATUS_UNPROCESSABLE_ENTITY'   => 422,
+                'DESCRIPTION_INVALID_STRUCTURE' => 'JSON is in invalid data structure',
+                'DESCRIPTION_NONEXISTING_KEY'   => 'No Data with provided Key found',
+                'DESCRIPTION_ONLY_JSON'         => 'Only JSON is allowed',
+                'DESCRIPTION_PARSE_ERROR'       => 'JSON Parse Error',
             ],
             $object->getConstants() + $parent->getConstants()
         );
@@ -42,47 +44,7 @@ class ErrorTest extends \LocalWebTestCase
     /**
      * @dataProvider dataProviderForTestProcess
      */
-    public function testProcess($code, $body)
-    {
-        $this->_object->process($code);
-
-        $response = $this->app->response;
-        $this->assertEquals($code, $response->getStatus());
-        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
-        $this->assertJsonStringEqualsJsonString($body, $response->getBody());
-    }
-
-    public function dataProviderForTestProcess()
-    {
-        return [
-            [
-                415,
-                '{
-                    "code": 415,
-                    "message": "Unsupported Media Type"
-                }',
-            ],
-            [
-                422,
-                '{
-                    "code": 422,
-                    "message": "Unprocessable Entity"
-                }',
-            ],
-            [
-                500,
-                '{
-                    "code": 500,
-                    "message": "Internal Server Error"
-                }',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider dataProviderForTestProcessWithDescription
-     */
-    public function testProcessWithDescription($code, $description, $body)
+    public function testProcess($code, $description, $body)
     {
         $this->_object->process($code, $description);
 
@@ -92,7 +54,7 @@ class ErrorTest extends \LocalWebTestCase
         $this->assertJsonStringEqualsJsonString($body, $response->getBody());
     }
 
-    public function dataProviderForTestProcessWithDescription()
+    public function dataProviderForTestProcess()
     {
         return [
             [
