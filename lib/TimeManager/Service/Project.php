@@ -25,6 +25,6 @@ class Project extends AppAware
     {
         return $this->_app->dbal
             ->getRepository('\TimeManager\Model\Project')
-            ->findOneBy(['_name' => $name]);
+            ->findOneBy(['name' => $name]);
     }
 }
