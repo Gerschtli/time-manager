@@ -2,45 +2,15 @@
 
 namespace TimeManager\Decorator;
 
-use Slim\Http\Response;
 use TimeManager\AppAware;
 
 abstract class Base extends AppAware
 {
-    protected function _print($code, $message)
+    protected function _print($code, $body)
     {
         $this->_app->status($code);
 
         $this->_app->contentType('application/json');
-        $this->_app->response->setBody(json_encode($message));
-    }
-
-    protected function _generateMessage($code, $message = '')
-    {
-        $httpMessage = Response::getMessageForCode($code);
-        $httpMessage = substr($httpMessage, 4);
-
-        if ($message != '') {
-            $result = $httpMessage . ', ' . $message;
-        } else {
-            $result = $httpMessage;
-        }
-
-        return $result;
-    }
-
-    protected function _generateOutput($type, $code, $description, $data = null)
-    {
-        $output = [
-            $type => [
-                'code'        => $code,
-                'description' => $description,
-            ],
-        ];
-        if (!empty($data)) {
-            $output += ['result' => $data];
-        }
-
-        return $output;
+        $this->_app->response->setBody(json_encode($body));
     }
 }

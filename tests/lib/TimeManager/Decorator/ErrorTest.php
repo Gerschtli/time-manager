@@ -42,12 +42,12 @@ class ErrorTest extends \LocalWebTestCase
     /**
      * @dataProvider dataProviderForTestProcess
      */
-    public function testProcess($errorCode, $body)
+    public function testProcess($code, $body)
     {
-        $this->_object->process($errorCode);
+        $this->_object->process($code);
 
         $response = $this->app->response;
-        $this->assertEquals($errorCode, $response->getStatus());
+        $this->assertEquals($code, $response->getStatus());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
         $this->assertJsonStringEqualsJsonString($body, $response->getBody());
     }
@@ -58,77 +58,68 @@ class ErrorTest extends \LocalWebTestCase
             [
                 415,
                 '{
-                    "error": {
-                        "code": 415,
-                        "description": "Unsupported Media Type, only JSON is allowed"
-                    }
+                    "code": 415,
+                    "message": "Unsupported Media Type"
                 }',
             ],
             [
                 422,
                 '{
-                    "error": {
-                        "code": 422,
-                        "description": "Unprocessable Entity, invalid JSON"
-                    }
+                    "code": 422,
+                    "message": "Unprocessable Entity"
                 }',
             ],
             [
                 500,
                 '{
-                    "error": {
-                        "code": 500,
-                        "description": "Internal Server Error"
-                    }
+                    "code": 500,
+                    "message": "Internal Server Error"
                 }',
             ],
         ];
     }
 
     /**
-     * @dataProvider dataProviderForTestProcessWithMessage
+     * @dataProvider dataProviderForTestProcessWithDescription
      */
-    public function testProcessWithMessage($errorCode, $message, $body)
+    public function testProcessWithDescription($code, $description, $body)
     {
-        $this->_object->process($errorCode, $message);
+        $this->_object->process($code, $description);
 
         $response = $this->app->response;
-        $this->assertEquals($errorCode, $response->getStatus());
+        $this->assertEquals($code, $response->getStatus());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
         $this->assertJsonStringEqualsJsonString($body, $response->getBody());
     }
 
-    public function dataProviderForTestProcessWithMessage()
+    public function dataProviderForTestProcessWithDescription()
     {
         return [
             [
                 415,
                 'bla blub',
                 '{
-                    "error": {
-                        "code": 415,
-                        "description": "Unsupported Media Type, bla blub"
-                    }
+                    "code": 415,
+                    "message": "Unsupported Media Type",
+                    "description": "bla blub"
                 }',
             ],
             [
                 422,
                 'xxx',
                 '{
-                    "error": {
-                        "code": 422,
-                        "description": "Unprocessable Entity, xxx"
-                    }
+                    "code": 422,
+                    "message": "Unprocessable Entity",
+                    "description": "xxx"
                 }',
             ],
             [
                 500,
                 'xxx',
                 '{
-                    "error": {
-                        "code": 500,
-                        "description": "Internal Server Error, xxx"
-                    }
+                    "code": 500,
+                    "message": "Internal Server Error",
+                    "description": "xxx"
                 }',
             ],
         ];

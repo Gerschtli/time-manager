@@ -2,6 +2,8 @@
 
 namespace TimeManager\Decorator;
 
+use Slim\Http\Response;
+
 class Error extends Base
 {
     const STATUS_NOT_FOUND               = 404;
@@ -11,30 +13,23 @@ class Error extends Base
     const MESSAGE_UNPROCESSABLE_ENTITY   = 'invalid JSON';
     const MESSAGE_INVALID_DATA           = 'invalid data';
 
-    public function process($code, $message = '')
+    public function process($code, $description = '')
     {
-        $description = $this->_generateMessage(
-            $code,
-            ($message ?: $this->_getMessage($code))
-        );
-
-        $output = $this->_generateOutput('error', $code, $description);
-        $this->_print($code, $output);
+        $body = [
+            'code'    => $code,
+            'message' => $this->_getMessage($code),
+        ];
+        if ($description != '') {
+            $body['description'] = $description;
+        }
+        $this->_print($code, $body);
     }
 
-    private function _getMessage($errorCode)
+    private function _getMessage($code)
     {
-        switch ($errorCode) {
-            case self::STATUS_UNSUPPORTED_MEDIA_TYPE:
-                $message = self::MESSAGE_UNSUPPORTED_MEDIA_TYPE;
-                break;
-            case self::STATUS_UNPROCESSABLE_ENTITY:
-                $message = self::MESSAGE_UNPROCESSABLE_ENTITY;
-                break;
-            default:
-                $message = '';
-                break;
-        }
+        $message = Response::getMessageForCode($code);
+        $message = substr($message, 4);
+
         return $message;
     }
 }
