@@ -5,7 +5,6 @@ use Doctrine\ORM\Tools\Setup;
 use TimeManager\Controller\Task as TaskController;
 use TimeManager\Decorator\Data as DataDecorator;
 use TimeManager\Decorator\Error as ErrorDecorator;
-use TimeManager\Decorator\Success as SuccessDecorator;
 use TimeManager\Middleware\JsonConverter;
 use TimeManager\Model\Project as ProjectModel;
 use TimeManager\Model\Task as TaskModel;
@@ -58,13 +57,6 @@ $app->container->singleton(
     'decoratorError',
     function () use ($app) {
         return new ErrorDecorator($app);
-    }
-);
-
-$app->container->singleton(
-    'decoratorSuccess',
-    function () use ($app) {
-        return new SuccessDecorator($app);
     }
 );
 
