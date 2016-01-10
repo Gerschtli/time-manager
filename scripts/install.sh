@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(dirname $(readlink -f "${0}"))"
+UPDATE_CONFIG="$(dirname ${SCRIPT_DIR})/update-config.sh"
 WORKSPACE_DIR="${SCRIPT_DIR}/workspace"
 
 GIT_DIR="${SCRIPT_DIR}/project"
@@ -110,6 +111,11 @@ _cleanSource() {
     popd 1> /dev/null
 }
 
+_updateConfig() {
+    _log "update config ..."
+    "${UPDATE_CONFIG}" "${WORKSPACE_DIR}/app/config.php"
+}
+
 
 _development() {
     _log "development build ..."
@@ -125,6 +131,7 @@ _production() {
     _gulp
     _build
     _cleanSource
+    _updateConfig
 }
  
 
