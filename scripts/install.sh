@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(dirname $(readlink -f "${0}"))"
 WORKSPACE_DIR="${SCRIPT_DIR}/workspace"
 
-GIT_DIR="${SCRIPT_DIR}/time-manager"
+GIT_DIR="${SCRIPT_DIR}/project"
 GIT_URL="git@github.com:Gerschtli/time-manager.git"
 GIT_BRANCH="master"
 
