@@ -3,6 +3,7 @@
 SCRIPT_DIR="$(dirname $(readlink -f "${0}"))"
 UPDATE_CONFIG="$(dirname ${SCRIPT_DIR})/update-config.sh"
 WORKSPACE_DIR="${SCRIPT_DIR}/workspace"
+LIVE_DIR="${SCRIPT_DIR}/live"
 
 GIT_DIR="${SCRIPT_DIR}/project"
 GIT_URL="git@github.com:Gerschtli/time-manager.git"
@@ -67,7 +68,7 @@ _composer() {
     fi
 
     _log "install composer dependencies ..."
-    "${COMPOSER}" install
+    "${COMPOSER}" install --no-dev
 
     popd 1> /dev/null
 }
@@ -116,6 +117,38 @@ _updateConfig() {
     "${UPDATE_CONFIG}" "${WORKSPACE_DIR}/app/config.php"
 }
 
+_compareFolders() {
+    pushd "${SCRIPT_DIR}" 1> /dev/null
+    _log "compare folders ..."
+
+    if [[ ! -d "${LIVE_DIR}" ]]; then
+        _log "create live dir ... "
+        mkdir -p "${LIVE_DIR}"
+    fi
+
+    diff -arq "${WORKSPACE_DIR}" "${LIVE_DIR}" \
+        | grep "Only in ${LIVE_DIR}/" \
+        | sed "s,:\ ,/," \
+        | sed "s,Only in ${LIVE_DIR}/,\t,"
+
+    popd 1> /dev/null
+}
+
+_copyWorkspace() {
+    read -p "copy workspace into live? [y/n] " CHOICE
+
+    if [[ "${CHOICE}" == "y" ]]; then
+        _log "remove live dir ..."
+        rm -rf "${LIVE_DIR}"
+        mkdir -p "${LIVE_DIR}"
+
+        _log "copy workspace ..."
+        pushd "${WORKSPACE_DIR}" 1> /dev/null
+        cp -R * "${LIVE_DIR}"
+        popd 1> /dev/null
+    fi
+}
+
 
 _development() {
     _log "development build ..."
@@ -132,6 +165,8 @@ _production() {
     _build
     _cleanSource
     _updateConfig
+    _compareFolders
+    _copyWorkspace
 }
  
 
