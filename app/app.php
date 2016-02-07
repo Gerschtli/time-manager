@@ -1,6 +1,6 @@
 <?php
 
-require PROJECT_ROOT . '/app/dic.php';
+require(PROJECT_ROOT . '/app/dic.php');
 
 $app->add($app->middlewareJsonConverter);
 

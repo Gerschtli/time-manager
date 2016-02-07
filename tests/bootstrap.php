@@ -17,7 +17,8 @@ if (!defined('APPLICATION_ENV')) {
         getenv('APPLICATION_ENV') ?: 'development'
     );
 }
-require_once PROJECT_ROOT . '/vendor/autoload.php';
+
+require_once(PROJECT_ROOT . '/vendor/autoload.php');
 
 class LocalWebTestCase extends WebTestCase
 {
@@ -29,7 +30,7 @@ class LocalWebTestCase extends WebTestCase
             ]
         );
 
-        require PROJECT_ROOT . '/app/app.php';
+        require(PROJECT_ROOT . '/app/app.php');
         return $app;
     }
 }
