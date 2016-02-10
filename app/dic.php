@@ -30,8 +30,7 @@ $app->container->singleton(
 $app->container->singleton(
     'dbal',
     function () use ($app) {
-        $isDevMode = (APPLICATION_ENV != 'production');
-        $config = Setup::createAnnotationMetadataConfiguration([PROJECT_ROOT . '/lib/Model'], $isDevMode);
+        $config = Setup::createAnnotationMetadataConfiguration([PROJECT_ROOT . '/lib/Model'], true);
 
         $mysqlConfig = $app->config->mysql;
         $connectionDetails = [
