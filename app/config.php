@@ -1,6 +1,8 @@
 <?php
 
-$mysql = (object)[
+$config = new stdClass();
+
+$config->mysql = (object)[
     'database' => '<$= database.name $>',
     'host'     => '<$= database.host $>',
     'username' => '<$= database.user $>',
@@ -8,7 +10,7 @@ $mysql = (object)[
 ];
 
 if (APPLICATION_ENV == 'development') {
-    $mysql = (object)[
+    $config->mysql = (object)[
         'database' => 'time-manager',
         'host'     => 'localhost',
         'username' => 'root',
@@ -16,6 +18,4 @@ if (APPLICATION_ENV == 'development') {
     ];
 }
 
-return (object)[
-    'mysql' => $mysql,
-];
+return $config;
