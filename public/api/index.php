@@ -12,7 +12,7 @@ if (!defined('APPLICATION_ENV')) {
     );
 }
 
-require PROJECT_ROOT . '/vendor/autoload.php';
+require(PROJECT_ROOT . '/vendor/autoload.php');
 
 $app = new Slim(
     [
@@ -21,6 +21,6 @@ $app = new Slim(
     ]
 );
 
-require PROJECT_ROOT . '/app/app.php';
+require(PROJECT_ROOT . '/app/app.php');
 
 $app->run();
