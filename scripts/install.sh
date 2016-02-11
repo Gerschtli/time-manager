@@ -57,7 +57,7 @@ _export(){
 _composer() {
     pushd "${GIT_DIR}" 1> /dev/null
 
-    COMPOSER="${GIT_DIR}/bin/composer.phar"
+    COMPOSER="./bin/composer.phar"
     if [[ ! -x "${COMPOSER}" ]]; then
         _log "download composer ..."
         mkdir -p bin
@@ -68,7 +68,12 @@ _composer() {
     fi
 
     _log "install composer dependencies ..."
-    "${COMPOSER}" install --no-dev
+    if [[ "${1}" == "dev" ]]; then
+        "${COMPOSER}" install --prefer-source
+    else
+        "${COMPOSER}" install --prefer-source --no-dev
+    fi
+
 
     popd 1> /dev/null
 }
@@ -153,14 +158,14 @@ _copyWorkspace() {
 _development() {
     _log "development build ..."
     _vagrant
-    _composer
+    _composer "dev"
     _gulp
 }
 
 _production() {
     _log "production build ..."
     _export
-    _composer
+    _composer "no-dev"
     _gulp
     _build
     _cleanSource
