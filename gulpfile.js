@@ -8,28 +8,52 @@ var gulp         = require('gulp'),
     sass         = require('gulp-ruby-sass'),
     uglify       = require('gulp-uglify'),
     del          = require('del'),
+    rmEmptyDirs  = require('remove-empty-directories'),
 
     gulpif       = require('gulp-if');
 
 var applicationEnv = process.env.APPLICATION_ENV || 'production',
     isProduction   = applicationEnv == 'production';
 
+
+var config = {
+  styles: {
+    src: 'src/styles/main.sass',
+    dest: 'dist/styles',
+    watch: 'src/styles/**/*.{sass,scss}',
+  },
+  scripts: {
+    src: 'src/scripts/**/*.js',
+    dest: 'dist/scripts',
+    name: 'main.min.js',
+  },
+  templates: {
+    src: 'src/**/*.jade',
+    dest: 'dist',
+  },
+  static: {
+    src: ['src/**/*', 'src/**/.*', '!src/**/*.{sass,scss,js,jade}'],
+    dest: 'dist',
+  },
+  dest: 'dist',
+};
+
 gulp.task('styles', function() {
-  return sass('public/styles/main.sass', { loadPath: ['node_modules/foundation-sites/scss'] })
+  return sass(config.styles.src, { loadPath: ['node_modules/foundation-sites/scss'] })
     .on('error', sass.logError)
     .pipe(rename({suffix: '.min'}))
     .pipe(autoprefixer())
     .pipe(gulpif(isProduction, minifycss()))
-    .pipe(gulp.dest('public/assets'));
+    .pipe(gulp.dest(config.styles.dest));
 });
 
 gulp.task('scripts', function() {
-  return gulp.src('public/scripts/**/*.js')
+  return gulp.src(config.scripts.src)
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
-    .pipe(concat('main.min.js'))
+    .pipe(concat(config.scripts.name))
     .pipe(gulpif(isProduction, uglify()))
-    .pipe(gulp.dest('public/assets'));
+    .pipe(gulp.dest(config.scripts.dest));
 });
 
 gulp.task('templates', function() {
@@ -39,21 +63,31 @@ gulp.task('templates', function() {
     options.pretty = '    ';
   }
 
-  return gulp.src('public/**/*.jade')
+  return gulp.src(config.templates.src)
     .pipe(jade(options))
-    .pipe(gulp.dest('public'));
+    .pipe(gulp.dest(config.templates.dest));
+});
+
+gulp.task('static', ['copyStatic'], function() {
+  return rmEmptyDirs(config.static.dest);
+});
+
+gulp.task('copyStatic', function() {
+  return gulp.src(config.static.src)
+    .pipe(gulp.dest(config.static.dest));
 });
 
 gulp.task('clean', function() {
-  return del(['public/assets/*', '!public/assets/.gitkeep']);
+  return del(config.dest);
 });
 
 gulp.task('default', ['build', 'watch']);
 
-gulp.task('build', ['styles', 'scripts', 'templates', 'clean']);
+gulp.task('build', ['styles', 'scripts', 'templates', 'static', 'clean']);
 
 gulp.task('watch', function() {
-  gulp.watch('public/styles/**/*.sass', ['styles']);
-  gulp.watch('public/scripts/**/*.js', ['scripts']);
-  gulp.watch('public/**/*.jade', ['templates']);
+  gulp.watch(config.styles.watch, ['styles']);
+  gulp.watch(config.scripts.src, ['scripts']);
+  gulp.watch(config.templates.src, ['templates']);
+  gulp.watch(config.static.src, ['static']);
 });
