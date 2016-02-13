@@ -110,7 +110,7 @@ _cleanSource() {
         -and ! -name ".." \
         -and ! -name "app" \
         -and ! -name "lib" \
-        -and ! -name "src" \
+        -and ! -name "dist" \
         -and ! -name "vendor" \
         -exec rm -Rf {} \+
     popd 1> /dev/null
