@@ -83,7 +83,9 @@ gulp.task('clean', function() {
 
 gulp.task('default', ['build', 'watch']);
 
-gulp.task('build', ['styles', 'scripts', 'templates', 'static', 'clean']);
+gulp.task('build', ['clean'], function() {
+  return gulp.start(['styles', 'scripts', 'templates', 'static']);
+});
 
 gulp.task('watch', function() {
   gulp.watch(config.styles.watch, ['styles']);
