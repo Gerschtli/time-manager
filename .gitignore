@@ -2,8 +2,6 @@
 .vagrant/
 bin/
 build/
+dist/
 node_modules/
-public/assets/*
-!public/assets/.gitkeep
-public/index.html
 vendor/
