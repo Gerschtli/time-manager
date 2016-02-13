@@ -110,10 +110,9 @@ _cleanSource() {
         -and ! -name ".." \
         -and ! -name "app" \
         -and ! -name "lib" \
-        -and ! -name "public" \
+        -and ! -name "src" \
         -and ! -name "vendor" \
         -exec rm -Rf {} \+
-    rm -Rf "public/styles" "public/scripts" "public/assets/.gitkeep"
     popd 1> /dev/null
 }
 
