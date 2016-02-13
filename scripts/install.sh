@@ -122,6 +122,8 @@ _updateConfig() {
 }
 
 _compareFolders() {
+    TMP="/tmp/time-manager"
+
     pushd "${SCRIPT_DIR}" 1> /dev/null
     _log "compare folders ..."
 
@@ -131,9 +133,14 @@ _compareFolders() {
     fi
 
     diff -arq "${WORKSPACE_DIR}" "${LIVE_DIR}" \
-        | grep "Only in ${LIVE_DIR}/" \
+        | grep "Only in ${LIVE_DIR}" \
         | sed "s,:\ ,/," \
-        | sed "s,Only in ${LIVE_DIR}/,\t,"
+        | sed "s,Only in ${LIVE_DIR},\t," > "${TMP}"
+
+    if [[ "$?" == 0 ]]; then
+        _log "files/folders to remove:" "ERROR"
+        cat "${TMP}"
+    fi
 
     popd 1> /dev/null
 }
