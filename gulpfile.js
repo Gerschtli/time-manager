@@ -1,6 +1,7 @@
 var gulp         = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     concat       = require('gulp-concat'),
+    jade         = require('gulp-jade'),
     jshint       = require('gulp-jshint'),
     minifycss    = require('gulp-minify-css'),
     rename       = require('gulp-rename'),
@@ -31,15 +32,28 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('public/assets'));
 });
 
+gulp.task('templates', function() {
+  var options = {}
+
+  if (!isProduction) {
+    options.pretty = '    ';
+  }
+
+  return gulp.src('public/**/*.jade')
+    .pipe(jade(options))
+    .pipe(gulp.dest('public'));
+});
+
 gulp.task('clean', function() {
   return del(['public/assets/*', '!public/assets/.gitkeep']);
 });
 
 gulp.task('default', ['build', 'watch']);
 
-gulp.task('build', ['styles', 'scripts', 'clean']);
+gulp.task('build', ['styles', 'scripts', 'templates', 'clean']);
 
 gulp.task('watch', function() {
   gulp.watch('public/styles/**/*.sass', ['styles']);
   gulp.watch('public/scripts/**/*.js', ['scripts']);
+  gulp.watch('public/**/*.jade', ['templates']);
 });
