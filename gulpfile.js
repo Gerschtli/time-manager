@@ -13,7 +13,7 @@ var gulp         = require('gulp'),
     gulpif       = require('gulp-if');
 
 var applicationEnv = process.env.APPLICATION_ENV || 'production',
-    isProduction   = applicationEnv == 'production';
+    isProduction   = applicationEnv === 'production';
 
 
 var config = {
@@ -28,8 +28,9 @@ var config = {
     name: 'main.min.js',
   },
   templates: {
-    src: 'src/**/*.jade',
+    src: ['src/**/*.jade', '!src/**/_*.jade'],
     dest: 'dist',
+    warch: 'src/**/*.jade',
   },
   static: {
     src: ['src/**/*', 'src/**/.*', '!src/**/*.{sass,scss,js,jade}'],
@@ -57,7 +58,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('templates', function() {
-  var options = {}
+  var options = {};
 
   if (!isProduction) {
     options.pretty = '    ';
@@ -90,6 +91,6 @@ gulp.task('build', ['clean'], function() {
 gulp.task('watch', function() {
   gulp.watch(config.styles.watch, ['styles']);
   gulp.watch(config.scripts.src, ['scripts']);
-  gulp.watch(config.templates.src, ['templates']);
+  gulp.watch(config.templates.watch, ['templates']);
   gulp.watch(config.static.src, ['static']);
 });
