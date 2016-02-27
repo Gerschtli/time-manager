@@ -1,24 +1,9 @@
-mixin taskRow(task)
-    td
-        input(type="text", ng-model="#{task}.description")
-    td
-        input(type="text", ng-model="#{task}.project")
-    td
-        div(ng-repeat="time in #{task}.times")
-            +timeRow("time")
-        div
-            +timeRow(task + ".newTime")
-
-mixin timeRow(time)
-    input(type="text", ng-model="#{time}.start")
-    span -
-    input(type="text", ng-model="#{time}.end")
-
 doctype html
 html(lang="de", ng-app="timeManager")
     head
         title Time Manager
         meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
 
         link(rel="stylesheet", href="styles/main.min.css")
         script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
@@ -26,17 +11,10 @@ html(lang="de", ng-app="timeManager")
 
     body
 
-        div(ng-controller="MainController as main")
-        
-            table
-                thead
-                    tr
-                        th Beschreibung
-                        th Projekt
-                        th Zeit
+        .container
 
-                tbody
-                    tr(ng-repeat="task in main.tasks", data-task-id="{{ task.taskId }}")
-                        +taskRow("task")
-                    tr
-                        +taskRow("main.newTask")
+            h1.title Aufgabenliste
+
+            div(ng-controller="MainController as main")
+
+                include modules/_table.jade

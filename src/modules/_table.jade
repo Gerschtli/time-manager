@@ -1,0 +1,14 @@
+include _table.mixins.jade
+
+table.task-table
+    thead
+        tr
+            th Beschreibung
+            th Projekt
+            th Zeit
+
+    tbody
+        tr(ng-repeat="task in main.tasks", data-task-id="{{ task.taskId }}")
+            +taskRow("task")
+        tr
+            +taskRow("main.newTask")
