@@ -1,6 +1,6 @@
 <?php
 
-namespace TimeManager\Decorator;
+namespace TimeManager\Presenter;
 
 use ReflectionClass;
 
@@ -16,15 +16,15 @@ class ErrorTest extends \LocalWebTestCase
 
     public function testInstance()
     {
-        $this->assertInstanceOf('\TimeManager\Decorator\Error', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Error', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
     public function testConstants()
     {
-        $object = new ReflectionClass('\TimeManager\Decorator\Error');
-        $parent = new ReflectionClass('\TimeManager\Decorator\Base');
+        $object = new ReflectionClass('\TimeManager\Presenter\Error');
+        $parent = new ReflectionClass('\TimeManager\Presenter\Base');
 
         $this->assertEquals(
             [

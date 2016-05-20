@@ -1,6 +1,6 @@
 <?php
 
-namespace TimeManager\Decorator;
+namespace TimeManager\Presenter;
 
 use Slim\Http\Response;
 

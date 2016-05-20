@@ -38,8 +38,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->decoratorData = $this
-            ->getMockBuilder('\TimeManager\Decorator\Data')
+        $this->app->presenterData = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -49,7 +49,7 @@ class TaskTest extends \LocalWebTestCase
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
 
-        $this->app->decoratorData
+        $this->app->presenterData
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -76,8 +76,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->decoratorError = $this
-            ->getMockBuilder('\TimeManager\Decorator\Error')
+        $this->app->presenterError = $this
+            ->getMockBuilder('\TimeManager\Presenter\Error')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -87,7 +87,7 @@ class TaskTest extends \LocalWebTestCase
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
 
-        $this->app->decoratorError
+        $this->app->presenterError
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -110,8 +110,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Model\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->decoratorData = $this
-            ->getMockBuilder('\TimeManager\Decorator\Data')
+        $this->app->presenterData = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -121,7 +121,7 @@ class TaskTest extends \LocalWebTestCase
             ->with($this->equalTo($taskId))
             ->will($this->returnValue($this->app->modelTask));
 
-        $this->app->decoratorData
+        $this->app->presenterData
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -140,8 +140,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->decoratorError = $this
-            ->getMockBuilder('\TimeManager\Decorator\Error')
+        $this->app->presenterError = $this
+            ->getMockBuilder('\TimeManager\Presenter\Error')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -151,7 +151,7 @@ class TaskTest extends \LocalWebTestCase
             ->with($this->equalTo($taskId))
             ->will($this->returnValue(null));
 
-        $this->app->decoratorError
+        $this->app->presenterError
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -176,8 +176,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Model\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->decoratorData = $this
-            ->getMockBuilder('\TimeManager\Decorator\Data')
+        $this->app->presenterData = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -186,7 +186,7 @@ class TaskTest extends \LocalWebTestCase
             ->method('getAll')
             ->will($this->returnValue([$modelTaskOne, $modelTaskTwo]));
 
-        $this->app->decoratorData
+        $this->app->presenterData
             ->expects($this->once())
             ->method('process')
             ->with(

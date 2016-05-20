@@ -3,8 +3,8 @@
 namespace TimeManager\Controller;
 
 use TimeManager\AppAware;
-use TimeManager\Decorator\Data;
-use TimeManager\Decorator\Error;
+use TimeManager\Presenter\Data;
+use TimeManager\Presenter\Error;
 
 class Task extends AppAware
 {
@@ -55,11 +55,11 @@ class Task extends AppAware
 
     private function _processData($code, $data)
     {
-        $this->_app->decoratorData->process($code, $data);
+        $this->_app->presenterData->process($code, $data);
     }
 
     private function _processError($code, $description)
     {
-        $this->_app->decoratorError->process($code, $description);
+        $this->_app->presenterError->process($code, $description);
     }
 }

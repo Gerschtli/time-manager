@@ -3,11 +3,11 @@
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use TimeManager\Controller\Task as TaskController;
-use TimeManager\Decorator\Data as DataDecorator;
-use TimeManager\Decorator\Error as ErrorDecorator;
 use TimeManager\Middleware\JsonConverter;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
+use TimeManager\Presenter\Data as DataPresenter;
+use TimeManager\Presenter\Error as ErrorPresenter;
 use TimeManager\Service\Task as TaskService;
 use TimeManager\Service\Time as TimeService;
 
@@ -44,20 +44,6 @@ $app->container->singleton(
 );
 
 $app->container->singleton(
-    'decoratorData',
-    function () use ($app) {
-        return new DataDecorator($app);
-    }
-);
-
-$app->container->singleton(
-    'decoratorError',
-    function () use ($app) {
-        return new ErrorDecorator($app);
-    }
-);
-
-$app->container->singleton(
     'middlewareJsonConverter',
     function () {
         return new JsonConverter();
@@ -75,6 +61,20 @@ $app->container->set(
     'modelTime',
     function () {
         return new TimeModel();
+    }
+);
+
+$app->container->singleton(
+    'presenterData',
+    function () use ($app) {
+        return new DataPresenter($app);
+    }
+);
+
+$app->container->singleton(
+    'presenterError',
+    function () use ($app) {
+        return new ErrorPresenter($app);
     }
 );
 

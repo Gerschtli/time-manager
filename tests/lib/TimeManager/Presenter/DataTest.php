@@ -1,6 +1,6 @@
 <?php
 
-namespace TimeManager\Decorator;
+namespace TimeManager\Presenter;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,8 +18,8 @@ class DataTest extends \LocalWebTestCase
 
     public function testInstance()
     {
-        $this->assertInstanceOf('\TimeManager\Decorator\Data', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Decorator\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Data', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 

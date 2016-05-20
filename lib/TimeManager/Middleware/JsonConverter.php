@@ -3,7 +3,7 @@
 namespace TimeManager\Middleware;
 
 use Slim\Middleware;
-use TimeManager\Decorator\Error;
+use TimeManager\Presenter\Error;
 
 class JsonConverter extends Middleware
 {
@@ -38,6 +38,6 @@ class JsonConverter extends Middleware
 
     private function _processError($code, $description)
     {
-        $this->app->errorDecorator->process($code, $description);
+        $this->app->errorPresenter->process($code, $description);
     }
 }
