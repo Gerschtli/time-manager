@@ -18,7 +18,6 @@
 ```json
 {
     "taskId": 4,
-    "project": "Project",
     "description": "Description",
     "times": [
         {
