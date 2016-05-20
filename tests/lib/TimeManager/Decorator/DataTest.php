@@ -28,9 +28,6 @@ class DataTest extends \LocalWebTestCase
         $task = new Task();
         $task->taskId      = 5;
         $task->description = 'description';
-        $task->project     = (object)[
-            'name' => 'project',
-        ];
         $task->times       = new ArrayCollection(
             [
                 (object)[
@@ -47,7 +44,6 @@ class DataTest extends \LocalWebTestCase
             (object)[
                 'taskId'      => 5,
                 'description' => 'description',
-                'project'     => 'project',
                 'times'       => [
                     (object)[
                         'start' => '2015-10-10 00:00:00',
@@ -73,9 +69,6 @@ class DataTest extends \LocalWebTestCase
         $task = new Task();
         $task->taskId      = 5;
         $task->description = 'description';
-        $task->project     = (object)[
-            'name' => 'project',
-        ];
         $task->times       = new ArrayCollection(
             [
                 (object)[
@@ -93,7 +86,6 @@ class DataTest extends \LocalWebTestCase
                 (object)[
                     'taskId'      => 5,
                     'description' => 'description',
-                    'project'     => 'project',
                     'times'       => [
                         (object)[
                             'start' => '2015-10-10 00:00:00',

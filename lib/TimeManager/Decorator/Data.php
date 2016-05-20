@@ -37,7 +37,6 @@ class Data extends Base
         $format = $this->_getFormatClosure();
         $clean  = $this->_getTimeCleanClosure($format);
 
-        $task->project = $task->project->name;
         $task->times->forAll($clean);
         $task->times = $task->times->toArray();
 

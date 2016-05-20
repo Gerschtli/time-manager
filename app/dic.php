@@ -6,10 +6,8 @@ use TimeManager\Controller\Task as TaskController;
 use TimeManager\Decorator\Data as DataDecorator;
 use TimeManager\Decorator\Error as ErrorDecorator;
 use TimeManager\Middleware\JsonConverter;
-use TimeManager\Model\Project as ProjectModel;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
-use TimeManager\Service\Project as ProjectService;
 use TimeManager\Service\Task as TaskService;
 use TimeManager\Service\Time as TimeService;
 
@@ -77,20 +75,6 @@ $app->container->set(
     'modelTime',
     function () {
         return new TimeModel();
-    }
-);
-
-$app->container->set(
-    'modelProject',
-    function () {
-        return new ProjectModel();
-    }
-);
-
-$app->container->singleton(
-    'serviceProject',
-    function () use ($app) {
-        return new ProjectService($app);
     }
 );
 

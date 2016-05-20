@@ -31,7 +31,6 @@ class TaskTest extends \LocalWebTestCase
     {
         $data = (object)[
             'description' => 'description',
-            'project'     => 'project',
             'times'       => [
                 (object)[
                     'start' => '2015-10-10 12:00:00',
@@ -47,24 +46,14 @@ class TaskTest extends \LocalWebTestCase
             'times' => new ArrayCollection(),
         ];
 
-        $this->app->serviceProject = $this
-            ->getMockBuilder('\TimeManager\Service\Project')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->serviceTime    = $this
+        $this->app->serviceTime = $this
             ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->dbal           = $this
+        $this->app->dbal        = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->app->serviceProject
-            ->expects($this->once())
-            ->method('createModel')
-            ->with($this->equalTo('project'))
-            ->will($this->returnValue((object)['name' => 'project']));
 
         $this->app->serviceTime
             ->expects($this->at(0))
@@ -113,9 +102,6 @@ class TaskTest extends \LocalWebTestCase
 
         $expected = (object)[
             'description' => 'description',
-            'project'     => (object)[
-                'name' => 'project',
-            ],
             'times' => new ArrayCollection(
                 [
                     (object)[
@@ -144,9 +130,7 @@ class TaskTest extends \LocalWebTestCase
 
     public function testCreateModelWithoutDescription()
     {
-        $data = (object)[
-            'project' => 'project',
-        ];
+        $data = new stdClass();
 
         $this->assertNull($this->_object->createModel($data));
     }

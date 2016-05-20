@@ -30,8 +30,6 @@ class DicTest extends \LocalWebTestCase
             'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],
             'modelTask'               => ['_notSameInstance', '\TimeManager\Model\Task'],
             'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],
-            'modelProject'            => ['_notSameInstance', '\TimeManager\Model\Project'],
-            'serviceProject'          => ['_sameInstance', '\TimeManager\Service\Project'],
             'serviceTask'             => ['_sameInstance', '\TimeManager\Service\Task'],
             'serviceTime'             => ['_sameInstance', '\TimeManager\Service\Time'],
         ];

@@ -19,13 +19,6 @@ class Task
     public $taskId;
 
     /**
-     * @OneToOne(targetEntity="Project")
-     * @JoinColumn(name="projectId", referencedColumnName="projectId")
-     * @var \TimeManager\Model\Project
-     */
-    public $project;
-
-    /**
      * @Column(type="string", name="description")
      * @var string
      */

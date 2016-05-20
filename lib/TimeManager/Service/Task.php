@@ -18,11 +18,6 @@ class Task extends AppAware
         $task              = $this->_app->modelTask;
         $task->description = $data->description;
 
-        if (!empty($data->project)) {
-            $project       = $this->_app->serviceProject->createModel($data->project);
-            $task->project = $project;
-        }
-
         if (!empty($data->times) && is_array($data->times)) {
             foreach ($data->times as $timeObject) {
                 $time = $this->_app->serviceTime->createModel($timeObject);
