@@ -30,7 +30,7 @@ var config = {
   templates: {
     src: ['src/**/*.jade', '!src/**/_*.jade'],
     dest: 'dist',
-    warch: 'src/**/*.jade',
+    watch: 'src/**/*.jade',
   },
   static: {
     src: ['src/**/*', 'src/**/.*', '!src/**/*.{sass,scss,js,jade}'],
