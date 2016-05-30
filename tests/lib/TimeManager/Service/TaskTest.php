@@ -102,7 +102,7 @@ class TaskTest extends \LocalWebTestCase
 
         $expected = (object)[
             'description' => 'description',
-            'times' => new ArrayCollection(
+            'times'       => new ArrayCollection(
                 [
                     (object)[
                         'start' => '2015-10-10 12:00:00',
