@@ -1,0 +1,31 @@
+.task-list
+    input,
+    .input-group
+        margin-bottom: 0
+
+    &--item
+        border: 1px solid $medium-gray
+        border-bottom-width: 0
+        padding: $global-padding
+
+        &:nth-child(odd)
+            background: $lighter-gray
+
+        &:last-child
+            border-bottom-width: 1px
+
+        &-info
+            border-bottom: 1px solid $light-gray
+            padding-bottom: ($global-padding * .75)
+
+    &--times
+        margin: 0
+        margin-left: $global-margin
+        padding-top: ($global-padding * .75)
+        list-style-type: none
+
+        &-item
+            margin-bottom: $global-margin
+
+            &:last-child
+                margin-bottom: 0
