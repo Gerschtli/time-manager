@@ -6,8 +6,6 @@ html(lang="de", ng-app="timeManager")
         meta(name="viewport", content="width=device-width, initial-scale=1")
 
         link(rel="stylesheet", href="styles/main.min.css")
-        script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
-        script(src="scripts/main.min.js")
 
     body
 
@@ -17,4 +15,16 @@ html(lang="de", ng-app="timeManager")
 
             div(ng-controller="MainController as main")
 
-                include modules/_table.jade
+                .task-list
+                    .task-list--item(ng-repeat="task in main.tasks")
+                        .task-list--item-info
+                            input(type="text", ng-model="task.description")
+                        ul.task-list--times
+                            li.task-list--times-item(ng-repeat="time in task.times")
+                                .input-group
+                                    input.input-group-field(type="text", ng-model="time.start")
+                                    span.input-group-label -
+                                    input.input-group-field(type="text", ng-model="time.end")
+
+        script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
+        script(src="scripts/main.min.js")
