@@ -21,6 +21,10 @@ var config = {
     src: 'src/styles/main.sass',
     dest: 'dist/styles',
     watch: 'src/styles/**/*.{sass,scss}',
+    loadPath: [
+      'node_modules/foundation-sites/scss',
+      'node_modules/font-awesome/scss',
+    ],
   },
   scripts: {
     src: 'src/scripts/**/*.js',
@@ -36,11 +40,15 @@ var config = {
     src: ['src/**/*', 'src/**/.*', '!src/**/*.{sass,scss,js,jade}'],
     dest: 'dist',
   },
+  fonts: {
+    src: 'node_modules/font-awesome/fonts/*',
+    dest: 'dist/fonts',
+  },
   dest: 'dist',
 };
 
 gulp.task('styles', function() {
-  return sass(config.styles.src, { loadPath: ['node_modules/foundation-sites/scss'] })
+  return sass(config.styles.src, { loadPath: config.styles.loadPath })
     .on('error', sass.logError)
     .pipe(rename({suffix: '.min'}))
     .pipe(autoprefixer())
@@ -69,8 +77,13 @@ gulp.task('templates', function() {
     .pipe(gulp.dest(config.templates.dest));
 });
 
-gulp.task('static', ['copyStatic'], function() {
+gulp.task('static', ['copy'], function() {
   return rmEmptyDirs(config.static.dest);
+});
+
+gulp.task('copy', ['copyStatic'], function() {
+  return gulp.src(config.fonts.src)
+    .pipe(gulp.dest(config.fonts.dest));
 });
 
 gulp.task('copyStatic', function() {
