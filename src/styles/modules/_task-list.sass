@@ -3,6 +3,9 @@
     .input-group
         margin-bottom: 0
 
+    .input-group
+        width: calc(100% - (18em / 14) * 3) // TODO: Use $width-icon-fw instead of (18em / 14)
+
     &--item
         border: 1px solid $medium-gray
         border-bottom-width: 0
@@ -17,6 +20,17 @@
         &-info
             border-bottom: 1px solid $light-gray
             padding-bottom: ($global-padding * .75)
+            display: flex
+            justify-content: space-between
+            align-items: center
+
+
+    &--actions
+        width: ($width-icon-fw * 2.5)
+        text-align: right
+
+        i:last-child
+            margin-left: ($width-icon-fw * .5)
 
     &--times
         margin: 0
@@ -26,6 +40,9 @@
 
         &-item
             margin-bottom: $global-margin
+            display: flex
+            justify-content: space-between
+            align-items: center
 
             &:last-child
                 margin-bottom: 0
