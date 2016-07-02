@@ -24,12 +24,14 @@ var config = {
     loadPath: [
       'node_modules/foundation-sites/scss',
       'node_modules/font-awesome/scss',
+      'node_modules/toastr',
     ],
   },
   scripts: {
     src: 'src/scripts/**/*.js',
     dest: 'dist/scripts',
     name: 'main.min.js',
+    loadPath: 'node_modules/toastr/toastr.js',
   },
   templates: {
     src: ['src/**/*.jade', '!src/**/_*.jade'],
@@ -57,12 +59,16 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-  return gulp.src(config.scripts.src)
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('default'))
+  return gulp.src([config.scripts.src, config.scripts.loadPath])
     .pipe(concat(config.scripts.name))
     .pipe(gulpif(isProduction, uglify()))
     .pipe(gulp.dest(config.scripts.dest));
+});
+
+gulp.task('jsLint', function() {
+  return gulp.src(config.scripts.src)
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('default'));
 });
 
 gulp.task('templates', function() {
@@ -98,7 +104,7 @@ gulp.task('clean', function() {
 gulp.task('default', ['build', 'watch']);
 
 gulp.task('build', ['clean'], function() {
-  return gulp.start(['styles', 'scripts', 'templates', 'static']);
+  return gulp.start(['styles', 'jsLint', 'scripts', 'templates', 'static']);
 });
 
 gulp.task('watch', function() {
