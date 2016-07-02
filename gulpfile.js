@@ -59,7 +59,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-  return gulp.src([config.scripts.src, config.scripts.loadPath])
+  return gulp.src([config.scripts.loadPath, config.scripts.src])
     .pipe(concat(config.scripts.name))
     .pipe(gulpif(isProduction, uglify()))
     .pipe(gulp.dest(config.scripts.dest));
