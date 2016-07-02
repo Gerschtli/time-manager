@@ -1,3 +1,14 @@
+mixin icon(type, click)
+    i.fa.fa-fw(class="fa-#{type}", ng-click="#{click}")
+
+mixin time(time)
+    input.input-group-field(type="text", ng-model="#{time}.start")
+    span.input-group-label -
+    input.input-group-field(type="text", ng-model="#{time}.end")
+
+mixin taskInfo(task)
+    input(type="text", ng-model="#{task}.description")
+
 doctype html
 html(lang="de", ng-app="timeManager")
     head
@@ -21,20 +32,31 @@ html(lang="de", ng-app="timeManager")
 
                         .task-list--item-info
                             .input-group
-                                input(type="text", ng-model="task.description")
+                                +taskInfo("task")
                             .task-list--actions
-                                i.fa.fa-fw.fa-check
-                                i.fa.fa-fw.fa-times
+                                +icon("check", "main.updateTask(task)")
+                                +icon("times", "main.deleteTask(task)")
 
                         ul.task-list--times
 
                             li.task-list--times-item(ng-repeat="time in task.times")
                                 .input-group
-                                    input.input-group-field(type="text", ng-model="time.start")
-                                    span.input-group-label -
-                                    input.input-group-field(type="text", ng-model="time.end")
+                                    +time("time")
                                 .task-list--actions
-                                    i.fa.fa-fw.fa-times
+                                    +icon("times", "main.deleteTime(task, time)")
+                            li.task-list--times-item
+                                .input-group
+                                    +time("newTime")
+                                .task-list--actions
+                                    +icon("plus", "main.addTime(task, newTime)")
+
+                    .task-list--item
+
+                        .task-list--item-info.task-list--item-info__new
+                            .input-group
+                                +taskInfo("newTask")
+                            .task-list--actions
+                                +icon("plus", "main.createTask(newTask)")
 
         script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
         script(src="scripts/main.min.js")
