@@ -3,6 +3,7 @@
 namespace TimeManager\Controller;
 
 use Slim\Environment;
+use stdclass;
 
 class TaskTest extends \LocalWebTestCase
 {
@@ -96,6 +97,35 @@ class TaskTest extends \LocalWebTestCase
             );
 
         $this->_object->addAction();
+    }
+
+    public function testDeleteAction()
+    {
+        $taskId = time();
+
+        $this->app->serviceTask   = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->presenterData = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('deleteById')
+            ->with($this->equalTo($taskId));
+
+        $this->app->presenterData
+            ->expects($this->once())
+            ->method('process')
+            ->with(
+                $this->equalTo(200),
+                $this->equalTo(new stdclass())
+            );
+
+        $this->_object->deleteAction($taskId);
     }
 
     public function testGetAction()

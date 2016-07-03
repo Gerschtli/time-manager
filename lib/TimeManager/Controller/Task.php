@@ -2,6 +2,7 @@
 
 namespace TimeManager\Controller;
 
+use stdclass;
 use TimeManager\AppAware;
 use TimeManager\Presenter\Data;
 use TimeManager\Presenter\Error;
@@ -24,6 +25,16 @@ class Task extends AppAware
                 Error::DESCRIPTION_INVALID_STRUCTURE
             );
         }
+    }
+
+    public function deleteAction($taskId)
+    {
+        $this->_app->serviceTask->deleteById($taskId);
+
+        $this->_processData(
+            Data::STATUS_OK,
+            new stdclass()
+        );
     }
 
     public function getAction($taskId)
