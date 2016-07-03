@@ -257,6 +257,34 @@ class TaskTest extends \LocalWebTestCase
         );
     }
 
+    public function testDeleteById()
+    {
+        $taskId = time();
+
+        $this->app->dbal = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->dbal
+            ->expects($this->at(0))
+            ->method('getReference')
+            ->with(
+                $this->equalTo('\TimeManager\Model\Task'),
+                $this->equalTo($taskId)
+            )
+            ->will($this->returnValue('bla'));
+        $this->app->dbal
+            ->expects($this->at(1))
+            ->method('remove')
+            ->with($this->equalTo('bla'));
+        $this->app->dbal
+            ->expects($this->at(2))
+            ->method('flush');
+
+        $this->_object->deleteById($taskId);
+    }
+
     public function testGetById()
     {
         $taskId = time();
