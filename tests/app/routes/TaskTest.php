@@ -17,17 +17,20 @@ class TaskTest extends \LocalWebTestCase
         $this->client->post('/task', $data, ['CONTENT_TYPE' => 'application/json']);
     }
 
-    public function testGetAllAction()
+    public function testDeleteAction()
     {
+        $taskId = time();
+
         $this->app->controllerTask = $this
             ->getMockBuilder('\TimeManager\Controller\Task')
             ->disableOriginalConstructor()
             ->getMock();
         $this->app->controllerTask
             ->expects($this->once())
-            ->method('getAllAction');
+            ->method('deleteAction')
+            ->with($this->equalTo($taskId));
 
-        $this->client->get('/task');
+        $this->client->delete('/task/' . $taskId);
     }
 
     public function testGetAction()
@@ -44,5 +47,18 @@ class TaskTest extends \LocalWebTestCase
             ->with($this->equalTo($taskId));
 
         $this->client->get('/task/' . $taskId);
+    }
+
+    public function testGetAllAction()
+    {
+        $this->app->controllerTask = $this
+            ->getMockBuilder('\TimeManager\Controller\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->controllerTask
+            ->expects($this->once())
+            ->method('getAllAction');
+
+        $this->client->get('/task');
     }
 }

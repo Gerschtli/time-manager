@@ -24,3 +24,10 @@ $app->get(
         $app->controllerTask->getAction($taskId);
     }
 );
+
+$app->delete(
+    '/task/:taskid',
+    function ($taskId) use ($app) {
+        $app->controllerTask->deleteAction($taskId);
+    }
+);
