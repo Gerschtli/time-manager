@@ -11,6 +11,7 @@
     function MainController($http, toastr, taskService) {
         var vm = this;
         vm.tasks = [];
+        vm.newTask = {};
         vm.createTask = createTask;
         vm.updateTask = updateTask;
         vm.deleteTask = deleteTask;
@@ -27,9 +28,11 @@
             });
         }
 
-        function createTask(task) {
-            // TODO
-            toastr.info('Create Task');
+        function createTask() {
+            taskService.add(vm.newTask, function(data) {
+                vm.tasks.push(data);
+                vm.newTask = {};
+            });
         }
 
         function updateTask(task) {

@@ -10,17 +10,38 @@
     /* @ngInject */
     function taskService($http, toastr) {
         var service = {
-            getAll: getAll
+            add: add,
+            getAll: getAll,
         };
         return service;
 
         ////////////////
 
+        function add(task, successCallback, errorCallback) {
+            $http(
+                {
+                    method: 'POST',
+                    url: '/api/task',
+                    data: task,
+                }
+            ).then(
+                function success(response) {
+                    successCallback(response.data);
+                },
+                function error(response) {
+                    toastr.error('Data could not be pushed', response.status + ' - ' + response.statusText);
+                    if (typeof errorCallback === 'function') {
+                        errorCallback(response);
+                    }
+                }
+            );
+        }
+
         function getAll(successCallback, errorCallback) {
             $http(
                 {
                     method: 'GET',
-                    url: '/api/task'
+                    url: '/api/task',
                 }
             ).then(
                 function success(response) {
