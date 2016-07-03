@@ -17,7 +17,7 @@
 
         ////////////////
 
-        function add(task, successCallback, errorCallback) {
+        function add(task, successCallback) {
             $http(
                 {
                     method: 'POST',
@@ -26,18 +26,15 @@
                 }
             ).then(
                 function success(response) {
-                    successCallback(response.data);
+                    successWrapper(response, successCallback);
                 },
                 function error(response) {
-                    toastr.error('Data could not be pushed', response.status + ' - ' + response.statusText);
-                    if (typeof errorCallback === 'function') {
-                        errorCallback(response);
-                    }
+                    errorWrapper(response);
                 }
             );
         }
 
-        function getAll(successCallback, errorCallback) {
+        function getAll(successCallback) {
             $http(
                 {
                     method: 'GET',
@@ -45,14 +42,22 @@
                 }
             ).then(
                 function success(response) {
-                    successCallback(response.data);
+                    successWrapper(response, successCallback);
                 },
                 function error(response) {
-                    toastr.error('Data could not be fetched', response.status + ' - ' + response.statusText);
-                    if (typeof errorCallback === 'function') {
-                        errorCallback(response);
-                    }
+                    errorWrapper(response);
                 }
+            );
+        }
+
+        function successWrapper(response, successCallback) {
+            successCallback(response.data);
+        }
+
+        function errorWrapper(response) {
+            toastr.error(
+                response.data.code + ' - ' + response.data.message,
+                response.data.description
             );
         }
     }
