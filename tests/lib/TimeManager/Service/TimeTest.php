@@ -30,16 +30,16 @@ class TimeTest extends \LocalWebTestCase
 
         $this->app->modelTime = new stdClass();
 
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTime));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -61,16 +61,16 @@ class TimeTest extends \LocalWebTestCase
     {
         $this->app->modelTime = new stdClass();
 
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTime));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('flush');
 

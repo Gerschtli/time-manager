@@ -21,8 +21,9 @@ class Time extends AppAware
             $time->end = new DateTime($data->end);
         }
 
-        $this->_app->dbal->persist($time);
-        $this->_app->dbal->flush();
+        $entityManager = $this->_app->entityManager;
+        $entityManager->persist($time);
+        $entityManager->flush();
 
         return $time;
     }

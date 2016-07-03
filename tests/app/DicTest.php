@@ -24,7 +24,7 @@ class DicTest extends \LocalWebTestCase
         $dependencies = [
             'config'                  => ['_sameInstance', '\stdClass'],
             'controllerTask'          => ['_sameInstance', '\TimeManager\Controller\Task'],
-            'dbal'                    => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
+            'entityManager'           => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
             'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],
             'modelTask'               => ['_notSameInstance', '\TimeManager\Model\Task'],
             'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],

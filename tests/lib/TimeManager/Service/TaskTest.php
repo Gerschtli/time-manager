@@ -46,11 +46,11 @@ class TaskTest extends \LocalWebTestCase
             'times' => new ArrayCollection(),
         ];
 
-        $this->app->serviceTime = $this
+        $this->app->serviceTime   = $this
             ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->dbal        = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -92,11 +92,11 @@ class TaskTest extends \LocalWebTestCase
                 )
             );
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTask));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -143,16 +143,16 @@ class TaskTest extends \LocalWebTestCase
 
         $this->app->modelTask = new stdClass();
 
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTask));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -184,11 +184,11 @@ class TaskTest extends \LocalWebTestCase
             'times' => new ArrayCollection(),
         ];
 
-        $this->app->serviceTime    = $this
+        $this->app->serviceTime   = $this
             ->getMockBuilder('\TimeManager\Service\Time')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->dbal           = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -224,11 +224,11 @@ class TaskTest extends \LocalWebTestCase
                 )
             );
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($this->app->modelTask));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -261,12 +261,12 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(0))
             ->method('getReference')
             ->with(
@@ -274,11 +274,11 @@ class TaskTest extends \LocalWebTestCase
                 $this->equalTo($taskId)
             )
             ->will($this->returnValue('bla'));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(1))
             ->method('remove')
             ->with($this->equalTo('bla'));
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->at(2))
             ->method('flush');
 
@@ -289,12 +289,12 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->once())
             ->method('find')
             ->with(
@@ -308,16 +308,16 @@ class TaskTest extends \LocalWebTestCase
 
     public function testGetAll()
     {
-        $this->app->dbal = $this
+        $this->app->entityManager = $this
             ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $repository      = $this
+        $repository               = $this
             ->getMockBuilder('\Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->dbal
+        $this->app->entityManager
             ->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('\TimeManager\Model\Task'))

@@ -26,7 +26,7 @@ $app->container->singleton(
 );
 
 $app->container->singleton(
-    'dbal',
+    'entityManager',
     function () use ($app) {
         $config = Setup::createAnnotationMetadataConfiguration([PROJECT_ROOT . '/lib/Model'], true);
 

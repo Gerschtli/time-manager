@@ -59,6 +59,6 @@ class Task extends AppAware
 
     private function _getEntityManager()
     {
-        return $this->_app->dbal;
+        return $this->_app->entityManager;
     }
 }
