@@ -13,6 +13,7 @@ var gulp         = require('gulp'),
     gulpif       = require('gulp-if');
 
 var applicationEnv = process.env.APPLICATION_ENV || 'production',
+    offline        = process.env.OFFLINE || false,
     isProduction   = applicationEnv === 'production';
 
 
@@ -32,6 +33,7 @@ var config = {
     dest: 'dist/scripts',
     name: 'main.min.js',
     loadPath: 'node_modules/toastr/toastr.js',
+    offline: 'src/offline-scripts/*.js',
   },
   templates: {
     src: ['src/**/*.jade', '!src/**/_*.jade'],
@@ -59,7 +61,13 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-  return gulp.src([config.scripts.loadPath, config.scripts.src])
+  var src = [];
+  if (offline) {
+    src.push(config.scripts.offline);
+  }
+  src.push(config.scripts.loadPath, config.scripts.src);
+
+  return gulp.src(src)
     .pipe(concat(config.scripts.name))
     .pipe(gulpif(isProduction, uglify()))
     .pipe(gulp.dest(config.scripts.dest));
