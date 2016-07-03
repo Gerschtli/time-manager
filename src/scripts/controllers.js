@@ -5,10 +5,10 @@
         .module('timeManager')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['$http', 'toastr'];
+    MainController.$inject = ['$http', 'toastr', 'taskService'];
 
     /* @ngInject */
-    function MainController($http, toastr) {
+    function MainController($http, toastr, taskService) {
         var vm = this;
         vm.tasks = [];
         vm.createTask = createTask;
@@ -22,19 +22,9 @@
         ////////////////
 
         function activate() {
-            $http(
-                {
-                    method: 'GET',
-                    url: '/api/task'
-                }
-            ).then(
-                function success(response) {
-                    vm.tasks = response.data;
-                },
-                function error(response) {
-                    console.log('error');
-                }
-            );
+            taskService.getAll(function(data) {
+                vm.tasks = data;
+            });
         }
 
         function createTask(task) {
