@@ -30,9 +30,9 @@ class Task extends AppAware
     {
         $this->_app->serviceTask->deleteById($taskId);
 
-        $this->_processData(
+        $this->_processInfo(
             Presenter::STATUS_OK,
-            new stdclass()
+            Presenter::DESCRIPTION_SUCCESSFUL_DELETION
         );
     }
 

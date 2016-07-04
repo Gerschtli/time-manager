@@ -107,8 +107,8 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->presenterData = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
+        $this->app->presenterInfo = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -117,12 +117,12 @@ class TaskTest extends \LocalWebTestCase
             ->method('deleteById')
             ->with($this->equalTo($taskId));
 
-        $this->app->presenterData
+        $this->app->presenterInfo
             ->expects($this->once())
             ->method('process')
             ->with(
                 $this->equalTo(200),
-                $this->equalTo(new stdclass())
+                $this->equalTo('Deletion successful')
             );
 
         $this->_object->deleteAction($taskId);
