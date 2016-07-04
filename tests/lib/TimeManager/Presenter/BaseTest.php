@@ -26,16 +26,17 @@ class BaseTest extends \LocalWebTestCase
 
         $this->assertEquals(
             [
-                'STATUS_OK'                     => 200,
-                'STATUS_CREATED'                => 201,
-                'STATUS_BAD_REQUEST'            => 400,
-                'STATUS_NOT_FOUND'              => 404,
-                'STATUS_UNSUPPORTED_MEDIA_TYPE' => 415,
-                'STATUS_UNPROCESSABLE_ENTITY'   => 422,
-                'DESCRIPTION_INVALID_STRUCTURE' => 'JSON is in invalid data structure',
-                'DESCRIPTION_NONEXISTING_KEY'   => 'No Data with provided Key found',
-                'DESCRIPTION_ONLY_JSON'         => 'Only JSON is allowed',
-                'DESCRIPTION_PARSE_ERROR'       => 'JSON Parse Error',
+                'STATUS_OK'                       => 200,
+                'STATUS_CREATED'                  => 201,
+                'STATUS_BAD_REQUEST'              => 400,
+                'STATUS_NOT_FOUND'                => 404,
+                'STATUS_UNSUPPORTED_MEDIA_TYPE'   => 415,
+                'STATUS_UNPROCESSABLE_ENTITY'     => 422,
+                'DESCRIPTION_SUCCESSFUL_DELETION' => 'Deletion successful',
+                'DESCRIPTION_INVALID_STRUCTURE'   => 'JSON is in invalid data structure',
+                'DESCRIPTION_NONEXISTING_KEY'     => 'No Data with provided Key found',
+                'DESCRIPTION_ONLY_JSON'           => 'Only JSON is allowed',
+                'DESCRIPTION_PARSE_ERROR'         => 'JSON Parse Error',
             ],
             $object->getConstants()
         );

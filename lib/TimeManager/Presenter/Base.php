@@ -13,10 +13,11 @@ abstract class Base extends AppAware
     const STATUS_UNSUPPORTED_MEDIA_TYPE = 415;
     const STATUS_UNPROCESSABLE_ENTITY   = 422;
 
-    const DESCRIPTION_INVALID_STRUCTURE = 'JSON is in invalid data structure';
-    const DESCRIPTION_NONEXISTING_KEY   = 'No Data with provided Key found';
-    const DESCRIPTION_ONLY_JSON         = 'Only JSON is allowed';
-    const DESCRIPTION_PARSE_ERROR       = 'JSON Parse Error';
+    const DESCRIPTION_SUCCESSFUL_DELETION = 'Deletion successful';
+    const DESCRIPTION_INVALID_STRUCTURE   = 'JSON is in invalid data structure';
+    const DESCRIPTION_NONEXISTING_KEY     = 'No Data with provided Key found';
+    const DESCRIPTION_ONLY_JSON           = 'Only JSON is allowed';
+    const DESCRIPTION_PARSE_ERROR         = 'JSON Parse Error';
 
     protected function _print($code, $body)
     {
