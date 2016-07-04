@@ -17,48 +17,35 @@
 
         ////////////////
 
-        function add(task, successCallback) {
-            $http(
+        function add(task) {
+            return $http(
                 {
                     method: 'POST',
                     url: '/api/task',
                     data: task,
                 }
-            ).then(
-                function success(response) {
-                    successWrapper(response, successCallback);
-                },
-                function error(response) {
-                    errorWrapper(response);
-                }
-            );
+            ).then(success).catch(error);
         }
 
-        function getAll(successCallback) {
-            $http(
+        function getAll() {
+            return $http(
                 {
                     method: 'GET',
                     url: '/api/task',
                 }
-            ).then(
-                function success(response) {
-                    successWrapper(response, successCallback);
-                },
-                function error(response) {
-                    errorWrapper(response);
-                }
-            );
+            ).then(success).catch(error);
         }
 
-        function successWrapper(response, successCallback) {
-            successCallback(response.data);
+        function success(response) {
+            return response.data;
         }
 
-        function errorWrapper(response) {
+        function error(response) {
             toastr.error(
                 response.data.code + ' - ' + response.data.message,
                 response.data.description
             );
+            return $q.reject(response);
         }
     }
 })();

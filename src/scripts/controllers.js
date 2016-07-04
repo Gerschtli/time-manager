@@ -23,16 +23,22 @@
         ////////////////
 
         function activate() {
-            taskService.getAll(function(data) {
-                vm.tasks = data;
-            });
+            getAllTasks();
+        }
+
+        function getAllTasks() {
+            taskService.getAll()
+                .then(function(data) {
+                    vm.tasks = data;
+                });
         }
 
         function createTask() {
-            taskService.add(vm.newTask, function(data) {
-                vm.tasks.push(data);
-                vm.newTask = {};
-            });
+            taskService.add(vm.newTask)
+                .then(function(data) {
+                    vm.tasks.push(data);
+                    vm.newTask = {};
+                });
         }
 
         function updateTask(task) {
