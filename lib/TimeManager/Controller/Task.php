@@ -19,7 +19,7 @@ class Task extends AppAware
                 $task
             );
         } else {
-            $this->_processError(
+            $this->_processInfo(
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
                 Presenter::DESCRIPTION_INVALID_STRUCTURE
             );
@@ -46,7 +46,7 @@ class Task extends AppAware
                 $task
             );
         } else {
-            $this->_processError(
+            $this->_processInfo(
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );
@@ -68,8 +68,8 @@ class Task extends AppAware
         $this->_app->presenterData->process($code, $data);
     }
 
-    private function _processError($code, $description)
+    private function _processInfo($code, $description)
     {
-        $this->_app->presenterError->process($code, $description);
+        $this->_app->presenterInfo->process($code, $description);
     }
 }

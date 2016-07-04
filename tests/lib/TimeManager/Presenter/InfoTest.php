@@ -4,19 +4,19 @@ namespace TimeManager\Presenter;
 
 use ReflectionClass;
 
-class ErrorTest extends \LocalWebTestCase
+class InfoTest extends \LocalWebTestCase
 {
     private $_object;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new Error($this->app);
+        $this->_object = new Info($this->app);
     }
 
     public function testInstance()
     {
-        $this->assertInstanceOf('\TimeManager\Presenter\Error', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Info', $this->_object);
         $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }

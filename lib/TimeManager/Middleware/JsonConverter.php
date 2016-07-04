@@ -3,7 +3,7 @@
 namespace TimeManager\Middleware;
 
 use Slim\Middleware;
-use TimeManager\Presenter\Error;
+use TimeManager\Presenter\Base as Presenter;
 
 class JsonConverter extends Middleware
 {
@@ -22,22 +22,22 @@ class JsonConverter extends Middleware
                     $env['slim.input'] = $result;
                     $this->next->call();
                 } else {
-                    $this->_processError(
-                        Error::STATUS_BAD_REQUEST,
-                        Error::DESCRIPTION_PARSE_ERROR
+                    $this->_processInfo(
+                        Presenter::STATUS_BAD_REQUEST,
+                        Presenter::DESCRIPTION_PARSE_ERROR
                     );
                 }
             } else {
-                $this->_processError(
-                    Error::STATUS_UNSUPPORTED_MEDIA_TYPE,
-                    Error::DESCRIPTION_ONLY_JSON
+                $this->_processInfo(
+                    Presenter::STATUS_UNSUPPORTED_MEDIA_TYPE,
+                    Presenter::DESCRIPTION_ONLY_JSON
                 );
             }
         }
     }
 
-    private function _processError($code, $description)
+    private function _processInfo($code, $description)
     {
-        $this->app->errorPresenter->process($code, $description);
+        $this->app->presenterInfo->process($code, $description);
     }
 }

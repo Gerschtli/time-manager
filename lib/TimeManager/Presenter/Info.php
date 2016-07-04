@@ -4,7 +4,7 @@ namespace TimeManager\Presenter;
 
 use Slim\Http\Response;
 
-class Error extends Base
+class Info extends Base
 {
     public function process($code, $description)
     {

@@ -7,7 +7,7 @@ use TimeManager\Middleware\JsonConverter;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
 use TimeManager\Presenter\Data as DataPresenter;
-use TimeManager\Presenter\Error as ErrorPresenter;
+use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
 use TimeManager\Service\Time as TimeService;
 
@@ -72,9 +72,9 @@ $app->container->singleton(
 );
 
 $app->container->singleton(
-    'presenterError',
+    'presenterInfo',
     function () use ($app) {
-        return new ErrorPresenter($app);
+        return new InfoPresenter($app);
     }
 );
 

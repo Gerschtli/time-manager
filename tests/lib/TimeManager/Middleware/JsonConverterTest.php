@@ -54,11 +54,11 @@ class JsonConverterTest extends \LocalWebTestCase
 
         $slim = new Slim();
         $slim->add(new JsonConverter());
-        $slim->errorPresenter = $this
-            ->getMockBuilder('\TimeManager\Presenter\Error')
+        $slim->presenterInfo = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
-        $slim->errorPresenter
+        $slim->presenterInfo
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -84,11 +84,11 @@ class JsonConverterTest extends \LocalWebTestCase
 
         $slim = new Slim();
         $slim->add(new JsonConverter());
-        $slim->errorPresenter = $this
-            ->getMockBuilder('\TimeManager\Presenter\Error')
+        $slim->presenterInfo = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
-        $slim->errorPresenter
+        $slim->presenterInfo
             ->expects($this->once())
             ->method('process')
             ->with(

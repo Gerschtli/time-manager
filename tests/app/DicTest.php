@@ -29,7 +29,7 @@ class DicTest extends \LocalWebTestCase
             'modelTask'               => ['_notSameInstance', '\TimeManager\Model\Task'],
             'modelTime'               => ['_notSameInstance', '\TimeManager\Model\Time'],
             'presenterData'           => ['_sameInstance', '\TimeManager\Presenter\Data'],
-            'presenterError'          => ['_sameInstance', '\TimeManager\Presenter\Error'],
+            'presenterInfo'           => ['_sameInstance', '\TimeManager\Presenter\Info'],
             'serviceTask'             => ['_sameInstance', '\TimeManager\Service\Task'],
             'serviceTime'             => ['_sameInstance', '\TimeManager\Service\Time'],
         ];
