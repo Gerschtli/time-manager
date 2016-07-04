@@ -8,9 +8,6 @@ use TimeManager\Model\Task;
 
 class Data extends Base
 {
-    const STATUS_OK      = 200;
-    const STATUS_CREATED = 201;
-
     public function process($code, $data)
     {
         if (is_array($data)) {

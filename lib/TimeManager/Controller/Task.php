@@ -4,8 +4,7 @@ namespace TimeManager\Controller;
 
 use stdclass;
 use TimeManager\AppAware;
-use TimeManager\Presenter\Data;
-use TimeManager\Presenter\Error;
+use TimeManager\Presenter\Base as Presenter;
 
 class Task extends AppAware
 {
@@ -16,13 +15,13 @@ class Task extends AppAware
 
         if (!is_null($task)) {
             $this->_processData(
-                Data::STATUS_CREATED,
+                Presenter::STATUS_CREATED,
                 $task
             );
         } else {
             $this->_processError(
-                Error::STATUS_UNPROCESSABLE_ENTITY,
-                Error::DESCRIPTION_INVALID_STRUCTURE
+                Presenter::STATUS_UNPROCESSABLE_ENTITY,
+                Presenter::DESCRIPTION_INVALID_STRUCTURE
             );
         }
     }
@@ -32,7 +31,7 @@ class Task extends AppAware
         $this->_app->serviceTask->deleteById($taskId);
 
         $this->_processData(
-            Data::STATUS_OK,
+            Presenter::STATUS_OK,
             new stdclass()
         );
     }
@@ -43,13 +42,13 @@ class Task extends AppAware
 
         if (!is_null($task)) {
             $this->_processData(
-                Data::STATUS_OK,
+                Presenter::STATUS_OK,
                 $task
             );
         } else {
             $this->_processError(
-                Error::STATUS_NOT_FOUND,
-                Error::DESCRIPTION_NONEXISTING_KEY
+                Presenter::STATUS_NOT_FOUND,
+                Presenter::DESCRIPTION_NONEXISTING_KEY
             );
         }
     }
@@ -59,7 +58,7 @@ class Task extends AppAware
         $tasks = $this->_app->serviceTask->getAll();
 
         $this->_processData(
-            Data::STATUS_OK,
+            Presenter::STATUS_OK,
             $tasks
         );
     }

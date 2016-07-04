@@ -21,26 +21,6 @@ class ErrorTest extends \LocalWebTestCase
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
-    public function testConstants()
-    {
-        $object = new ReflectionClass('\TimeManager\Presenter\Error');
-        $parent = new ReflectionClass('\TimeManager\Presenter\Base');
-
-        $this->assertEquals(
-            [
-                'STATUS_BAD_REQUEST'            => 400,
-                'STATUS_NOT_FOUND'              => 404,
-                'STATUS_UNSUPPORTED_MEDIA_TYPE' => 415,
-                'STATUS_UNPROCESSABLE_ENTITY'   => 422,
-                'DESCRIPTION_INVALID_STRUCTURE' => 'JSON is in invalid data structure',
-                'DESCRIPTION_NONEXISTING_KEY'   => 'No Data with provided Key found',
-                'DESCRIPTION_ONLY_JSON'         => 'Only JSON is allowed',
-                'DESCRIPTION_PARSE_ERROR'       => 'JSON Parse Error',
-            ],
-            $object->getConstants() + $parent->getConstants()
-        );
-    }
-
     /**
      * @dataProvider dataProviderForTestProcess
      */
