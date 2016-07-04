@@ -11,6 +11,7 @@
     function taskService($http, toastr) {
         var service = {
             add: add,
+            delete: deleteFunction,
             getAll: getAll,
         };
         return service;
@@ -23,6 +24,15 @@
                     method: 'POST',
                     url: '/api/task',
                     data: task,
+                }
+            ).then(success).catch(error);
+        }
+
+        function deleteFunction(task) {
+            return $http(
+                {
+                    method: 'DELETE',
+                    url: '/api/task/' + task.taskId,
                 }
             ).then(success).catch(error);
         }

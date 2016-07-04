@@ -30,6 +30,7 @@
             taskService.getAll()
                 .then(function(data) {
                     vm.tasks = data;
+                    toastr.success('Loaded all Tasks');
                 });
         }
 
@@ -38,6 +39,7 @@
                 .then(function(data) {
                     vm.tasks.push(data);
                     vm.newTask = {};
+                    toastr.success('Created Task');
                 });
         }
 
@@ -47,8 +49,14 @@
         }
 
         function deleteTask(task) {
-            // TODO
-            toastr.info('Delete Task');
+            taskService.delete(task)
+                .then(function(data) {
+                    var index = vm.tasks.indexOf(task);
+                    if (index > -1) {
+                        vm.tasks.splice(index, 1);
+                    }
+                    toastr.success('Deleted Task');
+                });
         }
 
         function addTime(task, time) {
