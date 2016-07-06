@@ -2,10 +2,9 @@
 
 namespace TimeManager\Controller;
 
-use TimeManager\AppAware;
 use TimeManager\Presenter\Base as Presenter;
 
-class Task extends AppAware
+class Task extends Controller
 {
     public function addAction()
     {
@@ -65,10 +64,5 @@ class Task extends AppAware
     private function _processData($code, $data)
     {
         $this->_app->presenterData->process($code, $data);
-    }
-
-    private function _processInfo($code, $description)
-    {
-        $this->_app->presenterInfo->process($code, $description);
     }
 }

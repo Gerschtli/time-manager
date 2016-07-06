@@ -3,7 +3,6 @@
 namespace TimeManager\Controller;
 
 use Slim\Environment;
-use stdclass;
 
 class TaskTest extends \LocalWebTestCase
 {
@@ -18,6 +17,7 @@ class TaskTest extends \LocalWebTestCase
     public function testInstance()
     {
         $this->assertInstanceOf('\TimeManager\Controller\Task', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Controller\Controller', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
