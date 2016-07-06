@@ -64,6 +64,14 @@ class InfoTest extends \LocalWebTestCase
                     "description": "xxx"
                 }',
             ],
+            [
+                500,
+                '',
+                '{
+                    "code": 500,
+                    "message": "Internal Server Error"
+                }',
+            ],
         ];
     }
 }
