@@ -2,7 +2,6 @@
 
 namespace TimeManager\Controller;
 
-use stdclass;
 use TimeManager\AppAware;
 use TimeManager\Presenter\Base as Presenter;
 
