@@ -23,6 +23,7 @@ class DicTest extends \LocalWebTestCase
     {
         $dependencies = [
             'config'                  => ['_sameInstance', '\stdClass'],
+            'controllerError'         => ['_sameInstance', '\TimeManager\Controller\Error'],
             'controllerTask'          => ['_sameInstance', '\TimeManager\Controller\Task'],
             'entityManager'           => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
             'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],

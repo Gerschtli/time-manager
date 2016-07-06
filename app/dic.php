@@ -2,6 +2,7 @@
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use TimeManager\Controller\Error as ErrorController;
 use TimeManager\Controller\Task as TaskController;
 use TimeManager\Middleware\JsonConverter;
 use TimeManager\Model\Task as TaskModel;
@@ -15,6 +16,13 @@ $app->container->singleton(
     'config',
     function () {
         return require(PROJECT_ROOT . '/app/config.php');
+    }
+);
+
+$app->container->singleton(
+    'controllerError',
+    function () use ($app) {
+        return new ErrorController($app);
     }
 );
 
