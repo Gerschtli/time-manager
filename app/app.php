@@ -6,40 +6,28 @@ $app->add($app->middlewareJsonConverter);
 
 $app->post(
     '/task',
-    function () use ($app) {
-        $app->controllerTask->addAction();
-    }
+    [$app->controllerTask, 'addAction']
 );
 
 $app->get(
     '/task',
-    function () use ($app) {
-        $app->controllerTask->getAllAction();
-    }
+    [$app->controllerTask, 'getAllAction']
 );
 
 $app->get(
-    '/task/:taskid',
-    function ($taskId) use ($app) {
-        $app->controllerTask->getAction($taskId);
-    }
+    '/task/:taskId',
+    [$app->controllerTask, 'getAction']
 );
 
 $app->delete(
-    '/task/:taskid',
-    function ($taskId) use ($app) {
-        $app->controllerTask->deleteAction($taskId);
-    }
+    '/task/:taskId',
+    [$app->controllerTask, 'deleteAction']
 );
 
 $app->notFound(
-    function () use ($app) {
-        echo $app->controllerError->notFoundAction();
-    }
+    [$app->controllerError, 'notFoundAction']
 );
 
 $app->error(
-    function () use ($app) {
-        echo $app->controllerError->errorAction();
-    }
+    [$app->controllerError, 'errorAction']
 );
