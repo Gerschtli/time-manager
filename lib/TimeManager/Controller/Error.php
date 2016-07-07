@@ -11,6 +11,8 @@ class Error extends Controller
         $this->_processInfo(
             Presenter::STATUS_INTERNAL_SERVER_ERROR
         );
+
+        return $this->_getBody();
     }
 
     public function notFoundAction()
@@ -19,5 +21,12 @@ class Error extends Controller
             Presenter::STATUS_NOT_FOUND,
             Presenter::DESCRIPTION_NO_ROUTE_MATCHED
         );
+
+        return $this->_getBody();
+    }
+
+    private function _getBody()
+    {
+        return $this->_app->response->getBody();
     }
 }

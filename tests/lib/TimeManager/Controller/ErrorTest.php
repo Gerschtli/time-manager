@@ -25,6 +25,10 @@ class ErrorTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->app->response = $this
+            ->getMockBuilder('\Slim\Http\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->app->presenterInfo
             ->expects($this->once())
@@ -33,14 +37,22 @@ class ErrorTest extends \LocalWebTestCase
                 $this->equalTo(500),
                 $this->equalTo('')
             );
+        $this->app->response
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue('return'));
 
-        $this->_object->errorAction();
+        $this->assertEquals('return', $this->_object->errorAction());
     }
 
     public function testNotFoundAction()
     {
         $this->app->presenterInfo = $this
             ->getMockBuilder('\TimeManager\Presenter\Info')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->response = $this
+            ->getMockBuilder('\Slim\Http\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -51,7 +63,11 @@ class ErrorTest extends \LocalWebTestCase
                 $this->equalTo(404),
                 $this->equalTo('No existing Route matched')
             );
+        $this->app->response
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue('return'));
 
-        $this->_object->notFoundAction();
+        $this->assertEquals('return', $this->_object->notFoundAction());
     }
 }
