@@ -25,21 +25,15 @@ class ErrorTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->response = $this
-            ->getMockBuilder('\Slim\Http\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $this->app->presenterInfo
             ->expects($this->once())
             ->method('process')
             ->with(
                 $this->equalTo(500),
-                $this->equalTo('')
-            );
-        $this->app->response
-            ->expects($this->once())
-            ->method('getBody')
+                $this->equalTo(null),
+                $this->equalTo(true)
+            )
             ->will($this->returnValue('return'));
 
         ob_start();
@@ -53,21 +47,15 @@ class ErrorTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Presenter\Info')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->response = $this
-            ->getMockBuilder('\Slim\Http\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $this->app->presenterInfo
             ->expects($this->once())
             ->method('process')
             ->with(
                 $this->equalTo(404),
-                $this->equalTo('No existing Route matched')
-            );
-        $this->app->response
-            ->expects($this->once())
-            ->method('getBody')
+                $this->equalTo('No existing Route matched'),
+                $this->equalTo(true)
+            )
             ->will($this->returnValue('return'));
 
         ob_start();

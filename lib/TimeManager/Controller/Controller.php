@@ -6,8 +6,8 @@ use TimeManager\AppAware;
 
 abstract class Controller extends AppAware
 {
-    protected function _processInfo($code, $description = '')
+    protected function _processInfo($code, $description = null, $returnPlain = false)
     {
-        $this->_app->presenterInfo->process($code, $description);
+        return $this->_app->presenterInfo->process($code, $description, $returnPlain);
     }
 }
