@@ -42,7 +42,9 @@ class ErrorTest extends \LocalWebTestCase
             ->method('getBody')
             ->will($this->returnValue('return'));
 
-        $this->assertEquals('return', $this->_object->errorAction());
+        ob_start();
+        $this->_object->errorAction();
+        $this->assertEquals('return', ob_get_clean());
     }
 
     public function testNotFoundAction()
@@ -68,6 +70,8 @@ class ErrorTest extends \LocalWebTestCase
             ->method('getBody')
             ->will($this->returnValue('return'));
 
-        $this->assertEquals('return', $this->_object->notFoundAction());
+        ob_start();
+        $this->_object->notFoundAction();
+        $this->assertEquals('return', ob_get_clean());
     }
 }

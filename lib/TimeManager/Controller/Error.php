@@ -12,7 +12,7 @@ class Error extends Controller
             Presenter::STATUS_INTERNAL_SERVER_ERROR
         );
 
-        return $this->_getBody();
+        echo $this->_getBody();
     }
 
     public function notFoundAction()
@@ -22,7 +22,7 @@ class Error extends Controller
             Presenter::DESCRIPTION_NO_ROUTE_MATCHED
         );
 
-        return $this->_getBody();
+        echo $this->_getBody();
     }
 
     private function _getBody()
