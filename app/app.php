@@ -31,3 +31,15 @@ $app->delete(
         $app->controllerTask->deleteAction($taskId);
     }
 );
+
+$app->notFound(
+    function () use ($app) {
+        echo $app->controllerError->notFoundAction();
+    }
+);
+
+$app->error(
+    function () use ($app) {
+        echo $app->controllerError->errorAction();
+    }
+);
