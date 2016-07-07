@@ -5,10 +5,10 @@
         .module('timeManager')
         .factory('taskService', taskService);
 
-    taskService.$inject = ['$http', 'toastr'];
+    taskService.$inject = ['$http', '$q', 'toastr'];
 
     /* @ngInject */
-    function taskService($http, toastr) {
+    function taskService($http, $q, toastr) {
         var service = {
             add: add,
             delete: deleteFunction,
