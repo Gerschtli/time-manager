@@ -13,42 +13,48 @@ var gulp         = require('gulp'),
 
     gulpif       = require('gulp-if');
 
-var offline        = !!argv.offline,
-    isProduction   = !!argv.production;
-
+var offline      = argv.offline,
+    isProduction = argv.production;
 
 var config = {
-  styles: {
-    src: 'src/styles/main.sass',
-    dest: 'dist/styles',
-    watch: 'src/styles/**/*.{sass,scss}',
-    loadPath: [
+  styles : {
+    src      : 'src/styles/main.sass',
+    dest     : 'dist/styles',
+    watch    : 'src/styles/**/*.{sass,scss}',
+    loadPath : [
       'node_modules/foundation-sites/scss',
       'node_modules/font-awesome/scss',
       'node_modules/toastr',
     ],
   },
-  scripts: {
-    src: 'src/scripts/**/*.js',
-    dest: 'dist/scripts',
-    name: 'main.min.js',
-    loadPath: 'node_modules/toastr/toastr.js',
-    offline: 'src/offline-scripts/*.js',
+  scripts : {
+    src      : 'src/scripts/**/*.js',
+    dest     : 'dist/scripts',
+    name     : 'main.min.js',
+    loadPath : 'node_modules/toastr/toastr.js',
+    offline  : 'src/offline-scripts/*.js',
   },
-  templates: {
-    src: ['src/**/*.jade', '!src/**/_*.jade'],
-    dest: 'dist',
-    watch: 'src/**/*.jade',
+  templates : {
+    src   : [
+      'src/**/*.jade',
+      '!src/**/_*.jade',
+    ],
+    dest  : 'dist',
+    watch : 'src/**/*.jade',
   },
-  static: {
-    src: ['src/**/*', 'src/**/.*', '!src/**/*.{sass,scss,js,jade}'],
-    dest: 'dist',
+  static : {
+    src  : [
+      'src/**/*',
+      'src/**/.*',
+      '!src/**/*.{sass,scss,js,jade}',
+    ],
+    dest : 'dist',
   },
-  fonts: {
-    src: 'node_modules/font-awesome/fonts/*',
-    dest: 'dist/fonts',
+  fonts : {
+    src  : 'node_modules/font-awesome/fonts/*',
+    dest : 'dist/fonts',
   },
-  dest: 'dist',
+  dest : 'dist',
 };
 
 gulp.task('styles', function() {
