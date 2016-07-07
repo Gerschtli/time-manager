@@ -27,3 +27,30 @@
     ]
 }
 ```
+
+## Gulp
+
+Build
+```bash
+$ gulp build
+```
+
+Watch
+```bash
+$ gulp watch
+```
+
+Build + Watch
+```bash
+$ gulp
+```
+
+Load offline versions of cdn libraries
+```bash
+$ gulp [build|watch] --offline
+```
+
+Production (minified CSS/JS/HTML)
+```bash
+$ gulp [build|watch] --production
+```
