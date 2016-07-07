@@ -12,12 +12,12 @@ class Task extends Controller
         $task = $this->_app->serviceTask->createModel($data);
 
         if (!is_null($task)) {
-            $this->_processData(
+            $this->_getDataPresenter()->process(
                 Presenter::STATUS_CREATED,
                 $task
             );
         } else {
-            $this->_processInfo(
+            $this->_getInfoPresenter()->process(
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
                 Presenter::DESCRIPTION_INVALID_STRUCTURE
             );
@@ -28,7 +28,7 @@ class Task extends Controller
     {
         $this->_app->serviceTask->deleteById($taskId);
 
-        $this->_processInfo(
+        $this->_getInfoPresenter()->process(
             Presenter::STATUS_OK,
             Presenter::DESCRIPTION_SUCCESSFUL_DELETION
         );
@@ -39,12 +39,12 @@ class Task extends Controller
         $task = $this->_app->serviceTask->getById((int) $taskId);
 
         if (!is_null($task)) {
-            $this->_processData(
+            $this->_getDataPresenter()->process(
                 Presenter::STATUS_OK,
                 $task
             );
         } else {
-            $this->_processInfo(
+            $this->_getInfoPresenter()->process(
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );
@@ -55,14 +55,14 @@ class Task extends Controller
     {
         $tasks = $this->_app->serviceTask->getAll();
 
-        $this->_processData(
+        $this->_getDataPresenter()->process(
             Presenter::STATUS_OK,
             $tasks
         );
     }
 
-    private function _processData($code, $data)
+    private function _getDataPresenter()
     {
-        $this->_app->presenterData->process($code, $data);
+        return $this->_app->presenterData;
     }
 }

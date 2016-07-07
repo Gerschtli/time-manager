@@ -8,7 +8,7 @@ class Error extends Controller
 {
     public function errorAction()
     {
-        echo $this->_processInfo(
+        echo $this->_getInfoPresenter()->process(
             Presenter::STATUS_INTERNAL_SERVER_ERROR,
             null,
             true
@@ -17,7 +17,7 @@ class Error extends Controller
 
     public function notFoundAction()
     {
-        echo $this->_processInfo(
+        echo $this->_getInfoPresenter()->process(
             Presenter::STATUS_NOT_FOUND,
             Presenter::DESCRIPTION_NO_ROUTE_MATCHED,
             true
