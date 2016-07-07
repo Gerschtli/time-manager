@@ -2,8 +2,6 @@
 
 namespace TimeManager\Presenter;
 
-use ReflectionClass;
-
 class InfoTest extends \LocalWebTestCase
 {
     private $_object;

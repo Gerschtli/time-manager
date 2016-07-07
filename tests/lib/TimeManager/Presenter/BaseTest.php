@@ -46,4 +46,5 @@ class BaseTest extends \LocalWebTestCase
 }
 
 class BaseWrapper extends Base
-{}
+{
+}
