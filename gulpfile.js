@@ -9,12 +9,12 @@ var gulp         = require('gulp'),
     uglify       = require('gulp-uglify'),
     del          = require('del'),
     rmEmptyDirs  = require('remove-empty-directories'),
+    argv         = require('yargs').argv,
 
     gulpif       = require('gulp-if');
 
-var applicationEnv = process.env.APPLICATION_ENV || 'production',
-    offline        = process.env.OFFLINE || false,
-    isProduction   = applicationEnv === 'production';
+var offline        = !!argv.offline,
+    isProduction   = !!argv.production;
 
 
 var config = {
