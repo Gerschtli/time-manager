@@ -4,8 +4,7 @@
 
 | URL           | Method | Input         | Description    |
 |---------------|--------|---------------|----------------|
-| /api/mail     | POST   | -             | Send mail      |
-| /api/mail     | GET    | -             | Get mail text  |
+| /api/task     | GET    | -             | Get all tasks  |
 | /api/task     | POST   | Task Object   | Add a new task |
 | /api/task/:id | GET    | -             | Get a task     |
 | /api/task/:id | PUT    | Task Object   | Update task    |
