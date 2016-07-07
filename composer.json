@@ -7,7 +7,7 @@
     },
     "require-dev": {
         "codeclimate/php-test-reporter": "dev-master",
-        "fabpot/php-cs-fixer"          : "@stable",
+        "friendsofphp/php-cs-fixer"    : "@stable",
         "phpmd/phpmd"                  : "@stable",
         "phpunit/phpunit"              : "@stable",
         "there4/slim-test-helpers"     : "@stable",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": "lib/"
+            "TimeManager\\": "lib/TimeManager/"
         }
     },
     "config": {
