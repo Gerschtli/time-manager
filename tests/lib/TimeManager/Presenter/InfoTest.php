@@ -64,7 +64,58 @@ class InfoTest extends \LocalWebTestCase
             ],
             [
                 500,
-                '',
+                null,
+                '{
+                    "code": 500,
+                    "message": "Internal Server Error"
+                }',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderForTestProcessWithReturn
+     */
+    public function testProcessWithReturn($code, $description, $body)
+    {
+        $return = $this->_object->process($code, $description, true);
+
+        $this->assertJsonStringEqualsJsonString($body, $return);
+    }
+
+    public function dataProviderForTestProcessWithReturn()
+    {
+        return [
+            [
+                415,
+                'bla blub',
+                '{
+                    "code": 415,
+                    "message": "Unsupported Media Type",
+                    "description": "bla blub"
+                }',
+            ],
+            [
+                422,
+                'xxx',
+                '{
+                    "code": 422,
+                    "message": "Unprocessable Entity",
+                    "description": "xxx"
+                }',
+            ],
+            [
+                500,
+                'xxx',
+                '{
+                    "code": 500,
+                    "message": "Internal Server Error",
+                    "description": "xxx"
+                }',
+            ],
+            [
+                500,
+                null,
                 '{
                     "code": 500,
                     "message": "Internal Server Error"

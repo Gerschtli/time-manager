@@ -21,11 +21,16 @@ abstract class Base extends AppAware
     const DESCRIPTION_PARSE_ERROR         = 'JSON Parse Error';
     const DESCRIPTION_NO_ROUTE_MATCHED    = 'No existing Route matched';
 
+    protected function _encodeBody($body)
+    {
+        return json_encode($body);
+    }
+
     protected function _print($code, $body)
     {
         $this->_app->status($code);
 
         $this->_app->contentType('application/json');
-        $this->_app->response->setBody(json_encode($body));
+        $this->_app->response->setBody($this->_encodeBody($body));
     }
 }

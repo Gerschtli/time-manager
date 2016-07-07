@@ -6,7 +6,7 @@ use Slim\Http\Response;
 
 class Info extends Base
 {
-    public function process($code, $description = '')
+    public function process($code, $description, $returnPlain = false)
     {
         $body = (object)[
             'code'    => $code,
@@ -14,6 +14,9 @@ class Info extends Base
         ];
         if (!empty($description)) {
             $body->description = $description;
+        }
+        if ($returnPlain) {
+            return $this->_encodeBody($body);
         }
         $this->_print($code, $body);
     }
