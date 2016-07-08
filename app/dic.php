@@ -20,7 +20,7 @@ $app->container->singleton(
 $app->container->singleton(
     'controllerError',
     function () use ($app) {
-        return new ErrorController($app);
+        return new ErrorController($app->presenterInfo);
     }
 );
 

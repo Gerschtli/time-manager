@@ -2,31 +2,25 @@
 
 namespace TimeManager\Controller;
 
-class ErrorTest extends \LocalWebTestCase
+class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
+    private $_infoPresenter;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new Error($this->app);
-    }
 
-    public function testInstance()
-    {
-        $this->assertInstanceOf('\TimeManager\Controller\Error', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Controller\Controller', $this->_object);
-        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+        $this->_infoPresenter = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->_object = new Error($this->_infoPresenter);
     }
 
     public function testErrorAction()
     {
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -43,12 +37,7 @@ class ErrorTest extends \LocalWebTestCase
 
     public function testNotFoundAction()
     {
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(

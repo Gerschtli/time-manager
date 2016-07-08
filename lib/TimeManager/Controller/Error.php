@@ -3,12 +3,20 @@
 namespace TimeManager\Controller;
 
 use TimeManager\Presenter\Base as Presenter;
+use TimeManager\Presenter\Info;
 
-class Error extends Controller
+class Error
 {
+    private $_infoPresenter;
+
+    public function __construct(Info $infoPresenter)
+    {
+        $this->_infoPresenter = $infoPresenter;
+    }
+
     public function errorAction()
     {
-        echo $this->_getInfoPresenter()->process(
+        echo $this->_infoPresenter->process(
             Presenter::STATUS_INTERNAL_SERVER_ERROR,
             null,
             true
@@ -17,7 +25,7 @@ class Error extends Controller
 
     public function notFoundAction()
     {
-        echo $this->_getInfoPresenter()->process(
+        echo $this->_infoPresenter->process(
             Presenter::STATUS_NOT_FOUND,
             Presenter::DESCRIPTION_NO_ROUTE_MATCHED,
             true
