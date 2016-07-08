@@ -8,6 +8,7 @@ abstract class Base extends AppAware
 {
     const STATUS_OK                     = 200;
     const STATUS_CREATED                = 201;
+    const STATUS_ACCEPTED               = 202;
     const STATUS_BAD_REQUEST            = 400;
     const STATUS_NOT_FOUND              = 404;
     const STATUS_UNSUPPORTED_MEDIA_TYPE = 415;

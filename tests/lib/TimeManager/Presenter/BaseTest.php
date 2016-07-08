@@ -28,6 +28,7 @@ class BaseTest extends \LocalWebTestCase
             [
                 'STATUS_OK'                       => 200,
                 'STATUS_CREATED'                  => 201,
+                'STATUS_ACCEPTED'                 => 202,
                 'STATUS_BAD_REQUEST'              => 400,
                 'STATUS_NOT_FOUND'                => 404,
                 'STATUS_UNSUPPORTED_MEDIA_TYPE'   => 415,
