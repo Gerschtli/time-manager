@@ -2,24 +2,40 @@
 
 namespace TimeManager\Controller;
 
-use Slim\Environment;
 use TimeManager\Model\Task as TaskModel;
 
-class TaskTest extends \LocalWebTestCase
+class TaskTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
+    private $_dataPresenter;
+    private $_infoPresenter;
+    private $_request;
+    private $_taskService;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new Task($this->app);
-    }
 
-    public function testInstance()
-    {
-        $this->assertInstanceOf('\TimeManager\Controller\Task', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Controller\Controller', $this->_object);
-        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+        $this->_dataPresenter = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->_infoPresenter = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->_request = $this
+            ->getMockBuilder('\Slim\Http\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->_taskService = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_object = new Task(
+            $this->_dataPresenter, $this->_infoPresenter, $this->_request, $this->_taskService
+        );
     }
 
     public function testAddAction()
@@ -28,35 +44,25 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        Environment::mock(
-            [
-                'slim.input' => $requestData,
-            ]
-        );
-
         $modelTask = new TaskModel();
         $modelTask->description = 'bla';
 
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterData = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->_request
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue($requestData));
 
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->at(0))
             ->method('convertToEntity')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->at(1))
             ->method('persistEntity')
             ->with($this->equalTo($modelTask));
 
-        $this->app->presenterData
+        $this->_dataPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -73,31 +79,21 @@ class TaskTest extends \LocalWebTestCase
             'test' => 'bla',
         ];
 
-        Environment::mock(
-            [
-                'slim.input' => $requestData,
-            ]
-        );
+        $this->_request
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue($requestData));
 
-        $this->app->serviceTask    = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('convertToEntity')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->never())
             ->method('persistEntity');
 
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -112,21 +108,12 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('deleteById')
             ->with($this->equalTo($taskId));
 
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -141,26 +128,15 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterData = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $modelTask = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $modelTask = new TaskModel();
 
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('getById')
             ->with($this->equalTo($taskId))
             ->will($this->returnValue($modelTask));
 
-        $this->app->presenterData
+        $this->_dataPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -175,22 +151,13 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->serviceTask    = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('getById')
             ->with($this->equalTo($taskId))
             ->will($this->returnValue(null));
 
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -203,29 +170,18 @@ class TaskTest extends \LocalWebTestCase
 
     public function testGetAllAction()
     {
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $modelTaskOne             = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $modelTaskTwo             = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterData = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $modelTaskOne = new TaskModel();
+        $modelTaskOne->description = 'dsad';
 
-        $this->app->serviceTask
+        $modelTaskTwo = new TaskModel();
+        $modelTaskTwo->description = 'ssssss';
+
+        $this->_taskService
             ->expects($this->once())
             ->method('getAll')
             ->will($this->returnValue([$modelTaskOne, $modelTaskTwo]));
 
-        $this->app->presenterData
+        $this->_dataPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -243,30 +199,20 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        Environment::mock(
-            [
-                'slim.input' => $requestData,
-            ]
-        );
-
         $modelTask = (object)['taskId' => $taskId];
 
-        $this->app->serviceTask   = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterData = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->_request
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue($requestData));
 
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('update')
             ->with($this->equalTo($taskId), $this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
 
-        $this->app->presenterData
+        $this->_dataPresenter
             ->expects($this->once())
             ->method('process')
             ->with(
@@ -284,28 +230,18 @@ class TaskTest extends \LocalWebTestCase
             'test' => 'bla',
         ];
 
-        Environment::mock(
-            [
-                'slim.input' => $requestData,
-            ]
-        );
+        $this->_request
+            ->expects($this->once())
+            ->method('getBody')
+            ->will($this->returnValue($requestData));
 
-        $this->app->serviceTask    = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->presenterInfo = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTask
+        $this->_taskService
             ->expects($this->once())
             ->method('update')
             ->with($this->equalTo($taskId), $this->equalTo($requestData))
             ->will($this->returnValue(null));
 
-        $this->app->presenterInfo
+        $this->_infoPresenter
             ->expects($this->once())
             ->method('process')
             ->with(

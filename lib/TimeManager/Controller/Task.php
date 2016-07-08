@@ -2,23 +2,42 @@
 
 namespace TimeManager\Controller;
 
+use Slim\Http\Request;
 use TimeManager\Presenter\Base as Presenter;
+use TimeManager\Presenter\Data as DataPresenter;
+use TimeManager\Presenter\Info as InfoPresenter;
+use TimeManager\Service\Task as TaskService;
 
-class Task extends Controller
+class Task
 {
+    private $_dataPresenter;
+    private $_infoPresenter;
+    private $_request;
+    private $_taskService;
+
+    public function __construct(
+        DataPresenter $data, InfoPresenter $info, Request $request, TaskService $task
+    )
+    {
+        $this->_dataPresenter = $data;
+        $this->_infoPresenter = $info;
+        $this->_request       = $request;
+        $this->_taskService   = $task;
+    }
+
     public function addAction()
     {
-        $data = $this->_app->request->getBody();
-        $task = $this->_app->serviceTask->convertToEntity($data);
+        $data = $this->_request->getBody();
+        $task = $this->_taskService->convertToEntity($data);
 
         if (!is_null($task)) {
-            $this->_app->serviceTask->persistEntity($task);
-            $this->_getDataPresenter()->process(
+            $this->_taskService->persistEntity($task);
+            $this->_dataPresenter->process(
                 Presenter::STATUS_CREATED,
                 $task
             );
         } else {
-            $this->_getInfoPresenter()->process(
+            $this->_infoPresenter->process(
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
                 Presenter::DESCRIPTION_INVALID_STRUCTURE
             );
@@ -27,9 +46,9 @@ class Task extends Controller
 
     public function deleteAction($taskId)
     {
-        $this->_app->serviceTask->deleteById($taskId);
+        $this->_taskService->deleteById($taskId);
 
-        $this->_getInfoPresenter()->process(
+        $this->_infoPresenter->process(
             Presenter::STATUS_OK,
             Presenter::DESCRIPTION_SUCCESSFUL_DELETION
         );
@@ -37,15 +56,15 @@ class Task extends Controller
 
     public function getAction($taskId)
     {
-        $task = $this->_app->serviceTask->getById((int) $taskId);
+        $task = $this->_taskService->getById((int) $taskId);
 
         if (!is_null($task)) {
-            $this->_getDataPresenter()->process(
+            $this->_dataPresenter->process(
                 Presenter::STATUS_OK,
                 $task
             );
         } else {
-            $this->_getInfoPresenter()->process(
+            $this->_infoPresenter->process(
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );
@@ -54,9 +73,9 @@ class Task extends Controller
 
     public function getAllAction()
     {
-        $tasks = $this->_app->serviceTask->getAll();
+        $tasks = $this->_taskService->getAll();
 
-        $this->_getDataPresenter()->process(
+        $this->_dataPresenter->process(
             Presenter::STATUS_OK,
             $tasks
         );
@@ -64,24 +83,19 @@ class Task extends Controller
 
     public function updateAction($taskId)
     {
-        $data = $this->_app->request->getBody();
-        $task = $this->_app->serviceTask->update($taskId, $data);
+        $data = $this->_request->getBody();
+        $task = $this->_taskService->update($taskId, $data);
 
         if (!is_null($task)) {
-            $this->_getDataPresenter()->process(
+            $this->_dataPresenter->process(
                 Presenter::STATUS_ACCEPTED,
                 $task
             );
         } else {
-            $this->_getInfoPresenter()->process(
+            $this->_infoPresenter->process(
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );
         }
-    }
-
-    private function _getDataPresenter()
-    {
-        return $this->_app->presenterData;
     }
 }

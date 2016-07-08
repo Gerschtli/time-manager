@@ -27,7 +27,9 @@ $app->container->singleton(
 $app->container->singleton(
     'controllerTask',
     function () use ($app) {
-        return new TaskController($app);
+        return new TaskController(
+            $app->presenterData, $app->presenterInfo, $app->request, $app->serviceTask
+        );
     }
 );
 
