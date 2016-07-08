@@ -226,4 +226,84 @@ class TaskTest extends \LocalWebTestCase
 
         $this->_object->getAllAction();
     }
+
+    public function testUpdateAction()
+    {
+        $taskId = time();
+        $requestData = (object)[
+            'description' => 'bla',
+        ];
+
+        Environment::mock(
+            [
+                'slim.input' => $requestData,
+            ]
+        );
+
+        $modelTask = (object)['taskId' => $taskId];
+
+        $this->app->serviceTask   = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->presenterData = $this
+            ->getMockBuilder('\TimeManager\Presenter\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('update')
+            ->with($this->equalTo($taskId), $this->equalTo($requestData))
+            ->will($this->returnValue($modelTask));
+
+        $this->app->presenterData
+            ->expects($this->once())
+            ->method('process')
+            ->with(
+                $this->equalTo(202),
+                $this->equalTo($modelTask)
+            );
+
+        $this->_object->updateAction($taskId);
+    }
+
+    public function testUpdateActionWithInvalidData()
+    {
+        $taskId = time();
+        $requestData = (object)[
+            'test' => 'bla',
+        ];
+
+        Environment::mock(
+            [
+                'slim.input' => $requestData,
+            ]
+        );
+
+        $this->app->serviceTask    = $this
+            ->getMockBuilder('\TimeManager\Service\Task')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->app->presenterInfo = $this
+            ->getMockBuilder('\TimeManager\Presenter\Info')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTask
+            ->expects($this->once())
+            ->method('update')
+            ->with($this->equalTo($taskId), $this->equalTo($requestData))
+            ->will($this->returnValue(null));
+
+        $this->app->presenterInfo
+            ->expects($this->once())
+            ->method('process')
+            ->with(
+                $this->equalTo(404),
+                $this->equalTo('No Data with provided Key found')
+            );
+
+        $this->_object->updateAction($taskId);
+    }
 }

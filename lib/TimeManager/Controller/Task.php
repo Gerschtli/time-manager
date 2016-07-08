@@ -61,6 +61,24 @@ class Task extends Controller
         );
     }
 
+    public function updateAction($taskId)
+    {
+        $data = $this->_app->request->getBody();
+        $task = $this->_app->serviceTask->update($taskId, $data);
+
+        if (!is_null($task)) {
+            $this->_getDataPresenter()->process(
+                Presenter::STATUS_ACCEPTED,
+                $task
+            );
+        } else {
+            $this->_getInfoPresenter()->process(
+                Presenter::STATUS_NOT_FOUND,
+                Presenter::DESCRIPTION_NONEXISTING_KEY
+            );
+        }
+    }
+
     private function _getDataPresenter()
     {
         return $this->_app->presenterData;
