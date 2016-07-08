@@ -5,33 +5,30 @@ namespace TimeManager\Service;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use stdClass;
 use TimeManager\AppAware;
+use TimeManager\Model\Task as TaskModel;
 
 class Task extends AppAware
 {
     private $_modelName = '\TimeManager\Model\Task';
 
-    public function createModel(stdClass $data)
+    public function convertToEntity(stdClass $data)
     {
         if (empty($data->description)) {
             return null;
         }
 
-        $task              = $this->_app->modelTask;
+        $task = new TaskModel();
         $task->description = $data->description;
 
         if (!empty($data->times) && is_array($data->times)) {
             foreach ($data->times as $timeObject) {
-                $time = $this->_app->serviceTime->createModel($timeObject);
-                if ($time != null) {
+                $time = $this->_app->serviceTime->convertToEntity($timeObject);
+                if ($time !== null) {
                     $time->task = $task;
                     $task->times->add($time);
                 }
             }
         }
-
-        $entityManager = $this->_getEntityManager();
-        $entityManager->persist($task);
-        $entityManager->flush();
 
         return $task;
     }
@@ -58,7 +55,13 @@ class Task extends AppAware
             ->findAll();
     }
 
-    public function update($taskId, stdclass $data)
+    public function persistEntity(TaskModel $task)
+    {
+        $this->_getEntityManager()->persist($task);
+        $this->_getEntityManager()->flush();
+    }
+
+    public function update($taskId, stdClass $data)
     {
         if (empty($data->taskId) || $data->taskId != $taskId) {
             return null;

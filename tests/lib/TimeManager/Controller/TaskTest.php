@@ -3,6 +3,7 @@
 namespace TimeManager\Controller;
 
 use Slim\Environment;
+use TimeManager\Model\Task as TaskModel;
 
 class TaskTest extends \LocalWebTestCase
 {
@@ -33,7 +34,8 @@ class TaskTest extends \LocalWebTestCase
             ]
         );
 
-        $modelTask = (object)['taskId' => time()];
+        $modelTask = new TaskModel();
+        $modelTask->description = 'bla';
 
         $this->app->serviceTask   = $this
             ->getMockBuilder('\TimeManager\Service\Task')
@@ -45,10 +47,14 @@ class TaskTest extends \LocalWebTestCase
             ->getMock();
 
         $this->app->serviceTask
-            ->expects($this->once())
-            ->method('createModel')
+            ->expects($this->at(0))
+            ->method('convertToEntity')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
+        $this->app->serviceTask
+            ->expects($this->at(1))
+            ->method('persistEntity')
+            ->with($this->equalTo($modelTask));
 
         $this->app->presenterData
             ->expects($this->once())
@@ -84,9 +90,12 @@ class TaskTest extends \LocalWebTestCase
 
         $this->app->serviceTask
             ->expects($this->once())
-            ->method('createModel')
+            ->method('convertToEntity')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
+        $this->app->serviceTask
+            ->expects($this->never())
+            ->method('persistEntity');
 
         $this->app->presenterInfo
             ->expects($this->once())

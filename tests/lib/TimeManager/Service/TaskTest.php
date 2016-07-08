@@ -5,6 +5,8 @@ namespace TimeManager\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use stdClass;
+use TimeManager\Model\Task as TaskModel;
+use TimeManager\Model\Time as TimeModel;
 
 /**
  * @SuppressWarnings(PMD.ExcessiveMethodLength)
@@ -26,235 +28,137 @@ class TaskTest extends \LocalWebTestCase
     }
 
     /**
-     * @SuppressWarnings(PMD.UnusedLocalVariable)
+     * @dataProvider dataProviderForTestConvertToEntity
      */
-    public function testCreateModel()
+    public function testConvertToEntity($data, $expected)
     {
-        $data = (object)[
-            'description' => 'description',
-            'times'       => [
-                (object)[
-                    'start' => '2015-10-10 12:00:00',
-                ],
-                (object)[
-                    'start' => '2015-10-10 12:00:00',
-                    'end'   => '2015-10-11 12:34:45',
-                ],
-            ],
-        ];
-
-        $this->app->modelTask = (object)[
-            'times' => new ArrayCollection(),
-        ];
-
-        $this->app->serviceTime   = $this
-            ->getMockBuilder('\TimeManager\Service\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTime
-            ->expects($this->at(0))
-            ->method('createModel')
-            ->with(
-                $this->equalTo(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                    ]
-                )
-            )
-            ->will(
-                $this->returnValue(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                    ]
-                )
-            );
-        $this->app->serviceTime
-            ->expects($this->at(1))
-            ->method('createModel')
-            ->with(
-                $this->equalTo(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ]
-                )
-            )
-            ->will(
-                $this->returnValue(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ]
-                )
-            );
-
-        $this->app->entityManager
-            ->expects($this->at(0))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
-        $this->app->entityManager
-            ->expects($this->at(1))
-            ->method('flush');
-
-        $expected = (object)[
-            'description' => 'description',
-            'times'       => new ArrayCollection(
-                [
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                    ],
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ],
-                ]
-            ),
-        ];
-
-        $expected->times->forAll(
-            function ($key, $value) use ($expected) {
-                $value->task = $expected;
-                return true;
-            }
-        );
-
         $this->assertEquals(
             $expected,
-            $this->_object->createModel($data)
+            $this->_object->convertToEntity($data)
         );
     }
 
-    public function testCreateModelWithoutDescription()
+    public function dataProviderForTestConvertToEntity()
     {
-        $data = new stdClass();
+        $task = new TaskModel();
+        $task->description = 'bla';
 
-        $this->assertNull($this->_object->createModel($data));
-    }
-
-    public function testCreateModelWithMinimumData()
-    {
-        $data = (object)[
-            'description' => 'description',
+        return [
+            [
+                (object)[],
+                null,
+            ],
+            [
+                (object)[
+                    'description' => null,
+                ],
+                null,
+            ],
+            [
+                (object)[
+                    'description' => '',
+                ],
+                null,
+            ],
+            [
+                (object)[
+                    'dsa' => 'dsdsa',
+                ],
+                null,
+            ],
+            [
+                (object)[
+                    'description' => 'bla',
+                ],
+                $task,
+            ],
+            [
+                (object)[
+                    'description' => 'bla',
+                    'times'       => null,
+                ],
+                $task,
+            ],
+            [
+                (object)[
+                    'description' => 'bla',
+                    'times'       => '',
+                ],
+                $task,
+            ],
+            [
+                (object)[
+                    'description' => 'bla',
+                    'times'       => [],
+                ],
+                $task,
+            ],
         ];
-
-        $this->app->modelTask = new stdClass();
-
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
-            ->expects($this->at(0))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
-        $this->app->entityManager
-            ->expects($this->at(1))
-            ->method('flush');
-
-        $this->assertEquals(
-            (object)['description' => 'description'],
-            $this->_object->createModel($data)
-        );
     }
 
-    /**
-     * @SuppressWarnings(PMD.UnusedLocalVariable)
-     */
-    public function testCreateModelWithInvalidTime()
+    public function testConvertToEntityWithInvalidTime()
     {
         $data = (object)[
-            'description' => 'description',
+            'description' => 'bla',
             'times'       => [
                 (object)[
-                    'start' => 'bla',
-                ],
-                (object)[
-                    'start' => '2015-10-10 12:00:00',
-                    'end'   => '2015-10-11 12:34:45',
+                    'start' => null,
                 ],
             ],
         ];
 
-        $this->app->modelTask = (object)[
-            'times' => new ArrayCollection(),
-        ];
+        $expected = new TaskModel();
+        $expected->description = 'bla';
 
-        $this->app->serviceTime   = $this
+        $this->app->serviceTime = $this
             ->getMockBuilder('\TimeManager\Service\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->app->serviceTime
-            ->expects($this->at(0))
-            ->method('createModel')
-            ->with(
-                $this->equalTo(
-                    (object)[
-                        'start' => 'bla',
-                    ]
-                )
-            )
+            ->expects($this->once())
+            ->method('convertToEntity')
+            ->with($this->equalTo((object)['start' => null]))
             ->will($this->returnValue(null));
-        $this->app->serviceTime
-            ->expects($this->at(1))
-            ->method('createModel')
-            ->with(
-                $this->equalTo(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ]
-                )
-            )
-            ->will(
-                $this->returnValue(
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ]
-                )
-            );
-
-        $this->app->entityManager
-            ->expects($this->at(0))
-            ->method('persist')
-            ->with($this->equalTo($this->app->modelTask));
-        $this->app->entityManager
-            ->expects($this->at(1))
-            ->method('flush');
-
-        $expected = (object)[
-            'description' => 'description',
-            'times'       => new ArrayCollection(
-                [
-                    (object)[
-                        'start' => '2015-10-10 12:00:00',
-                        'end'   => '2015-10-11 12:34:45',
-                    ],
-                ]
-            ),
-        ];
-
-        $expected->times->forAll(
-            function ($key, $value) use ($expected) {
-                $value->task = $expected;
-                return true;
-            }
-        );
 
         $this->assertEquals(
             $expected,
-            $this->_object->createModel($data)
+            $this->_object->convertToEntity($data)
+        );
+    }
+
+    public function testConvertToEntityWithValidTime()
+    {
+        $data = (object)[
+            'description' => 'bla',
+            'times'       => [
+                (object)[
+                    'start' => '2015-01-01 12:00:42',
+                ],
+            ],
+        ];
+
+        $timeModel = new TimeModel();
+        $timeModel->start = '2015-01-01 12:00:42';
+
+        $expected = new TaskModel();
+        $expected->description = 'bla';
+        $expected->times->add($timeModel);
+
+        $this->app->serviceTime = $this
+            ->getMockBuilder('\TimeManager\Service\Time')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->serviceTime
+            ->expects($this->once())
+            ->method('convertToEntity')
+            ->with($this->equalTo((object)['start' => '2015-01-01 12:00:42']))
+            ->will($this->returnValue($timeModel));
+
+        $this->assertEquals(
+            $expected,
+            $this->_object->convertToEntity($data)
         );
     }
 
@@ -330,6 +234,27 @@ class TaskTest extends \LocalWebTestCase
             ->will($this->returnValue('bla'));
 
         $this->assertEquals('bla', $this->_object->getAll());
+    }
+
+    public function testPersistEntity()
+    {
+        $entity = new TaskModel();
+        $entity->description = 'hdjsa';
+
+        $this->app->entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->entityManager
+            ->expects($this->at(0))
+            ->method('persist')
+            ->with($this->equalTo($entity));
+        $this->app->entityManager
+            ->expects($this->at(1))
+            ->method('flush');
+
+        $this->_object->persistEntity($entity);
     }
 
     public function testUpdate()

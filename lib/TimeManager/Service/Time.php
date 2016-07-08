@@ -5,25 +5,28 @@ namespace TimeManager\Service;
 use DateTime;
 use stdClass;
 use TimeManager\AppAware;
+use TimeManager\Model\Time as TimeModel;
 
 class Time extends AppAware
 {
-    public function createModel(stdClass $data)
+    public function persistEntity(TimeModel $time)
+    {
+        $this->_app->entityManager->persist($time);
+        $this->_app->entityManager->flush();
+    }
+
+    public function convertToEntity(stdClass $data)
     {
         if (empty($data->start) || !$this->_isValidDate($data->start)) {
             return null;
         }
 
-        $time        = $this->_app->modelTime;
+        $time = new TimeModel();
         $time->start = new DateTime($data->start);
 
         if (!empty($data->end) && $this->_isValidDate($data->end)) {
             $time->end = new DateTime($data->end);
         }
-
-        $entityManager = $this->_app->entityManager;
-        $entityManager->persist($time);
-        $entityManager->flush();
 
         return $time;
     }

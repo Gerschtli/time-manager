@@ -9,9 +9,10 @@ class Task extends Controller
     public function addAction()
     {
         $data = $this->_app->request->getBody();
-        $task = $this->_app->serviceTask->createModel($data);
+        $task = $this->_app->serviceTask->convertToEntity($data);
 
         if (!is_null($task)) {
+            $this->_app->serviceTask->persistEntity($task);
             $this->_getDataPresenter()->process(
                 Presenter::STATUS_CREATED,
                 $task
