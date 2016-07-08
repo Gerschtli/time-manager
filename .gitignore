@@ -1,7 +1,6 @@
 .sass-cache/
 .vagrant/
 bin/
-build/
 dist/
 node_modules/
 vendor/
