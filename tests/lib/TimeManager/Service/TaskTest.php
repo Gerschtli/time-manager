@@ -3,6 +3,7 @@
 namespace TimeManager\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use stdClass;
 
 /**
@@ -329,5 +330,116 @@ class TaskTest extends \LocalWebTestCase
             ->will($this->returnValue('bla'));
 
         $this->assertEquals('bla', $this->_object->getAll());
+    }
+
+    public function testUpdate()
+    {
+        $taskId = time() % 20;
+
+        $modelTask = (object)[
+            'taskId'      => $taskId,
+            'description' => 'bla',
+        ];
+        $modelTaskCopy = (object)[
+            'taskId'      => $taskId,
+            'description' => 'blax',
+        ];
+
+        $this->app->entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->entityManager
+            ->expects($this->at(0))
+            ->method('merge')
+            ->with($this->equalTo($modelTask))
+            ->will($this->returnValue($modelTaskCopy));
+        $this->app->entityManager
+            ->expects($this->at(1))
+            ->method('flush');
+
+        $this->assertEquals($modelTaskCopy, $this->_object->update($taskId, $modelTask));
+    }
+
+    public function testUpdateWhenEntityIsNew()
+    {
+        $taskId = time() % 20;
+
+        $modelTask = (object)[
+            'taskId'      => $taskId,
+            'description' => 'bla',
+        ];
+
+        $this->app->entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->entityManager
+            ->expects($this->once())
+            ->method('merge')
+            ->with($this->equalTo($modelTask))
+            ->will($this->throwException(new ORMInvalidArgumentException('exception')));
+        $this->app->entityManager
+            ->expects($this->never())
+            ->method('flush');
+
+        $this->assertNull($this->_object->update($taskId, $modelTask));
+    }
+
+    /**
+     * @dataProvider dataProviderForTestUpdateWhenIdIsInvalid
+     */
+    public function testUpdateWhenIdIsInvalid($taskId, $modelTask)
+    {
+        $taskId = time() % 20;
+
+        $modelTask = (object)[
+            'taskId'      => $taskId,
+            'description' => 'bla',
+        ];
+
+        $this->app->entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->app->entityManager
+            ->expects($this->once())
+            ->method('merge')
+            ->with($this->equalTo($modelTask))
+            ->will($this->throwException(new ORMInvalidArgumentException('exception')));
+        $this->app->entityManager
+            ->expects($this->never())
+            ->method('flush');
+
+        $this->assertNull($this->_object->update($taskId, $modelTask));
+    }
+
+    public function dataProviderForTestUpdateWhenIdIsInvalid()
+    {
+        return [
+            [
+                123,
+                (object)[
+                    'description' => 'bla',
+                ],
+            ],
+            [
+                123,
+                (object)[
+                    'taskId'      => null,
+                    'description' => 'bla',
+                ],
+            ],
+            [
+                123,
+                (object)[
+                    'taskId'      => 241,
+                    'description' => 'bla',
+                ],
+            ],
+        ];
     }
 }

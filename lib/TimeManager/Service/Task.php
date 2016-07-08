@@ -2,6 +2,7 @@
 
 namespace TimeManager\Service;
 
+use Doctrine\ORM\ORMInvalidArgumentException;
 use stdClass;
 use TimeManager\AppAware;
 
@@ -55,6 +56,20 @@ class Task extends AppAware
         return $this->_getEntityManager()
             ->getRepository($this->_modelName)
             ->findAll();
+    }
+
+    public function update($taskId, stdclass $data)
+    {
+        if (empty($data->taskId) || $data->taskId != $taskId) {
+            return null;
+        }
+        try {
+            $copy = $this->_getEntityManager()->merge($data);
+            $this->_getEntityManager()->flush();
+            return $copy;
+        } catch (ORMInvalidArgumentException $exception) {
+            return null;
+        }
     }
 
     private function _getEntityManager()
