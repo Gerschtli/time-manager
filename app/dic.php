@@ -5,8 +5,6 @@ use Doctrine\ORM\Tools\Setup;
 use TimeManager\Controller\Error as ErrorController;
 use TimeManager\Controller\Task as TaskController;
 use TimeManager\Middleware\JsonConverter;
-use TimeManager\Model\Task as TaskModel;
-use TimeManager\Model\Time as TimeModel;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
@@ -55,20 +53,6 @@ $app->container->singleton(
     'middlewareJsonConverter',
     function () {
         return new JsonConverter();
-    }
-);
-
-$app->container->set(
-    'modelTask',
-    function () {
-        return new TaskModel();
-    }
-);
-
-$app->container->set(
-    'modelTime',
-    function () {
-        return new TimeModel();
     }
 );
 

@@ -145,12 +145,12 @@ class TaskTest extends \LocalWebTestCase
             ->getMockBuilder('\TimeManager\Service\Task')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->app->modelTask     = $this
-            ->getMockBuilder('\TimeManager\Model\Task')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->app->presenterData = $this
             ->getMockBuilder('\TimeManager\Presenter\Data')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $modelTask = $this
+            ->getMockBuilder('\TimeManager\Model\Task')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -158,14 +158,14 @@ class TaskTest extends \LocalWebTestCase
             ->expects($this->once())
             ->method('getById')
             ->with($this->equalTo($taskId))
-            ->will($this->returnValue($this->app->modelTask));
+            ->will($this->returnValue($modelTask));
 
         $this->app->presenterData
             ->expects($this->once())
             ->method('process')
             ->with(
                 $this->equalTo(200),
-                $this->equalTo($this->app->modelTask)
+                $this->equalTo($modelTask)
             );
 
         $this->_object->getAction($taskId);
