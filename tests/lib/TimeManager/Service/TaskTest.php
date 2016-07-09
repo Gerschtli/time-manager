@@ -9,20 +9,26 @@ use TimeManager\Model\Time as TimeModel;
 /**
  * @SuppressWarnings(PMD.ExcessiveMethodLength)
  */
-class TaskTest extends \LocalWebTestCase
+class TaskTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
+    private $_entityManager;
+    private $_timeService;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new Task($this->app);
-    }
 
-    public function testInstance()
-    {
-        $this->assertInstanceOf('\TimeManager\Service\Task', $this->_object);
-        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+        $this->_entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->_timeService = $this
+            ->getMockBuilder('\TimeManager\Service\Time')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_object = new Task($this->_entityManager, $this->_timeService);
     }
 
     /**
@@ -108,12 +114,7 @@ class TaskTest extends \LocalWebTestCase
         $expected = new TaskModel();
         $expected->description = 'bla';
 
-        $this->app->serviceTime = $this
-            ->getMockBuilder('\TimeManager\Service\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTime
+        $this->_timeService
             ->expects($this->once())
             ->method('convertToEntity')
             ->with($this->equalTo((object)['start' => null]))
@@ -143,12 +144,7 @@ class TaskTest extends \LocalWebTestCase
         $expected->description = 'bla';
         $expected->times->add($timeModel);
 
-        $this->app->serviceTime = $this
-            ->getMockBuilder('\TimeManager\Service\Time')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->serviceTime
+        $this->_timeService
             ->expects($this->once())
             ->method('convertToEntity')
             ->with($this->equalTo((object)['start' => '2015-01-01 12:00:42']))
@@ -164,12 +160,7 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(0))
             ->method('getReference')
             ->with(
@@ -177,11 +168,11 @@ class TaskTest extends \LocalWebTestCase
                 $this->equalTo($taskId)
             )
             ->will($this->returnValue('bla'));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(1))
             ->method('remove')
             ->with($this->equalTo('bla'));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(2))
             ->method('flush');
 
@@ -192,12 +183,7 @@ class TaskTest extends \LocalWebTestCase
     {
         $taskId = time();
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->once())
             ->method('find')
             ->with(
@@ -211,16 +197,12 @@ class TaskTest extends \LocalWebTestCase
 
     public function testGetAll()
     {
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repository               = $this
+        $repository = $this
             ->getMockBuilder('\Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('\TimeManager\Model\Task'))
@@ -239,16 +221,11 @@ class TaskTest extends \LocalWebTestCase
         $entity = new TaskModel();
         $entity->description = 'hdjsa';
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($entity));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -268,17 +245,12 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'blax',
         ];
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(0))
             ->method('merge')
             ->with($this->equalTo($modelTask))
             ->will($this->returnValue($modelTaskCopy));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(1))
             ->method('flush');
 
@@ -294,17 +266,12 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->once())
             ->method('merge')
             ->with($this->equalTo($modelTask))
             ->will($this->throwException(new ORMInvalidArgumentException('exception')));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->never())
             ->method('flush');
 
@@ -323,17 +290,12 @@ class TaskTest extends \LocalWebTestCase
             'description' => 'bla',
         ];
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->once())
             ->method('merge')
             ->with($this->equalTo($modelTask))
             ->will($this->throwException(new ORMInvalidArgumentException('exception')));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->never())
             ->method('flush');
 

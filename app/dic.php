@@ -84,7 +84,7 @@ $app->container->singleton(
 $app->container->singleton(
     'serviceTask',
     function () use ($app) {
-        return new TaskService($app);
+        return new TaskService($app->entityManager, $app->serviceTime);
     }
 );
 

@@ -2,7 +2,7 @@
 
 namespace TimeManager\Model;
 
-class TaskTest extends \LocalWebTestCase
+class TaskTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
 
