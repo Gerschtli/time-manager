@@ -15,7 +15,7 @@ class InfoTest extends \LocalWebTestCase
     public function testInstance()
     {
         $this->assertInstanceOf('\TimeManager\Presenter\Info', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Presenter', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 

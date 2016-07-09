@@ -4,7 +4,7 @@ namespace TimeManager\Presenter;
 
 use Slim\Http\Response;
 
-class Info extends Base
+class Info extends Presenter
 {
     public function process($code, $description, $returnPlain = false)
     {

@@ -19,7 +19,7 @@ class DataTest extends \LocalWebTestCase
     public function testInstance()
     {
         $this->assertInstanceOf('\TimeManager\Presenter\Data', $this->_object);
-        $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Presenter', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 

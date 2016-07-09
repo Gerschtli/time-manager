@@ -4,25 +4,25 @@ namespace TimeManager\Presenter;
 
 use ReflectionClass;
 
-class BaseTest extends \LocalWebTestCase
+class PresenterTest extends \LocalWebTestCase
 {
     private $_object;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new BaseWrapper($this->app);
+        $this->_object = new PresenterWrapper($this->app);
     }
 
     public function testInstance()
     {
-        $this->assertInstanceOf('\TimeManager\Presenter\Base', $this->_object);
+        $this->assertInstanceOf('\TimeManager\Presenter\Presenter', $this->_object);
         $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
     }
 
     public function testConstants()
     {
-        $object = new ReflectionClass('\TimeManager\Presenter\Base');
+        $object = new ReflectionClass('\TimeManager\Presenter\Presenter');
 
         $this->assertEquals(
             [
@@ -46,6 +46,6 @@ class BaseTest extends \LocalWebTestCase
     }
 }
 
-class BaseWrapper extends Base
+class PresenterWrapper extends Presenter
 {
 }

@@ -3,7 +3,7 @@
 namespace TimeManager\Middleware;
 
 use Slim\Middleware;
-use TimeManager\Presenter\Base as Presenter;
+use TimeManager\Presenter\Presenter;
 
 class JsonConverter extends Middleware
 {

@@ -4,7 +4,7 @@ namespace TimeManager\Presenter;
 
 use TimeManager\AppAware;
 
-abstract class Base extends AppAware
+abstract class Presenter extends AppAware
 {
     const STATUS_OK                     = 200;
     const STATUS_CREATED                = 201;

@@ -5,7 +5,7 @@ namespace TimeManager\Middleware;
 use Slim\Environment;
 use Slim\Slim;
 
-class JsonConverterTest extends \LocalWebTestCase
+class JsonConverterTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

@@ -2,7 +2,7 @@
 
 namespace TimeManager\Controller;
 
-use TimeManager\Presenter\Base as Presenter;
+use TimeManager\Presenter\Presenter;
 use TimeManager\Presenter\Info;
 
 class Error

@@ -6,7 +6,7 @@ use Closure;
 use DateTime;
 use TimeManager\Model\Task;
 
-class Data extends Base
+class Data extends Presenter
 {
     public function process($code, $data)
     {
