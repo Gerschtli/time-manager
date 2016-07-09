@@ -70,14 +70,14 @@ $app->container->singleton(
 $app->container->singleton(
     'presenterData',
     function () use ($app) {
-        return new DataPresenter($app);
+        return new DataPresenter($app->response);
     }
 );
 
 $app->container->singleton(
     'presenterInfo',
     function () use ($app) {
-        return new InfoPresenter($app);
+        return new InfoPresenter($app->response);
     }
 );
 

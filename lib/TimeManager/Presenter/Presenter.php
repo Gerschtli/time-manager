@@ -2,9 +2,9 @@
 
 namespace TimeManager\Presenter;
 
-use TimeManager\AppAware;
+use Slim\Http\Response;
 
-abstract class Presenter extends AppAware
+abstract class Presenter
 {
     const STATUS_OK                     = 200;
     const STATUS_CREATED                = 201;
@@ -22,6 +22,13 @@ abstract class Presenter extends AppAware
     const DESCRIPTION_PARSE_ERROR         = 'JSON Parse Error';
     const DESCRIPTION_NO_ROUTE_MATCHED    = 'No existing Route matched';
 
+    protected $_response;
+
+    public function __construct(Response $response)
+    {
+        $this->_response = $response;
+    }
+
     protected function _encodeBody($body)
     {
         return json_encode($body);
@@ -29,9 +36,9 @@ abstract class Presenter extends AppAware
 
     protected function _print($code, $body)
     {
-        $this->_app->status($code);
+        $this->_response->setStatus($code);
 
-        $this->_app->contentType('application/json');
-        $this->_app->response->setBody($this->_encodeBody($body));
+        $this->_response->headers->set('Content-Type', 'application/json');
+        $this->_response->setBody($this->_encodeBody($body));
     }
 }

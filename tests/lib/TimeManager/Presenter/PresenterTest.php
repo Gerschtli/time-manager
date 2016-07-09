@@ -4,22 +4,8 @@ namespace TimeManager\Presenter;
 
 use ReflectionClass;
 
-class PresenterTest extends \LocalWebTestCase
+class PresenterTest extends \PHPUnit_Framework_TestCase
 {
-    private $_object;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->_object = new PresenterWrapper($this->app);
-    }
-
-    public function testInstance()
-    {
-        $this->assertInstanceOf('\TimeManager\Presenter\Presenter', $this->_object);
-        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
-    }
-
     public function testConstants()
     {
         $object = new ReflectionClass('\TimeManager\Presenter\Presenter');
@@ -44,8 +30,4 @@ class PresenterTest extends \LocalWebTestCase
             $object->getConstants()
         );
     }
-}
-
-class PresenterWrapper extends Presenter
-{
 }
