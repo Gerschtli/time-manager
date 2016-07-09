@@ -2,7 +2,7 @@
     "name": "gerschtli/time-manager",
     "require": {
         "php"         : ">=5.5.0",
-        "slim/slim"   : "@stable",
+        "slim/slim"   : "^2@stable",
         "doctrine/orm": "@stable"
     },
     "require-dev": {
@@ -10,7 +10,6 @@
         "friendsofphp/php-cs-fixer"    : "@stable",
         "phpmd/phpmd"                  : "@stable",
         "phpunit/phpunit"              : "@stable",
-        "there4/slim-test-helpers"     : "@stable",
         "zerkalica/phpcs"              : "dev-master"
     },
     "autoload": {
