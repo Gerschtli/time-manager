@@ -7,7 +7,7 @@ use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
 
 /**
- * @SuppressWarnings(PMD.ExcessiveMethodLength)
+ * @SuppressWarnings(PMD.TooManyPublicMethods)
  */
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
