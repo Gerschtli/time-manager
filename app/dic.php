@@ -20,7 +20,9 @@ $app->container->singleton(
 $app->container->singleton(
     'controllerError',
     function () use ($app) {
-        return new ErrorController($app->presenterInfo);
+        return new ErrorController(
+            $app->presenterInfo
+        );
     }
 );
 
@@ -28,7 +30,10 @@ $app->container->singleton(
     'controllerTask',
     function () use ($app) {
         return new TaskController(
-            $app->presenterData, $app->presenterInfo, $app->request, $app->serviceTask
+            $app->presenterData,
+            $app->presenterInfo,
+            $app->request,
+            $app->serviceTask
         );
     }
 );
@@ -53,8 +58,12 @@ $app->container->singleton(
 
 $app->container->singleton(
     'middlewareJsonConverter',
-    function () {
-        return new JsonConverter();
+    function () use ($app) {
+        return new JsonConverter(
+            $app->environment,
+            $app->presenterInfo,
+            $app->request
+        );
     }
 );
 
