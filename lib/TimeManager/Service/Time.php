@@ -3,16 +3,17 @@
 namespace TimeManager\Service;
 
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use stdClass;
-use TimeManager\AppAware;
 use TimeManager\Model\Time as TimeModel;
 
-class Time extends AppAware
+class Time
 {
-    public function persistEntity(TimeModel $time)
+    private $_entityManager;
+
+    public function __construct(EntityManager $entityManager)
     {
-        $this->_app->entityManager->persist($time);
-        $this->_app->entityManager->flush();
+        $this->_entityManager = $entityManager;
     }
 
     public function convertToEntity(stdClass $data)
@@ -29,6 +30,12 @@ class Time extends AppAware
         }
 
         return $time;
+    }
+
+    public function persistEntity(TimeModel $time)
+    {
+        $this->_entityManager->persist($time);
+        $this->_entityManager->flush();
     }
 
     private function _isValidDate($date)

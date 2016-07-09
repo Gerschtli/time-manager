@@ -91,6 +91,6 @@ $app->container->singleton(
 $app->container->singleton(
     'serviceTime',
     function () use ($app) {
-        return new TimeService($app);
+        return new TimeService($app->entityManager);
     }
 );

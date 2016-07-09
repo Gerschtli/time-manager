@@ -5,20 +5,21 @@ namespace TimeManager\Service;
 use DateTime;
 use TimeManager\Model\Time as TimeModel;
 
-class TimeTest extends \LocalWebTestCase
+class TimeTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
+    private $_entityManager;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_object = new Time($this->app);
-    }
 
-    public function testInstance()
-    {
-        $this->assertInstanceOf('\TimeManager\Service\Time', $this->_object);
-        $this->assertInstanceOf('\TimeManager\AppAware', $this->_object);
+        $this->_entityManager = $this
+            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_object = new Time($this->_entityManager);
     }
 
     /**
@@ -112,16 +113,11 @@ class TimeTest extends \LocalWebTestCase
         $modelTime = new TimeModel();
         $modelTime->start = '2015-01-01 12:00:42';
 
-        $this->app->entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(0))
             ->method('persist')
             ->with($this->equalTo($modelTime));
-        $this->app->entityManager
+        $this->_entityManager
             ->expects($this->at(1))
             ->method('flush');
 
