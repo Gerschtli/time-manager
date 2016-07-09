@@ -1,23 +1,27 @@
 <?php
 
+use Slim\Environment;
+use Slim\Slim;
+
 /**
  * @SuppressWarnings(PMD.UnusedPrivateMethod)
  * @SuppressWarnings(PMD.UnusedFormalParameter)
  */
-class DicTest extends \LocalWebTestCase
+class DicTest extends \PHPUnit_Framework_TestCase
 {
     private $_allDependencies;
     private $_systemDependencies = [
-        'settings',
         'environment',
+        'log',
+        'logWriter',
+        'mode',
         'request',
         'response',
         'router',
+        'settings',
         'view',
-        'logWriter',
-        'log',
-        'mode',
     ];
+    private $_app;
 
     public function testDic()
     {
@@ -33,7 +37,9 @@ class DicTest extends \LocalWebTestCase
             'serviceTime'             => ['_sameInstance', '\TimeManager\Service\Time'],
         ];
 
-        $this->_allDependencies = $this->app->container->all();
+        $this->_app = $this->_getSlimInstance();
+
+        $this->_allDependencies = $this->_app->container->all();
 
         foreach ($dependencies as $name => $info) {
             $this->{$info[0]}($name, $info[1]);
@@ -44,24 +50,38 @@ class DicTest extends \LocalWebTestCase
         $this->assertEquals(0, count($this->_allDependencies));
     }
 
+    private function _getSlimInstance()
+    {
+        $app = new Slim(
+            [
+                'debug' => false,
+            ]
+        );
+
+        Environment::mock([]);
+
+        require(PROJECT_ROOT . '/app/app.php');
+        return $app;
+    }
+
     private function _exists($name, $class)
     {
-        $this->assertTrue($this->app->container->has($name), "{$name} exists");
+        $this->assertTrue($this->_app->container->has($name), "{$name} exists");
         unset($this->_allDependencies[$name]);
     }
 
     private function _instanceOf($name, $class)
     {
         $this->_exists($name, $class);
-        $this->assertInstanceOf($class, $this->app->$name);
+        $this->assertInstanceOf($class, $this->_app->$name);
     }
 
     private function _sameInstance($name, $class)
     {
         $this->_instanceOf($name, $class);
 
-        $instanceOne = $this->app->$name;
-        $instanceTwo = $this->app->$name;
+        $instanceOne = $this->_app->$name;
+        $instanceTwo = $this->_app->$name;
         $this->assertSame($instanceOne, $instanceTwo);
     }
 
@@ -69,8 +89,8 @@ class DicTest extends \LocalWebTestCase
     {
         $this->_instanceOf($name, $class);
 
-        $instanceOne = $this->app->$name;
-        $instanceTwo = $this->app->$name;
+        $instanceOne = $this->_app->$name;
+        $instanceTwo = $this->_app->$name;
         $this->assertNotSame($instanceOne, $instanceTwo);
     }
 
