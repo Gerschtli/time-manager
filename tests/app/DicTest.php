@@ -60,7 +60,7 @@ class DicTest extends \PHPUnit_Framework_TestCase
 
         Environment::mock([]);
 
-        require(PROJECT_ROOT . '/app/app.php');
+        require_once(PROJECT_ROOT . '/app/app.php');
         return $app;
     }
 

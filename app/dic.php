@@ -13,7 +13,7 @@ use TimeManager\Service\Time as TimeService;
 $app->container->singleton(
     'config',
     function () {
-        return require(PROJECT_ROOT . '/app/config.php');
+        return require_once(PROJECT_ROOT . '/app/config.php');
     }
 );
 
