@@ -3,9 +3,9 @@
 namespace TimeManager\Controller;
 
 use Slim\Http\Request;
-use TimeManager\Presenter\Presenter;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
+use TimeManager\Presenter\Presenter;
 use TimeManager\Service\Task as TaskService;
 
 class Task

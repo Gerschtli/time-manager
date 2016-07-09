@@ -2,8 +2,8 @@
 
 namespace TimeManager\Controller;
 
-use TimeManager\Presenter\Presenter;
 use TimeManager\Presenter\Info;
+use TimeManager\Presenter\Presenter;
 
 class Error
 {

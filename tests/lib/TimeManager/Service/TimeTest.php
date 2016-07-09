@@ -3,7 +3,6 @@
 namespace TimeManager\Service;
 
 use DateTime;
-use stdClass;
 use TimeManager\Model\Time as TimeModel;
 
 class TimeTest extends \LocalWebTestCase
@@ -61,7 +60,7 @@ class TimeTest extends \LocalWebTestCase
                     'start' => '2015-01-01 12:00:42',
                     'end'   => null,
                 ],
-                $timeOnlyStart
+                $timeOnlyStart,
             ],
             [
                 (object)[

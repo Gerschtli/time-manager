@@ -2,9 +2,7 @@
 
 namespace TimeManager\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use stdClass;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
 

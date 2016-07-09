@@ -25,7 +25,7 @@ class JsonConverterTest extends \PHPUnit_Framework_TestCase
         $this->_next = $this
             ->getMockBuilder('\Slim\Middleware')
             ->disableOriginalConstructor()
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMockForAbstractClass();
         $this->_request = $this
             ->getMockBuilder('\Slim\Http\Request')

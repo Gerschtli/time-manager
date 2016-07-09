@@ -4,7 +4,6 @@ require(PROJECT_ROOT . '/app/dic.php');
 
 $app->add($app->middlewareJsonConverter);
 
-
 $app->get(
     '/task',
     [$app->controllerTask, 'getAllAction']

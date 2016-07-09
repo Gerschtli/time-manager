@@ -21,7 +21,7 @@ class Time extends AppAware
             return null;
         }
 
-        $time = new TimeModel();
+        $time        = new TimeModel();
         $time->start = new DateTime($data->start);
 
         if (!empty($data->end) && $this->_isValidDate($data->end)) {

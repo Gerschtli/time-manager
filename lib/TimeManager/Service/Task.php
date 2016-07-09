@@ -17,7 +17,7 @@ class Task extends AppAware
             return null;
         }
 
-        $task = new TaskModel();
+        $task              = new TaskModel();
         $task->description = $data->description;
 
         if (!empty($data->times) && is_array($data->times)) {
