@@ -283,18 +283,9 @@ class TaskTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdateWhenIdIsInvalid($taskId, $modelTask)
     {
-        $taskId = time() % 20;
-
-        $modelTask = (object)[
-            'taskId'      => $taskId,
-            'description' => 'bla',
-        ];
-
         $this->_entityManager
-            ->expects($this->once())
-            ->method('merge')
-            ->with($this->equalTo($modelTask))
-            ->will($this->throwException(new ORMInvalidArgumentException('exception')));
+            ->expects($this->never())
+            ->method('merge');
         $this->_entityManager
             ->expects($this->never())
             ->method('flush');
