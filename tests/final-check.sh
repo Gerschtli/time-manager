@@ -31,5 +31,4 @@ echo "${BLUETEXT}######################################################"
 echo "#${CYANBOLDTEXT}            PHP-CS-Fixer wird ausgefuehrt:          ${STDTEXT}${BLUETEXT}#"
 echo "######################################################${STDTEXT}"
 echo $'\n'
-TEST=0 php bin/php-cs-fixer fix
-TEST=1 php bin/php-cs-fixer fix
+php bin/php-cs-fixer fix
