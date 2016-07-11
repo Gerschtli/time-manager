@@ -68,7 +68,7 @@ class JsonConverterTest extends \PHPUnit_Framework_TestCase
             ->method('offsetSet')
             ->with(
                 $this->equalTo('slim.input'),
-                $this->equalTo((object)['foo' => 'bar'])
+                $this->equalTo((object) ['foo' => 'bar'])
             );
 
         $this->_infoPresenter

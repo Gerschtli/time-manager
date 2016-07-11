@@ -40,11 +40,11 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testAddAction()
     {
-        $requestData = (object)[
+        $requestData = (object) [
             'description' => 'bla',
         ];
 
-        $modelTask = new TaskModel();
+        $modelTask              = new TaskModel();
         $modelTask->description = 'bla';
 
         $this->_request
@@ -75,7 +75,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testAddActionWithInvalidData()
     {
-        $requestData = (object)[
+        $requestData = (object) [
             'test' => 'bla',
         ];
 
@@ -170,10 +170,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllAction()
     {
-        $modelTaskOne = new TaskModel();
+        $modelTaskOne              = new TaskModel();
         $modelTaskOne->description = 'dsad';
 
-        $modelTaskTwo = new TaskModel();
+        $modelTaskTwo              = new TaskModel();
         $modelTaskTwo->description = 'ssssss';
 
         $this->_taskService
@@ -194,12 +194,12 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateAction()
     {
-        $taskId = time();
-        $requestData = (object)[
+        $taskId      = time();
+        $requestData = (object) [
             'description' => 'bla',
         ];
 
-        $modelTask = (object)['taskId' => $taskId];
+        $modelTask = (object) ['taskId' => $taskId];
 
         $this->_request
             ->expects($this->once())
@@ -225,8 +225,8 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateActionWithInvalidData()
     {
-        $taskId = time();
-        $requestData = (object)[
+        $taskId      = time();
+        $requestData = (object) [
             'test' => 'bla',
         ];
 

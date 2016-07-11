@@ -8,7 +8,7 @@ class Info extends Presenter
 {
     public function process($code, $description, $returnPlain = false)
     {
-        $body = (object)[
+        $body = (object) [
             'code'    => $code,
             'message' => $this->_getMessage($code),
         ];

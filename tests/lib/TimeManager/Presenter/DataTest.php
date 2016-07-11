@@ -38,15 +38,15 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $task = new Task();
+        $task              = new Task();
         $task->taskId      = 5;
         $task->description = 'description';
         $task->times       = new ArrayCollection(
             [
-                (object)[
+                (object) [
                     'start' => new DateTime('2015-10-10'),
                 ],
-                (object)[
+                (object) [
                     'start' => new DateTime('2015-10-10'),
                     'end'   => new DateTime('2015-11-11'),
                 ],
@@ -54,14 +54,14 @@ class DataTest extends \PHPUnit_Framework_TestCase
         );
 
         $body = json_encode(
-            (object)[
+            (object) [
                 'taskId'      => 5,
                 'description' => 'description',
                 'times'       => [
-                    (object)[
+                    (object) [
                         'start' => '2015-10-10 00:00:00',
                     ],
-                    (object)[
+                    (object) [
                         'start' => '2015-10-10 00:00:00',
                         'end'   => '2015-11-11 00:00:00',
                     ],
@@ -98,15 +98,15 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessWithDataArray()
     {
-        $task = new Task();
+        $task              = new Task();
         $task->taskId      = 5;
         $task->description = 'description';
         $task->times       = new ArrayCollection(
             [
-                (object)[
+                (object) [
                     'start' => new DateTime('2015-10-10'),
                 ],
-                (object)[
+                (object) [
                     'start' => new DateTime('2015-10-10'),
                     'end'   => new DateTime('2015-11-11'),
                 ],
@@ -115,14 +115,14 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
         $body = json_encode(
             [
-                (object)[
+                (object) [
                     'taskId'      => 5,
                     'description' => 'description',
                     'times'       => [
-                        (object)[
+                        (object) [
                             'start' => '2015-10-10 00:00:00',
                         ],
-                        (object)[
+                        (object) [
                             'start' => '2015-10-10 00:00:00',
                             'end'   => '2015-11-11 00:00:00',
                         ],

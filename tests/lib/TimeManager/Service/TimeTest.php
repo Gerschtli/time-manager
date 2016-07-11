@@ -35,72 +35,72 @@ class TimeTest extends \PHPUnit_Framework_TestCase
 
     public function dataProviderForTestConvertToEntity()
     {
-        $timeOnlyStart = new TimeModel();
+        $timeOnlyStart        = new TimeModel();
         $timeOnlyStart->start = new DateTime('2015-01-01 12:00:42');
 
-        $timeStartEnd = new TimeModel();
+        $timeStartEnd        = new TimeModel();
         $timeStartEnd->start = new DateTime('2015-01-01 12:00:42');
         $timeStartEnd->end   = new DateTime('2015-01-01 14:00:42');
 
         return [
             [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                     'end'   => '2015-01-01 14:00:42',
                 ],
                 $timeStartEnd,
             ],
             [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                 ],
                 $timeOnlyStart,
             ],
             [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                     'end'   => null,
                 ],
                 $timeOnlyStart,
             ],
             [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                     'end'   => 5,
                 ],
                 $timeOnlyStart,
             ],
             [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                     'end'   => '2015-15-40 25:61:123',
                 ],
                 $timeOnlyStart,
             ],
             [
-                (object)[],
+                (object) [],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'test' => 456,
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'start' => null,
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'start' => 5,
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'start' => '2015-15-40 25:61:123',
                 ],
                 null,
@@ -110,7 +110,7 @@ class TimeTest extends \PHPUnit_Framework_TestCase
 
     public function testPersistEntity()
     {
-        $modelTime = new TimeModel();
+        $modelTime        = new TimeModel();
         $modelTime->start = '2015-01-01 12:00:42';
 
         $this->_entityManager

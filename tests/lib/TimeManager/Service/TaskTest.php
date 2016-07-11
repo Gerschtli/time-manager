@@ -44,54 +44,54 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function dataProviderForTestConvertToEntity()
     {
-        $task = new TaskModel();
+        $task              = new TaskModel();
         $task->description = 'bla';
 
         return [
             [
-                (object)[],
+                (object) [],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'description' => null,
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'description' => '',
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'dsa' => 'dsdsa',
                 ],
                 null,
             ],
             [
-                (object)[
+                (object) [
                     'description' => 'bla',
                 ],
                 $task,
             ],
             [
-                (object)[
+                (object) [
                     'description' => 'bla',
                     'times'       => null,
                 ],
                 $task,
             ],
             [
-                (object)[
+                (object) [
                     'description' => 'bla',
                     'times'       => '',
                 ],
                 $task,
             ],
             [
-                (object)[
+                (object) [
                     'description' => 'bla',
                     'times'       => [],
                 ],
@@ -102,22 +102,22 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertToEntityWithInvalidTime()
     {
-        $data = (object)[
+        $data = (object) [
             'description' => 'bla',
             'times'       => [
-                (object)[
+                (object) [
                     'start' => null,
                 ],
             ],
         ];
 
-        $expected = new TaskModel();
+        $expected              = new TaskModel();
         $expected->description = 'bla';
 
         $this->_timeService
             ->expects($this->once())
             ->method('convertToEntity')
-            ->with($this->equalTo((object)['start' => null]))
+            ->with($this->equalTo((object) ['start' => null]))
             ->will($this->returnValue(null));
 
         $this->assertEquals(
@@ -128,26 +128,26 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertToEntityWithValidTime()
     {
-        $data = (object)[
+        $data = (object) [
             'description' => 'bla',
             'times'       => [
-                (object)[
+                (object) [
                     'start' => '2015-01-01 12:00:42',
                 ],
             ],
         ];
 
-        $timeModel = new TimeModel();
+        $timeModel        = new TimeModel();
         $timeModel->start = '2015-01-01 12:00:42';
 
-        $expected = new TaskModel();
+        $expected              = new TaskModel();
         $expected->description = 'bla';
         $expected->times->add($timeModel);
 
         $this->_timeService
             ->expects($this->once())
             ->method('convertToEntity')
-            ->with($this->equalTo((object)['start' => '2015-01-01 12:00:42']))
+            ->with($this->equalTo((object) ['start' => '2015-01-01 12:00:42']))
             ->will($this->returnValue($timeModel));
 
         $this->assertEquals(
@@ -218,7 +218,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testPersistEntity()
     {
-        $entity = new TaskModel();
+        $entity              = new TaskModel();
         $entity->description = 'hdjsa';
 
         $this->_entityManager
@@ -236,11 +236,11 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     {
         $taskId = time() % 20;
 
-        $modelTask = (object)[
+        $modelTask = (object) [
             'taskId'      => $taskId,
             'description' => 'bla',
         ];
-        $modelTaskCopy = (object)[
+        $modelTaskCopy = (object) [
             'taskId'      => $taskId,
             'description' => 'blax',
         ];
@@ -261,7 +261,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     {
         $taskId = time() % 20;
 
-        $modelTask = (object)[
+        $modelTask = (object) [
             'taskId'      => $taskId,
             'description' => 'bla',
         ];
@@ -298,20 +298,20 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 123,
-                (object)[
+                (object) [
                     'description' => 'bla',
                 ],
             ],
             [
                 123,
-                (object)[
+                (object) [
                     'taskId'      => null,
                     'description' => 'bla',
                 ],
             ],
             [
                 123,
-                (object)[
+                (object) [
                     'taskId'      => 241,
                     'description' => 'bla',
                 ],

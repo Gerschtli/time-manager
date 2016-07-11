@@ -2,7 +2,7 @@
 
 $config = new stdClass();
 
-$config->mysql = (object)[
+$config->mysql = (object) [
     'database' => '<$= database.name $>',
     'host'     => '<$= database.host $>',
     'username' => '<$= database.user $>',
@@ -10,7 +10,7 @@ $config->mysql = (object)[
 ];
 
 if (APPLICATION_ENV == 'development') {
-    $config->mysql = (object)[
+    $config->mysql = (object) [
         'database' => 'time-manager',
         'host'     => 'localhost',
         'username' => 'root',
