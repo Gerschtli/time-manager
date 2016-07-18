@@ -9,7 +9,7 @@ cache:
     - $HOME/.composer/cache
 install:
     - composer self-update
-    - composer --prefer-source install
+    - composer --prefer-dist install
 script:
     - ./bin/phpunit
     - ./bin/phpcs --standard=tests/phpcs-ruleset.xml app lib tests
