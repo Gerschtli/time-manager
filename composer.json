@@ -1,5 +1,5 @@
 {
-    "name": "gerschtli/time-manager",
+    "name": "Gerschtli/time-manager",
     "require": {
         "php"         : ">=5.5.0",
         "slim/slim"   : "^2@stable",
