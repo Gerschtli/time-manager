@@ -5,7 +5,7 @@ php:
     - 7.0
 cache:
   directories:
-  - $HOME/vendor
+  - vendor
 install:
     - composer self-update
     - composer --prefer-source install
