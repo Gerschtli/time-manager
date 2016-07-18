@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e70c7b9d15465c2ab5f91d930d0f28bb",
-    "content-hash": "77e7f52f31479592df61bb806854a757",
+    "hash": "afdc19dfe5c7a3fca27e6e87a47bfd05",
+    "content-hash": "1d43705d6601c9c2d22977d3fb4a8f72",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2135,6 +2135,84 @@
             "time": "2015-06-21 13:59:46"
         },
         {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2016-07-13 23:29:13"
+        },
+        {
             "name": "symfony/config",
             "version": "v3.1.2",
             "source": {
@@ -2600,31 +2678,6 @@
                 "validate"
             ],
             "time": "2015-08-24 13:29:44"
-        },
-        {
-            "name": "zerkalica/phpcs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zerkalica/PHP_CodeSniffer.git",
-                "reference": "e2d4488665c722b81e04141c5615ced3277509d9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zerkalica/PHP_CodeSniffer/zipball/e2d4488665c722b81e04141c5615ced3277509d9",
-                "reference": "e2d4488665c722b81e04141c5615ced3277509d9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "bin": [
-                "scripts/phpcs"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Unofficial version of PHP_CodeSniffer to be handled with Composer",
-            "time": "2012-11-06 21:19:44"
         }
     ],
     "aliases": [],
@@ -2636,7 +2689,7 @@
         "friendsofphp/php-cs-fixer": 0,
         "phpmd/phpmd": 0,
         "phpunit/phpunit": 0,
-        "zerkalica/phpcs": 20
+        "squizlabs/php_codesniffer": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

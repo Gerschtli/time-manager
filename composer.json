@@ -10,7 +10,7 @@
         "friendsofphp/php-cs-fixer"    : "@stable",
         "phpmd/phpmd"                  : "@stable",
         "phpunit/phpunit"              : "@stable",
-        "zerkalica/phpcs"              : "dev-master"
+        "squizlabs/PHP_CodeSniffer"    : "@stable"
     },
     "autoload": {
         "psr-4": {
