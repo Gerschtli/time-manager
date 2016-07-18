@@ -234,7 +234,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $taskId = time() % 20;
+        $taskId = (time() % 20) + 1;
 
         $modelTask = (object) [
             'taskId'      => $taskId,
