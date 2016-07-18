@@ -1,7 +1,7 @@
 {
     "name": "Gerschtli/time-manager",
     "require": {
-        "php"         : ">=5.5.0",
+        "php"         : ">=7",
         "slim/slim"   : "^2@stable",
         "doctrine/orm": "@stable"
     },
