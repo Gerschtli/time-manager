@@ -86,4 +86,31 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
             $this->_object->notFoundAction($request, $response)
         );
     }
+
+    public function testNotAllowedAction()
+    {
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_infoPresenter
+            ->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo($this->_response),
+                $this->equalTo(405),
+                $this->equalTo('Available Methods: POST, GET')
+            )
+            ->will($this->returnValue($this->_response));
+
+        $this->assertEquals(
+            $this->_response,
+            $this->_object->notAllowedAction($request, $response, ['POST', 'GET'])
+        );
+    }
 }

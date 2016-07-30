@@ -44,8 +44,11 @@ class Error
     {
         return $this->_infoPresenter->render(
             $this->_response,
-            Presenter::STATUS_NOT_FOUND,
-            Presenter::DESCRIPTION_NO_ROUTE_MATCHED
+            Presenter::STATUS_METHOD_NOT_ALLOWED,
+            sprintf(
+                Presenter::DESCRIPTION_AVAILABLE_METHODS,
+                implode(', ', $methods)
+            )
         );
     }
 }
