@@ -6,26 +6,22 @@ use Slim\Http\Response;
 
 class Info extends Presenter
 {
-    public function process($code, $description, $returnPlain = false)
+    public function process(Response $response, $code, $description)
     {
         $body = (object) [
             'code'    => $code,
-            'message' => $this->_getMessage($code),
+            'message' => $this->_getMessage($response, $code),
         ];
         if (!empty($description)) {
             $body->description = $description;
         }
-        if ($returnPlain) {
-            return $this->_encodeBody($body);
-        }
-        $this->_print($code, $body);
+        return $response->withJson($body, $code);
     }
 
-    private function _getMessage($code)
+    private function _getMessage(Response $response, $code)
     {
-        $message = Response::getMessageForCode($code);
-        $message = substr($message, 4);
-
-        return $message;
+        return $response
+            ->withStatus($code)
+            ->getReasonPhrase();
     }
 }

@@ -22,23 +22,8 @@ abstract class Presenter
     const DESCRIPTION_PARSE_ERROR         = 'JSON Parse Error';
     const DESCRIPTION_NO_ROUTE_MATCHED    = 'No existing Route matched';
 
-    protected $_response;
-
-    public function __construct(Response $response)
+    protected function _print(Response $response, $code, $body)
     {
-        $this->_response = $response;
-    }
-
-    protected function _encodeBody($body)
-    {
-        return json_encode($body);
-    }
-
-    protected function _print($code, $body)
-    {
-        $this->_response->setStatus($code);
-
-        $this->_response->headers->set('Content-Type', 'application/json');
-        $this->_response->setBody($this->_encodeBody($body));
+        return $response->withJson($body, $code);
     }
 }

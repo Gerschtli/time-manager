@@ -2,33 +2,47 @@
 
 namespace TimeManager\Controller;
 
+use Exception;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use TimeManager\Presenter\Info;
 use TimeManager\Presenter\Presenter;
 
 class Error
 {
     private $_infoPresenter;
+    private $_response;
 
-    public function __construct(Info $infoPresenter)
+    public function __construct(Info $infoPresenter, Response $response)
     {
         $this->_infoPresenter = $infoPresenter;
+        $this->_response      = $response;
     }
 
-    public function errorAction()
+    public function errorAction(Request $request, Response $response, Exception $exception)
     {
-        echo $this->_infoPresenter->process(
+        return $this->_infoPresenter->process(
+            $this->_response,
             Presenter::STATUS_INTERNAL_SERVER_ERROR,
-            null,
-            true
+            $exception->getMessage()
         );
     }
 
-    public function notFoundAction()
+    public function notFoundAction(Request $request, Response $response)
     {
-        echo $this->_infoPresenter->process(
+        return $this->_infoPresenter->process(
+            $this->_response,
             Presenter::STATUS_NOT_FOUND,
-            Presenter::DESCRIPTION_NO_ROUTE_MATCHED,
-            true
+            Presenter::DESCRIPTION_NO_ROUTE_MATCHED
+        );
+    }
+
+    public function notAllowedAction(Request $request, Response $response, array $methods)
+    {
+        return $this->_infoPresenter->process(
+            $this->_response,
+            Presenter::STATUS_NOT_FOUND,
+            Presenter::DESCRIPTION_NO_ROUTE_MATCHED
         );
     }
 }

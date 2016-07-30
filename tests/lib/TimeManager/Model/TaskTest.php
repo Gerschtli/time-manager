@@ -2,6 +2,8 @@
 
 namespace TimeManager\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
@@ -15,7 +17,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     public function testConstuctor()
     {
         $this->assertInstanceOf(
-            '\Doctrine\Common\Collections\ArrayCollection',
+            ArrayCollection::class,
             $this->_object->times
         );
         $this->assertEquals(0, count($this->_object->times));

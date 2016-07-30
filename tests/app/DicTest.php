@@ -1,7 +1,15 @@
 <?php
 
-use Slim\Environment;
-use Slim\Slim;
+use Doctrine\ORM\EntityManager;
+use Slim\App;
+use Slim\Collection;
+use TimeManager\Controller\Error as ErrorController;
+use TimeManager\Controller\Task as TaskController;
+use TimeManager\Middleware\JsonConverter;
+use TimeManager\Presenter\Data as DataPresenter;
+use TimeManager\Presenter\Info as InfoPresenter;
+use TimeManager\Service\Task as TaskService;
+use TimeManager\Service\Time as TimeService;
 
 /**
  * @SuppressWarnings(PMD.UnusedPrivateMethod)
@@ -11,35 +19,45 @@ class DicTest extends \PHPUnit_Framework_TestCase
 {
     private $_allDependencies;
     private $_systemDependencies = [
+        'callableResolver',
         'environment',
-        'log',
-        'logWriter',
-        'mode',
+        'foundHandler',
+        'phpErrorHandler',
         'request',
         'response',
         'router',
         'settings',
-        'view',
     ];
-    private $_app;
+    private $_container;
 
     public function testDic()
     {
         $dependencies = [
-            'config'                  => ['_sameInstance', '\stdClass'],
-            'controllerError'         => ['_sameInstance', '\TimeManager\Controller\Error'],
-            'controllerTask'          => ['_sameInstance', '\TimeManager\Controller\Task'],
-            'entityManager'           => ['_sameInstance', '\Doctrine\ORM\EntityManager'],
-            'middlewareJsonConverter' => ['_sameInstance', '\TimeManager\Middleware\JsonConverter'],
-            'presenterData'           => ['_sameInstance', '\TimeManager\Presenter\Data'],
-            'presenterInfo'           => ['_sameInstance', '\TimeManager\Presenter\Info'],
-            'serviceTask'             => ['_sameInstance', '\TimeManager\Service\Task'],
-            'serviceTime'             => ['_sameInstance', '\TimeManager\Service\Time'],
+            'errorHandler'         => [
+                '_testCallable',
+                [ErrorController::class, 'errorAction'],
+            ],
+            'notAllowedHandler'    => [
+                '_testCallable',
+                [ErrorController::class, 'notAllowedAction'],
+            ],
+            'notFoundHandler'      => [
+                '_testCallable',
+                [ErrorController::class, 'notFoundAction'],
+            ],
+            ErrorController::class => ['_sameInstance', ErrorController::class],
+            TaskController::class  => ['_sameInstance', TaskController::class],
+            EntityManager::class   => ['_sameInstance', EntityManager::class],
+            JsonConverter::class   => ['_sameInstance', JsonConverter::class],
+            DataPresenter::class   => ['_sameInstance', DataPresenter::class],
+            InfoPresenter::class   => ['_sameInstance', InfoPresenter::class],
+            TaskService::class     => ['_sameInstance', TaskService::class],
+            TimeService::class     => ['_sameInstance', TimeService::class],
         ];
 
-        $this->_app = $this->_getSlimInstance();
+        $this->_container = $this->_getSlimInstance()->getContainer();
 
-        $this->_allDependencies = $this->_app->container->all();
+        $this->_allDependencies = $this->_container->keys();
 
         foreach ($dependencies as $name => $info) {
             $this->{$info[0]}($name, $info[1]);
@@ -52,52 +70,59 @@ class DicTest extends \PHPUnit_Framework_TestCase
 
     private function _getSlimInstance()
     {
-        $app = new Slim(
+        $app = new App(
             [
-                'debug' => false,
+                'settings' => ['test' => 'bla'],
             ]
         );
 
-        Environment::mock([]);
+        require_once(__DIR__ . '/../../app/dependencies.php');
 
-        require_once(PROJECT_ROOT . '/app/app.php');
         return $app;
     }
 
-    private function _exists($name, $class)
+    private function _exists($name, $value)
     {
-        $this->assertTrue($this->_app->container->has($name), "{$name} exists");
-        unset($this->_allDependencies[$name]);
+        $this->assertTrue($this->_container->has($name), "{$name} exists");
+
+        $this->_delete($name);
     }
 
-    private function _instanceOf($name, $class)
+    private function _instanceOf($name, $value)
     {
-        $this->_exists($name, $class);
-        $this->assertInstanceOf($class, $this->_app->$name);
+        $this->_exists($name, $value);
+        $this->assertInstanceOf($value, $this->_container->get($name));
     }
 
-    private function _sameInstance($name, $class)
+    private function _sameInstance($name, $value)
     {
-        $this->_instanceOf($name, $class);
+        $this->_instanceOf($name, $value);
 
-        $instanceOne = $this->_app->$name;
-        $instanceTwo = $this->_app->$name;
+        $instanceOne = $this->_container->get($name);
+        $instanceTwo = $this->_container->get($name);
         $this->assertSame($instanceOne, $instanceTwo);
     }
 
-    private function _notSameInstance($name, $class)
+    private function _testCallable($name, $value)
     {
-        $this->_instanceOf($name, $class);
+        $this->_exists($name, $value);
 
-        $instanceOne = $this->_app->$name;
-        $instanceTwo = $this->_app->$name;
-        $this->assertNotSame($instanceOne, $instanceTwo);
+        $callable = $this->_container->get($name);
+        $this->assertInstanceOf($value[0], $callable[0]);
+        $this->assertEquals($value[1], $callable[1]);
     }
 
     private function _clearList()
     {
         foreach ($this->_systemDependencies as $dependency) {
-            unset($this->_allDependencies[$dependency]);
+            $this->_delete($dependency);
+        }
+    }
+
+    private function _delete($name)
+    {
+        if(($key = array_search($name, $this->_allDependencies)) !== false) {
+            unset($this->_allDependencies[$key]);
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace TimeManager\Controller;
 
 use Slim\Http\Request;
+use Slim\Http\Response;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Presenter\Presenter;
@@ -12,87 +13,93 @@ class Task
 {
     private $_dataPresenter;
     private $_infoPresenter;
-    private $_request;
     private $_taskService;
 
     public function __construct(
-        DataPresenter $data, InfoPresenter $info, Request $request, TaskService $task
+        DataPresenter $data, InfoPresenter $info, TaskService $task
     )
     {
         $this->_dataPresenter = $data;
         $this->_infoPresenter = $info;
-        $this->_request       = $request;
         $this->_taskService   = $task;
     }
 
-    public function addAction()
+    public function addAction(Request $request, Response $response, array $args)
     {
-        $data = $this->_request->getBody();
+        $data = $request->getParsedBody();
         $task = $this->_taskService->convertToEntity($data);
 
         if (!is_null($task)) {
             $this->_taskService->persistEntity($task);
-            $this->_dataPresenter->process(
+            return $this->_dataPresenter->process(
+                $response,
                 Presenter::STATUS_CREATED,
                 $task
             );
         } else {
-            $this->_infoPresenter->process(
+            return $this->_infoPresenter->process(
+                $response,
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
                 Presenter::DESCRIPTION_INVALID_STRUCTURE
             );
         }
     }
 
-    public function deleteAction($taskId)
+    public function deleteAction(Request $request, Response $response, array $args)
     {
-        $this->_taskService->deleteById($taskId);
+        $this->_taskService->deleteById($args['taskId']);
 
-        $this->_infoPresenter->process(
+        return $this->_infoPresenter->process(
+            $response,
             Presenter::STATUS_OK,
             Presenter::DESCRIPTION_SUCCESSFUL_DELETION
         );
     }
 
-    public function getAction($taskId)
+    public function getAction(Request $request, Response $response, array $args)
     {
-        $task = $this->_taskService->getById((int) $taskId);
+        $task = $this->_taskService->getById((int) $args['taskId']);
 
         if (!is_null($task)) {
-            $this->_dataPresenter->process(
+            return $this->_dataPresenter->process(
+                $response,
                 Presenter::STATUS_OK,
                 $task
             );
         } else {
-            $this->_infoPresenter->process(
+            return $this->_infoPresenter->process(
+                $response,
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );
         }
     }
 
-    public function getAllAction()
+    public function getAllAction(Request $request, Response $response, array $args)
     {
         $tasks = $this->_taskService->getAll();
 
-        $this->_dataPresenter->process(
+        return $this->_dataPresenter->process(
+            $response,
             Presenter::STATUS_OK,
             $tasks
         );
     }
 
-    public function updateAction($taskId)
+    public function updateAction(Request $request, Response $response, array $args)
     {
-        $data = $this->_request->getBody();
-        $task = $this->_taskService->update($taskId, $data);
+        $data = $request->getParsedBody();
+        $task = $this->_taskService->update($args['taskId'], $data);
 
         if (!is_null($task)) {
-            $this->_dataPresenter->process(
+            return $this->_dataPresenter->process(
+                $response,
                 Presenter::STATUS_ACCEPTED,
                 $task
             );
         } else {
-            $this->_infoPresenter->process(
+            return $this->_infoPresenter->process(
+                $response,
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
             );

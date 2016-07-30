@@ -2,14 +2,18 @@
 
 namespace TimeManager\Controller;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 use TimeManager\Model\Task as TaskModel;
+use TimeManager\Presenter\Data as DataPresenter;
+use TimeManager\Presenter\Info as InfoPresenter;
+use TimeManager\Service\Task as TaskService;
 
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
     private $_dataPresenter;
     private $_infoPresenter;
-    private $_request;
     private $_taskService;
 
     public function setUp()
@@ -17,24 +21,22 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_dataPresenter = $this
-            ->getMockBuilder('\TimeManager\Presenter\Data')
+            ->getMockBuilder(DataPresenter::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->_infoPresenter = $this
-            ->getMockBuilder('\TimeManager\Presenter\Info')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->_request = $this
-            ->getMockBuilder('\Slim\Http\Request')
+            ->getMockBuilder(InfoPresenter::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->_taskService = $this
-            ->getMockBuilder('\TimeManager\Service\Task')
+            ->getMockBuilder(TaskService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->_object = new Task(
-            $this->_dataPresenter, $this->_infoPresenter, $this->_request, $this->_taskService
+            $this->_dataPresenter,
+            $this->_infoPresenter,
+            $this->_taskService
         );
     }
 
@@ -47,9 +49,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $modelTask              = new TaskModel();
         $modelTask->description = 'bla';
 
-        $this->_request
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request
             ->expects($this->once())
-            ->method('getBody')
+            ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
         $this->_taskService
@@ -66,11 +77,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(201),
                 $this->equalTo($modelTask)
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->addAction();
+        $this->assertEquals(
+            $response,
+            $this->_object->addAction($request, $response, [])
+        );
     }
 
     public function testAddActionWithInvalidData()
@@ -79,9 +95,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             'test' => 'bla',
         ];
 
-        $this->_request
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request
             ->expects($this->once())
-            ->method('getBody')
+            ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
         $this->_taskService
@@ -97,16 +122,30 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(422),
                 $this->equalTo('JSON is in invalid data structure')
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->addAction();
+        $this->assertEquals(
+            $response,
+            $this->_object->addAction($request, $response, [])
+        );
     }
 
     public function testDeleteAction()
     {
         $taskId = time();
+
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->_taskService
             ->expects($this->once())
@@ -117,11 +156,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(200),
                 $this->equalTo('Deletion successful')
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->deleteAction($taskId);
+        $this->assertEquals(
+            $response,
+            $this->_object->deleteAction($request, $response, ['taskId' => $taskId])
+        );
     }
 
     public function testGetAction()
@@ -129,6 +173,15 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $taskId = time();
 
         $modelTask = new TaskModel();
+
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->_taskService
             ->expects($this->once())
@@ -140,16 +193,30 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(200),
                 $this->equalTo($modelTask)
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->getAction($taskId);
+        $this->assertEquals(
+            $response,
+            $this->_object->getAction($request, $response, ['taskId' => $taskId])
+        );
     }
 
     public function testGetActionWithoutValidId()
     {
         $taskId = time();
+
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->_taskService
             ->expects($this->once())
@@ -161,11 +228,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(404),
                 $this->equalTo('No Data with provided Key found')
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->getAction($taskId);
+        $this->assertEquals(
+            $response,
+            $this->_object->getAction($request, $response, ['taskId' => $taskId])
+        );
     }
 
     public function testGetAllAction()
@@ -176,6 +248,15 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $modelTaskTwo              = new TaskModel();
         $modelTaskTwo->description = 'ssssss';
 
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->_taskService
             ->expects($this->once())
             ->method('getAll')
@@ -185,11 +266,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(200),
                 $this->equalTo([$modelTaskOne, $modelTaskTwo])
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->getAllAction();
+        $this->assertEquals(
+            $response,
+            $this->_object->getAllAction($request, $response, [])
+        );
     }
 
     public function testUpdateAction()
@@ -201,9 +287,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $modelTask = (object) ['taskId' => $taskId];
 
-        $this->_request
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request
             ->expects($this->once())
-            ->method('getBody')
+            ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
         $this->_taskService
@@ -216,11 +311,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(202),
                 $this->equalTo($modelTask)
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->updateAction($taskId);
+        $this->assertEquals(
+            $response,
+            $this->_object->updateAction($request, $response, ['taskId' => $taskId])
+        );
     }
 
     public function testUpdateActionWithInvalidData()
@@ -230,9 +330,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             'test' => 'bla',
         ];
 
-        $this->_request
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request
             ->expects($this->once())
-            ->method('getBody')
+            ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
         $this->_taskService
@@ -245,10 +354,15 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('process')
             ->with(
+                $this->equalTo($response),
                 $this->equalTo(404),
                 $this->equalTo('No Data with provided Key found')
-            );
+            )
+            ->will($this->returnValue($response));
 
-        $this->_object->updateAction($taskId);
+        $this->assertEquals(
+            $response,
+            $this->_object->updateAction($request, $response, ['taskId' => $taskId])
+        );
     }
 }

@@ -4,11 +4,12 @@ namespace TimeManager\Presenter;
 
 use Closure;
 use DateTime;
+use Slim\Http\Response;
 use TimeManager\Model\Task;
 
 class Data extends Presenter
 {
-    public function process($code, $data)
+    public function process(Response $response, $code, $data)
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -18,7 +19,7 @@ class Data extends Presenter
             $data = $this->_checkForParsing($data);
         }
 
-        $this->_print($code, $data);
+        return $response->withJson($data, $code);
     }
 
     private function _checkForParsing($data)

@@ -1,25 +1,16 @@
 <?php
 
-use Slim\Slim;
+use Slim\App;
 
-if (!defined('PROJECT_ROOT')) {
-    define('PROJECT_ROOT', realpath(__DIR__ . '/../..'));
-}
-if (!defined('APPLICATION_ENV')) {
-    define(
-        'APPLICATION_ENV',
-        getenv('APPLICATION_ENV') ?: 'production'
-    );
-}
+require_once(__DIR__ . '/../../vendor/autoload.php');
 
-require_once(PROJECT_ROOT . '/vendor/autoload.php');
+$settings = require_once(__DIR__ . '/../../app/settings.php');
+$app = new App($settings);
 
-$app = new Slim(
-    [
-        'debug' => (APPLICATION_ENV != 'production'),
-    ]
-);
+require_once(__DIR__ . '/../../app/dependencies.php');
 
-require_once(PROJECT_ROOT . '/app/app.php');
+require_once(__DIR__ . '/../../app/middleware.php');
+
+require_once(__DIR__ . '/../../app/routes.php');
 
 $app->run();

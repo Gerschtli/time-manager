@@ -1,16 +1,16 @@
 <?php
 
-$config = new stdClass();
+$mode = getenv('APPLICATION_ENV') ?: 'production';
 
-$config->mysql = (object) [
+$database = [
     'database' => '<$= database.name $>',
     'host'     => '<$= database.host $>',
     'username' => '<$= database.user $>',
     'password' => '<$= database.password $>',
 ];
 
-if (APPLICATION_ENV == 'development') {
-    $config->mysql = (object) [
+if ($mode == 'development') {
+    $database = [
         'database' => 'time-manager',
         'host'     => 'localhost',
         'username' => 'root',
@@ -18,4 +18,9 @@ if (APPLICATION_ENV == 'development') {
     ];
 }
 
-return $config;
+return [
+    'settings' => [
+        'database' => $database,
+        'mode'     => $mode,
+    ],
+];
