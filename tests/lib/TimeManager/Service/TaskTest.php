@@ -2,6 +2,8 @@
 
 namespace TimeManager\Service;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use TimeManager\Model\Task as TaskModel;
 use TimeManager\Model\Time as TimeModel;
@@ -20,15 +22,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->_timeService = $this
-            ->getMockBuilder('\TimeManager\Service\Time')
+            ->getMockBuilder(Time::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->_object = new Task($this->_entityManager, $this->_timeService);
+        $this->_object = new Task(
+            $this->_entityManager,
+            $this->_timeService
+        );
     }
 
     /**
@@ -164,7 +169,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->at(0))
             ->method('getReference')
             ->with(
-                $this->equalTo('\TimeManager\Model\Task'),
+                $this->equalTo(TaskModel::class),
                 $this->equalTo($taskId)
             )
             ->will($this->returnValue('bla'));
@@ -187,7 +192,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('find')
             ->with(
-                $this->equalTo('\TimeManager\Model\Task'),
+                $this->equalTo(TaskModel::class),
                 $this->equalTo($taskId)
             )
             ->will($this->returnValue('bla'));
@@ -198,14 +203,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     public function testGetAll()
     {
         $repository = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityRepository')
+            ->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->_entityManager
             ->expects($this->once())
             ->method('getRepository')
-            ->with($this->equalTo('\TimeManager\Model\Task'))
+            ->with($this->equalTo(TaskModel::class))
             ->will($this->returnValue($repository));
 
         $repository

@@ -3,6 +3,7 @@
 namespace TimeManager\Service;
 
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use TimeManager\Model\Time as TimeModel;
 
 class TimeTest extends \PHPUnit_Framework_TestCase
@@ -15,11 +16,13 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_entityManager = $this
-            ->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->_object = new Time($this->_entityManager);
+        $this->_object = new Time(
+            $this->_entityManager
+        );
     }
 
     /**

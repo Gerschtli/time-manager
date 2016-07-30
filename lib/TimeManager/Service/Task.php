@@ -10,8 +10,6 @@ use TimeManager\Service\Time as TimeService;
 
 class Task
 {
-    private $_modelName = '\TimeManager\Model\Task';
-
     private $_entityManager;
     private $_timeService;
 
@@ -45,7 +43,7 @@ class Task
 
     public function deleteById($taskId)
     {
-        $task = $this->_entityManager->getReference($this->_modelName, $taskId);
+        $task = $this->_entityManager->getReference(TaskModel::class, $taskId);
         $this->_entityManager->remove($task);
         $this->_entityManager->flush();
     }
@@ -53,13 +51,13 @@ class Task
     public function getById($taskId)
     {
         return $this->_entityManager
-            ->find($this->_modelName, $taskId);
+            ->find(TaskModel::class, $taskId);
     }
 
     public function getAll()
     {
         return $this->_entityManager
-            ->getRepository($this->_modelName)
+            ->getRepository(TaskModel::class)
             ->findAll();
     }
 
