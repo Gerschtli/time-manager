@@ -75,7 +75,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_dataPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(201),
@@ -120,7 +120,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(422),
@@ -154,7 +154,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(200),
@@ -191,7 +191,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_dataPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(200),
@@ -226,7 +226,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(404),
@@ -264,7 +264,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_dataPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(200),
@@ -309,7 +309,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_dataPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(202),
@@ -352,7 +352,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($response),
                 $this->equalTo(404),

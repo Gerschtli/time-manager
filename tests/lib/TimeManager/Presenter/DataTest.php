@@ -24,7 +24,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Presenter::class, $this->_object);
     }
 
-    public function testProcess()
+    public function testRender()
     {
         $task              = new Task();
         $task->taskId      = 5;
@@ -70,11 +70,11 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $response,
-            $this->_object->process($response, 200, $task)
+            $this->_object->render($response, 200, $task)
         );
     }
 
-    public function testProcessWithDataArray()
+    public function testRenderWithDataArray()
     {
         $task              = new Task();
         $task->taskId      = 5;
@@ -120,7 +120,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $response,
-            $this->_object->process($response, 200, [$task])
+            $this->_object->render($response, 200, [$task])
         );
     }
 }

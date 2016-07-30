@@ -44,7 +44,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($this->_response),
                 $this->equalTo(500),
@@ -73,7 +73,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
 
         $this->_infoPresenter
             ->expects($this->once())
-            ->method('process')
+            ->method('render')
             ->with(
                 $this->equalTo($this->_response),
                 $this->equalTo(404),

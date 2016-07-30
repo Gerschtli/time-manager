@@ -22,9 +22,9 @@ class InfoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataProviderForTestProcess
+     * @dataProvider dataProviderForTestRender
      */
-    public function testProcess($code, $description, $body)
+    public function testRender($code, $description, $body)
     {
         $response = $this
             ->getMockBuilder(Response::class)
@@ -51,11 +51,11 @@ class InfoTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $response,
-            $this->_object->process($response, $code, $description)
+            $this->_object->render($response, $code, $description)
         );
     }
 
-    public function dataProviderForTestProcess()
+    public function dataProviderForTestRender()
     {
         return [
             [

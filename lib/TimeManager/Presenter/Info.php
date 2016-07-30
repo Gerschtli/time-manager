@@ -6,7 +6,7 @@ use Slim\Http\Response;
 
 class Info extends Presenter
 {
-    public function process(Response $response, $code, $description)
+    public function render(Response $response, $code, $description)
     {
         $body = (object) [
             'code'    => $code,

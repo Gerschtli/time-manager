@@ -34,13 +34,13 @@ class Task
 
         if (!is_null($task)) {
             $this->_taskService->persistEntity($task);
-            return $this->_dataPresenter->process(
+            return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_CREATED,
                 $task
             );
         } else {
-            return $this->_infoPresenter->process(
+            return $this->_infoPresenter->render(
                 $response,
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
                 Presenter::DESCRIPTION_INVALID_STRUCTURE
@@ -52,7 +52,7 @@ class Task
     {
         $this->_taskService->deleteById($args['taskId']);
 
-        return $this->_infoPresenter->process(
+        return $this->_infoPresenter->render(
             $response,
             Presenter::STATUS_OK,
             Presenter::DESCRIPTION_SUCCESSFUL_DELETION
@@ -64,13 +64,13 @@ class Task
         $task = $this->_taskService->getById((int) $args['taskId']);
 
         if (!is_null($task)) {
-            return $this->_dataPresenter->process(
+            return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_OK,
                 $task
             );
         } else {
-            return $this->_infoPresenter->process(
+            return $this->_infoPresenter->render(
                 $response,
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY
@@ -82,7 +82,7 @@ class Task
     {
         $tasks = $this->_taskService->getAll();
 
-        return $this->_dataPresenter->process(
+        return $this->_dataPresenter->render(
             $response,
             Presenter::STATUS_OK,
             $tasks
@@ -95,13 +95,13 @@ class Task
         $task = $this->_taskService->update($args['taskId'], $data);
 
         if (!is_null($task)) {
-            return $this->_dataPresenter->process(
+            return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_ACCEPTED,
                 $task
             );
         } else {
-            return $this->_infoPresenter->process(
+            return $this->_infoPresenter->render(
                 $response,
                 Presenter::STATUS_NOT_FOUND,
                 Presenter::DESCRIPTION_NONEXISTING_KEY

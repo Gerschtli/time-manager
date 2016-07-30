@@ -9,7 +9,7 @@ use TimeManager\Model\Task;
 
 class Data extends Presenter
 {
-    public function process(Response $response, $code, $data)
+    public function render(Response $response, $code, $data)
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
