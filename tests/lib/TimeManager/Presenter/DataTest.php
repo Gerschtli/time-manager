@@ -41,20 +41,6 @@ class DataTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $body = (object) [
-            'taskId'      => 5,
-            'description' => 'description',
-            'times'       => [
-                (object) [
-                    'start' => '2015-10-10 00:00:00',
-                ],
-                (object) [
-                    'start' => '2015-10-10 00:00:00',
-                    'end'   => '2015-11-11 00:00:00',
-                ],
-            ],
-        ];
-
         $expected              = new Task();
         $expected->taskId      = 5;
         $expected->description = 'description';

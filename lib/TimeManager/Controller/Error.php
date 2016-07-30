@@ -8,6 +8,9 @@ use Slim\Http\Response;
 use TimeManager\Presenter\Info;
 use TimeManager\Presenter\Presenter;
 
+/**
+ * @SuppressWarnings(PMD.UnusedFormalParameter)
+ */
 class Error
 {
     private $_infoPresenter;

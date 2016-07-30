@@ -2,8 +2,6 @@
 
 namespace TimeManager\Presenter;
 
-use Slim\Http\Response;
-
 abstract class Presenter
 {
     const STATUS_OK                     = 200;

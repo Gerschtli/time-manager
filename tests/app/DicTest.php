@@ -2,7 +2,6 @@
 
 use Doctrine\ORM\EntityManager;
 use Slim\App;
-use Slim\Collection;
 use TimeManager\Controller\Error as ErrorController;
 use TimeManager\Controller\Task as TaskController;
 use TimeManager\Middleware\JsonConverter;
@@ -121,7 +120,9 @@ class DicTest extends \PHPUnit_Framework_TestCase
 
     private function _delete($name)
     {
-        if(($key = array_search($name, $this->_allDependencies)) !== false) {
+        $key = array_search($name, $this->_allDependencies);
+
+        if ($key !== false) {
             unset($this->_allDependencies[$key]);
         }
     }

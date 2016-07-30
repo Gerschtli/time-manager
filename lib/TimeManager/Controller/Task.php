@@ -9,6 +9,9 @@ use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Presenter\Presenter;
 use TimeManager\Service\Task as TaskService;
 
+/**
+ * @SuppressWarnings(PMD.UnusedFormalParameter)
+ */
 class Task
 {
     private $_dataPresenter;
