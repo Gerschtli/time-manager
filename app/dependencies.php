@@ -2,6 +2,9 @@
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\WebProcessor;
 use TimeManager\Controller\Error as ErrorController;
 use TimeManager\Controller\Task as TaskController;
 use TimeManager\Middleware\JsonConverter;
@@ -33,10 +36,25 @@ $container['notAllowedHandler'] = function ($container) {
     ];
 };
 
+$container['logger'] = function ($container) {
+    $settings = $container->get('settings');
+
+    $logger = new Logger($settings['logger']['name']);
+    $logger->pushProcessor(new WebProcessor());
+    $logger->pushHandler(
+        new StreamHandler(
+            $settings['logger']['path'],
+            Logger::DEBUG
+        )
+    );
+    return $logger;
+};
+
 $container[ErrorController::class] = function ($container) {
     return new ErrorController(
         $container->get(InfoPresenter::class),
-        $container->get('response')
+        $container->get('response'),
+        $container->get('logger')
     );
 };
 

@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 use Slim\App;
 use TimeManager\Controller\Error as ErrorController;
 use TimeManager\Controller\Task as TaskController;
@@ -44,6 +45,7 @@ class DicTest extends \PHPUnit_Framework_TestCase
                 '_testCallable',
                 [ErrorController::class, 'notFoundAction'],
             ],
+            'logger'               => ['_sameInstance', Logger::class],
             ErrorController::class => ['_sameInstance', ErrorController::class],
             TaskController::class  => ['_sameInstance', TaskController::class],
             EntityManager::class   => ['_sameInstance', EntityManager::class],
@@ -71,7 +73,12 @@ class DicTest extends \PHPUnit_Framework_TestCase
     {
         $app = new App(
             [
-                'settings' => ['test' => 'bla'],
+                'settings' => [
+                    'logger' => [
+                        'name' => 'test',
+                        'path' => 'test',
+                    ],
+                ],
             ]
         );
 

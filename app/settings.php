@@ -22,5 +22,9 @@ return [
     'settings' => [
         'database' => $database,
         'mode'     => $mode,
+        'logger'   => [
+            'name' => 'Default',
+            'path' => '/var/log/php/time-manager.log',
+        ],
     ],
 ];
