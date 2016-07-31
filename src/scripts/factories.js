@@ -13,6 +13,7 @@
             add: add,
             delete: deleteFunction,
             getAll: getAll,
+            update: update,
         };
         return service;
 
@@ -42,6 +43,16 @@
                 {
                     method: 'GET',
                     url: '/api/task',
+                }
+            ).then(success).catch(error);
+        }
+
+        function update(task) {
+            return $http(
+                {
+                    method: 'PUT',
+                    url: '/api/task/' + task.taskId,
+                    data: task,
                 }
             ).then(success).catch(error);
         }

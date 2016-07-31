@@ -44,8 +44,11 @@
         }
 
         function updateTask(task) {
-            // TODO
-            toastr.info('Update Task');
+            taskService.update(task)
+                .then(function(data) {
+                    task = data;
+                    toastr.success('Updated Task');
+                });
         }
 
         function deleteTask(task) {
