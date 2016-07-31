@@ -285,7 +285,8 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             'description' => 'bla',
         ];
 
-        $modelTask = (object) ['taskId' => $taskId];
+        $modelTask         = new TaskModel();
+        $modelTask->taskId = $taskId;
 
         $request = $this
             ->getMockBuilder(Request::class)
@@ -302,9 +303,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($requestData));
 
         $this->_taskService
-            ->expects($this->once())
+            ->expects($this->at(0))
+            ->method('convertToEntity')
+            ->with($this->equalTo($requestData))
+            ->will($this->returnValue($modelTask));
+        $this->_taskService
+            ->expects($this->at(1))
             ->method('update')
-            ->with($this->equalTo($taskId), $this->equalTo($requestData))
+            ->with($this->equalTo($taskId), $this->equalTo($modelTask))
             ->will($this->returnValue($modelTask));
 
         $this->_dataPresenter
@@ -314,6 +320,57 @@ class TaskTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo($response),
                 $this->equalTo(202),
                 $this->equalTo($modelTask)
+            )
+            ->will($this->returnValue($response));
+
+        $this->assertEquals(
+            $response,
+            $this->_object->updateAction($request, $response, ['taskId' => $taskId])
+        );
+    }
+
+    public function testUpdateActionWhenUpdateFails()
+    {
+        $taskId      = time();
+        $requestData = (object) [
+            'test' => 'bla',
+        ];
+
+        $modelTask         = new TaskModel();
+        $modelTask->taskId = $taskId;
+
+        $request = $this
+            ->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $request
+            ->expects($this->once())
+            ->method('getParsedBody')
+            ->will($this->returnValue($requestData));
+
+        $this->_taskService
+            ->expects($this->at(0))
+            ->method('convertToEntity')
+            ->with($this->equalTo($requestData))
+            ->will($this->returnValue($modelTask));
+        $this->_taskService
+            ->expects($this->at(1))
+            ->method('update')
+            ->with($this->equalTo($taskId), $this->equalTo($modelTask))
+            ->will($this->returnValue(null));
+
+        $this->_infoPresenter
+            ->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo($response),
+                $this->equalTo(404),
+                $this->equalTo('No Data with provided Key found')
             )
             ->will($this->returnValue($response));
 
@@ -346,17 +403,20 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->_taskService
             ->expects($this->once())
-            ->method('update')
-            ->with($this->equalTo($taskId), $this->equalTo($requestData))
+            ->method('convertToEntity')
+            ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
+        $this->_taskService
+            ->expects($this->never())
+            ->method('update');
 
         $this->_infoPresenter
             ->expects($this->once())
             ->method('render')
             ->with(
                 $this->equalTo($response),
-                $this->equalTo(404),
-                $this->equalTo('No Data with provided Key found')
+                $this->equalTo(422),
+                $this->equalTo('JSON is in invalid data structure')
             )
             ->will($this->returnValue($response));
 

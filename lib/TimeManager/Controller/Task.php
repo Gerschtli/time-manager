@@ -91,14 +91,24 @@ class Task
 
     public function updateAction(Request $request, Response $response, array $args)
     {
-        $data = $request->getParsedBody();
-        $task = $this->_taskService->update($args['taskId'], $data);
+        $data    = $request->getParsedBody();
+        $task    = $this->_taskService->convertToEntity($data);
 
-        if (!is_null($task)) {
+        if (is_null($task)) {
+            return $this->_infoPresenter->render(
+                $response,
+                Presenter::STATUS_UNPROCESSABLE_ENTITY,
+                Presenter::DESCRIPTION_INVALID_STRUCTURE
+            );
+        }
+
+        $newTask = $this->_taskService->update($args['taskId'], $task);
+
+        if (!is_null($newTask)) {
             return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_ACCEPTED,
-                $task
+                $newTask
             );
         } else {
             return $this->_infoPresenter->render(
