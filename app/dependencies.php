@@ -2,6 +2,7 @@
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\WebProcessor;
@@ -39,14 +40,19 @@ $container['notAllowedHandler'] = function ($container) {
 $container['logger'] = function ($container) {
     $settings = $container->get('settings');
 
+    $formatter = new LineFormatter();
+    $formatter->includeStacktraces();
+
+    $handler = new StreamHandler(
+        $settings['logger']['path'],
+        Logger::DEBUG
+    );
+    $handler->setFormatter($formatter);
+
     $logger = new Logger($settings['logger']['name']);
     $logger->pushProcessor(new WebProcessor());
-    $logger->pushHandler(
-        new StreamHandler(
-            $settings['logger']['path'],
-            Logger::DEBUG
-        )
-    );
+    $logger->pushHandler($handler);
+
     return $logger;
 };
 
