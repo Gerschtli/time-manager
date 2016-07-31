@@ -28,6 +28,10 @@ class Task
         $task              = new TaskModel();
         $task->description = $data->description;
 
+        if (!empty($data->taskId)) {
+            $task->taskId = $data->taskId;
+        }
+
         if (!empty($data->times) && is_array($data->times)) {
             foreach ($data->times as $timeObject) {
                 $time = $this->_timeService->convertToEntity($timeObject);

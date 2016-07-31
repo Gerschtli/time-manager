@@ -52,6 +52,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $task              = new TaskModel();
         $task->description = 'bla';
 
+        $taskWithId              = new TaskModel();
+        $taskWithId->taskId      = 15;
+        $taskWithId->description = 'bla';
+
         return [
             [
                 (object) [],
@@ -101,6 +105,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase
                     'times'       => [],
                 ],
                 $task,
+            ],
+            [
+                (object) [
+                    'taskId'      => 15,
+                    'description' => 'bla',
+                ],
+                $taskWithId,
             ],
         ];
     }
