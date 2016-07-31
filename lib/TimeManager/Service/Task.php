@@ -71,13 +71,13 @@ class Task
         $this->_entityManager->flush();
     }
 
-    public function update($taskId, stdClass $data)
+    public function update($taskId, TaskModel $task)
     {
-        if (empty($data->taskId) || $data->taskId != $taskId) {
+        if (empty($task->taskId) || $task->taskId != $taskId) {
             return null;
         }
         try {
-            $copy = $this->_entityManager->merge($data);
+            $copy = $this->_entityManager->merge($task);
             $this->_entityManager->flush();
             return $copy;
         } catch (ORMInvalidArgumentException $exception) {

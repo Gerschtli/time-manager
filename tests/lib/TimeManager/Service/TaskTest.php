@@ -252,14 +252,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     {
         $taskId = (time() % 20) + 1;
 
-        $modelTask = (object) [
-            'taskId'      => $taskId,
-            'description' => 'bla',
-        ];
-        $modelTaskCopy = (object) [
-            'taskId'      => $taskId,
-            'description' => 'blax',
-        ];
+        $modelTask              = new TaskModel();
+        $modelTask->taskId      = $taskId;
+        $modelTask->description = 'bla';
+
+        $modelTaskCopy              = new TaskModel();
+        $modelTaskCopy->taskId      = $taskId;
+        $modelTaskCopy->description = 'blax';
 
         $this->_entityManager
             ->expects($this->at(0))
@@ -277,10 +276,9 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     {
         $taskId = time() % 20;
 
-        $modelTask = (object) [
-            'taskId'      => $taskId,
-            'description' => 'bla',
-        ];
+        $modelTask              = new TaskModel();
+        $modelTask->taskId      = $taskId;
+        $modelTask->description = 'bla';
 
         $this->_entityManager
             ->expects($this->once())
@@ -311,26 +309,21 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function dataProviderForTestUpdateWhenIdIsInvalid()
     {
+        $taskNoId              = new TaskModel();
+        $taskNoId->description = 'bla';
+
+        $taskWrongId              = new TaskModel();
+        $taskWrongId->taskId      = 241;
+        $taskWrongId->description = 'bla';
+
         return [
             [
                 123,
-                (object) [
-                    'description' => 'bla',
-                ],
+                $taskNoId,
             ],
             [
                 123,
-                (object) [
-                    'taskId'      => null,
-                    'description' => 'bla',
-                ],
-            ],
-            [
-                123,
-                (object) [
-                    'taskId'      => 241,
-                    'description' => 'bla',
-                ],
+                $taskWrongId,
             ],
         ];
     }
