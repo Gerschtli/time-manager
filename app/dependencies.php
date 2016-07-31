@@ -13,6 +13,7 @@ use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
 use TimeManager\Service\Time as TimeService;
+use TimeManager\Util\Date;
 
 $container = $app->getContainer();
 
@@ -113,4 +114,8 @@ $container[TimeService::class] = function ($container) {
     return new TimeService(
         $container->get(EntityManager::class)
     );
+};
+
+$container[Date::class] = function ($container) {
+    return new Date();
 };
