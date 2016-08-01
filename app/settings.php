@@ -11,7 +11,7 @@ $database = [
 
 if ($mode == 'development') {
     $database = [
-        'database' => 'time-manager',
+        'database' => 'time_manager',
         'host'     => 'localhost',
         'username' => 'root',
         'password' => 'root',
