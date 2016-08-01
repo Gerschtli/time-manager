@@ -7,19 +7,21 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity
- * @Table(name="tm_tasks")
+ * @Table(name="tasks")
  */
 class Task
 {
     /**
      * @Id
      * @GeneratedValue
-     * @Column(type="integer", name="taskId")
+     * @Column(type="integer", name="id")
      *
      * @var int
      */
@@ -33,7 +35,11 @@ class Task
     public $description;
 
     /**
-     * @OneToMany(targetEntity="Time", mappedBy="task")
+     * @ManyToMany(targetEntity="Time", cascade={"persist"})
+     * @JoinTable(name="tasks_times",
+     *      joinColumns={@JoinColumn(name="task_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="time_id", referencedColumnName="id", unique=true)}
+     * )
      *
      * @var Time[]
      */

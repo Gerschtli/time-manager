@@ -22,8 +22,11 @@ $group         = "www-data"
 $directory     = "/var/www/${appName}"
 $resourcePath  = "${directory}/manifests/resources"
 
+$logFolder     = "/var/log/php"
+$logFile       = "${logFolder}/time-manager.log"
+
 $mysqlServer   = "localhost"
-$mysqlDatabase = "${appName}"
+$mysqlDatabase = "time_manager"
 $mysqlUser     = "root"
 $mysqlPassword = "root"
 
@@ -64,12 +67,20 @@ class httpserver {
 
   file { [
       "${directory}",
-      "/var/log/php"
+      "${logFolder}"
     ]:
     ensure => "directory",
     owner  => "${user}",
     group  => "${group}",
     mode   => "0775"
+  }
+
+  file { "${logFile}":
+    ensure  => "present",
+    owner   => "${user}",
+    group   => "${group}",
+    mode    => "0775",
+    replace => 'no'
   }
 
   file { "/etc/apache2/sites-available/${appName}.conf":
