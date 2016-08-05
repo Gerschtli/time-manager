@@ -2,20 +2,27 @@
 
 namespace TimeManager\Presenter;
 
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Slim\Http\Response;
 use TimeManager\Model\Task;
+use TimeManager\Transformer\Task as TaskTransformer;
 
 class DataTest extends \PHPUnit_Framework_TestCase
 {
     private $_object;
+    private $_taskTransformer;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->_object = new Data();
+        $this->_taskTransformer = $this
+            ->getMockBuilder(TaskTransformer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_object = new Data(
+            $this->_taskTransformer
+        );
     }
 
     public function testInstance()
@@ -26,33 +33,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testRender()
     {
-        $task              = new Task();
-        $task->taskId      = 5;
-        $task->description = 'description';
-        $task->times       = new ArrayCollection(
-            [
-                (object) [
-                    'start' => new DateTime('2015-10-10'),
-                ],
-                (object) [
-                    'start' => new DateTime('2015-10-10'),
-                    'end'   => new DateTime('2015-11-11'),
-                ],
-            ]
-        );
-
-        $expected              = new Task();
-        $expected->taskId      = 5;
-        $expected->description = 'description';
-        $expected->times       = [
-            (object) [
-                'start' => '2015-10-10 00:00:00',
-            ],
-            (object) [
-                'start' => '2015-10-10 00:00:00',
-                'end'   => '2015-11-11 00:00:00',
-            ],
-        ];
+        $data = ['test'];
 
         $response = $this
             ->getMockBuilder(Response::class)
@@ -63,7 +44,38 @@ class DataTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('withJson')
             ->with(
-                $this->equalTo($expected),
+                $this->equalTo($data),
+                $this->equalTo(200)
+            )
+            ->will($this->returnSelf());
+
+        $this->assertEquals(
+            $response,
+            $this->_object->render($response, 200, $data)
+        );
+    }
+
+    public function testRenderWithTask()
+    {
+        $task = new Task();
+        $data = ['task'];
+
+        $response = $this
+            ->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->_taskTransformer
+            ->expects($this->once())
+            ->method('transformToApiObject')
+            ->with($this->equalTo($task))
+            ->will($this->returnValue($data));
+
+        $response
+            ->expects($this->once())
+            ->method('withJson')
+            ->with(
+                $this->equalTo($data),
                 $this->equalTo(200)
             )
             ->will($this->returnSelf());
@@ -74,46 +86,27 @@ class DataTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRenderWithDataArray()
+    public function testRenderWithTaskList()
     {
-        $task              = new Task();
-        $task->taskId      = 5;
-        $task->description = 'description';
-        $task->times       = new ArrayCollection(
-            [
-                (object) [
-                    'start' => new DateTime('2015-10-10'),
-                ],
-                (object) [
-                    'start' => new DateTime('2015-10-10'),
-                    'end'   => new DateTime('2015-11-11'),
-                ],
-            ]
-        );
-
-        $expected              = new Task();
-        $expected->taskId      = 5;
-        $expected->description = 'description';
-        $expected->times       = [
-            (object) [
-                'start' => '2015-10-10 00:00:00',
-            ],
-            (object) [
-                'start' => '2015-10-10 00:00:00',
-                'end'   => '2015-11-11 00:00:00',
-            ],
-        ];
+        $task = new Task();
+        $data = ['task'];
 
         $response = $this
             ->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->_taskTransformer
+            ->expects($this->once())
+            ->method('transformToApiObject')
+            ->with($this->equalTo($task))
+            ->will($this->returnValue($data));
+
         $response
             ->expects($this->once())
             ->method('withJson')
             ->with(
-                $this->equalTo([$expected]),
+                $this->equalTo([$data]),
                 $this->equalTo(200)
             )
             ->will($this->returnSelf());

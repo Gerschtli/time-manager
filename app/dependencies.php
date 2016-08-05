@@ -93,7 +93,9 @@ $container[EntityManager::class] = function ($container) {
 };
 
 $container[DataPresenter::class] = function ($container) {
-    return new DataPresenter();
+    return new DataPresenter(
+        $container->get(TaskTransformer::class)
+    );
 };
 
 $container[InfoPresenter::class] = function ($container) {

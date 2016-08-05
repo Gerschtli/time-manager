@@ -2,13 +2,19 @@
 
 namespace TimeManager\Presenter;
 
-use Closure;
-use DateTime;
 use Slim\Http\Response;
 use TimeManager\Model\Task;
+use TimeManager\Transformer\Task as TaskTransformer;
 
 class Data extends Presenter
 {
+    private $_taskTransformer;
+
+    public function __construct(TaskTransformer $taskTransformer)
+    {
+        $this->_taskTransformer = $taskTransformer;
+    }
+
     public function render(Response $response, $code, $data)
     {
         if (is_array($data)) {
@@ -25,44 +31,8 @@ class Data extends Presenter
     private function _checkForParsing($data)
     {
         if ($data instanceof Task) {
-            $data = $this->_parseTask($data);
+            $data = $this->_taskTransformer->transformToApiObject($data);
         }
         return $data;
-    }
-
-    private function _parseTask(Task $task)
-    {
-        $format = $this->_getFormatClosure();
-        $clean  = $this->_getTimeCleanClosure($format);
-
-        $task->times->forAll($clean);
-        $task->times = $task->times->toArray();
-
-        return $task;
-    }
-
-    private function _getFormatClosure()
-    {
-        return function (DateTime $date) {
-            return $date->format('Y-m-d H:i:s');
-        };
-    }
-
-    /**
-     * @SuppressWarnings(PMD.UnusedLocalVariable)
-     */
-    private function _getTimeCleanClosure(Closure $format)
-    {
-        return function ($key, $value) use ($format) {
-            unset($value->timeId, $value->task);
-
-            $value->start = $format($value->start);
-            if (empty($value->end)) {
-                unset($value->end);
-            } else {
-                $value->end = $format($value->end);
-            }
-            return true;
-        };
     }
 }
