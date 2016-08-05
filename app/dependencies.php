@@ -12,7 +12,6 @@ use TimeManager\Middleware\JsonConverter;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
-use TimeManager\Service\Time as TimeService;
 use TimeManager\Transformer\Task as TaskTransformer;
 use TimeManager\Util\Date;
 
@@ -107,12 +106,6 @@ $container[JsonConverter::class] = function ($container) {
 
 $container[TaskService::class] = function ($container) {
     return new TaskService(
-        $container->get(EntityManager::class)
-    );
-};
-
-$container[TimeService::class] = function ($container) {
-    return new TimeService(
         $container->get(EntityManager::class)
     );
 };

@@ -9,7 +9,6 @@ use TimeManager\Middleware\JsonConverter;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
-use TimeManager\Service\Time as TimeService;
 use TimeManager\Transformer\Task as TaskTransformer;
 use TimeManager\Util\Date;
 
@@ -55,7 +54,6 @@ class DicTest extends \PHPUnit_Framework_TestCase
             DataPresenter::class   => ['_sameInstance', DataPresenter::class],
             InfoPresenter::class   => ['_sameInstance', InfoPresenter::class],
             TaskService::class     => ['_sameInstance', TaskService::class],
-            TimeService::class     => ['_sameInstance', TimeService::class],
             TaskTransformer::class => ['_sameInstance', TaskTransformer::class],
             Date::class            => ['_sameInstance', Date::class],
         ];
