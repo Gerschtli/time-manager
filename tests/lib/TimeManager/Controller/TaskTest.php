@@ -8,6 +8,7 @@ use TimeManager\Model\Task as TaskModel;
 use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Service\Task as TaskService;
+use TimeManager\Transformer\Task as TaskTransformer;
 
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,6 +16,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
     private $_dataPresenter;
     private $_infoPresenter;
     private $_taskService;
+    private $_taskTransformer;
 
     public function setUp()
     {
@@ -32,11 +34,16 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder(TaskService::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->_taskTransformer = $this
+            ->getMockBuilder(TaskTransformer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->_object = new Task(
             $this->_dataPresenter,
             $this->_infoPresenter,
-            $this->_taskService
+            $this->_taskService,
+            $this->_taskTransformer
         );
     }
 
@@ -63,13 +70,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
-        $this->_taskService
-            ->expects($this->at(0))
-            ->method('convertToEntity')
+        $this->_taskTransformer
+            ->expects($this->once())
+            ->method('transformToModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
+
         $this->_taskService
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('persistEntity')
             ->with($this->equalTo($modelTask));
 
@@ -109,11 +117,12 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
-        $this->_taskService
+        $this->_taskTransformer
             ->expects($this->once())
-            ->method('convertToEntity')
+            ->method('transformToModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
+
         $this->_taskService
             ->expects($this->never())
             ->method('persistEntity');
@@ -302,13 +311,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
-        $this->_taskService
-            ->expects($this->at(0))
-            ->method('convertToEntity')
+        $this->_taskTransformer
+            ->expects($this->once())
+            ->method('transformToModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
+
         $this->_taskService
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('update')
             ->with($this->equalTo($taskId), $this->equalTo($modelTask))
             ->will($this->returnValue($modelTask));
@@ -353,13 +363,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
-        $this->_taskService
-            ->expects($this->at(0))
-            ->method('convertToEntity')
+        $this->_taskTransformer
+            ->expects($this->once())
+            ->method('transformToModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue($modelTask));
+
         $this->_taskService
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('update')
             ->with($this->equalTo($taskId), $this->equalTo($modelTask))
             ->will($this->returnValue(null));
@@ -401,11 +412,12 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('getParsedBody')
             ->will($this->returnValue($requestData));
 
-        $this->_taskService
+        $this->_taskTransformer
             ->expects($this->once())
-            ->method('convertToEntity')
+            ->method('transformToModel')
             ->with($this->equalTo($requestData))
             ->will($this->returnValue(null));
+
         $this->_taskService
             ->expects($this->never())
             ->method('update');

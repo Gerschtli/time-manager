@@ -70,7 +70,8 @@ $container[TaskController::class] = function ($container) {
     return new TaskController(
         $container->get(DataPresenter::class),
         $container->get(InfoPresenter::class),
-        $container->get(TaskService::class)
+        $container->get(TaskService::class),
+        $container->get(TaskTransformer::class)
     );
 };
 

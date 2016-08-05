@@ -8,6 +8,7 @@ use TimeManager\Presenter\Data as DataPresenter;
 use TimeManager\Presenter\Info as InfoPresenter;
 use TimeManager\Presenter\Presenter;
 use TimeManager\Service\Task as TaskService;
+use TimeManager\Transformer\Task as TaskTransformer;
 
 /**
  * @SuppressWarnings(PMD.UnusedFormalParameter)
@@ -17,22 +18,24 @@ class Task
     private $_dataPresenter;
     private $_infoPresenter;
     private $_taskService;
+    private $_transformer;
 
     public function __construct(
-        DataPresenter $data, InfoPresenter $info, TaskService $task
+        DataPresenter $data, InfoPresenter $info, TaskService $task, TaskTransformer $transformer
     )
     {
         $this->_dataPresenter = $data;
         $this->_infoPresenter = $info;
         $this->_taskService   = $task;
+        $this->_transformer   = $transformer;
     }
 
     public function addAction(Request $request, Response $response, array $args)
     {
         $data = $request->getParsedBody();
-        $task = $this->_taskService->convertToEntity($data);
+        $task = $this->_transformer->transformToModel($data);
 
-        if (!is_null($task)) {
+        if ($task !== null) {
             $this->_taskService->persistEntity($task);
             return $this->_dataPresenter->render(
                 $response,
@@ -63,7 +66,7 @@ class Task
     {
         $task = $this->_taskService->getById((int) $args['taskId']);
 
-        if (!is_null($task)) {
+        if ($task !== null) {
             return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_OK,
@@ -91,10 +94,10 @@ class Task
 
     public function updateAction(Request $request, Response $response, array $args)
     {
-        $data    = $request->getParsedBody();
-        $task    = $this->_taskService->convertToEntity($data);
+        $data = $request->getParsedBody();
+        $task = $this->_transformer->transformToModel($data);
 
-        if (is_null($task)) {
+        if ($task === null) {
             return $this->_infoPresenter->render(
                 $response,
                 Presenter::STATUS_UNPROCESSABLE_ENTITY,
@@ -104,7 +107,7 @@ class Task
 
         $newTask = $this->_taskService->update($args['taskId'], $task);
 
-        if (!is_null($newTask)) {
+        if ($newTask !== null) {
             return $this->_dataPresenter->render(
                 $response,
                 Presenter::STATUS_ACCEPTED,
