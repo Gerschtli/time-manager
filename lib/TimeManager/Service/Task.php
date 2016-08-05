@@ -6,43 +6,14 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use stdClass;
 use TimeManager\Model\Task as TaskModel;
-use TimeManager\Service\Time as TimeService;
 
 class Task
 {
     private $_entityManager;
-    private $_timeService;
 
-    public function __construct(EntityManager $entityManager, TimeService $timeService)
+    public function __construct(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
-        $this->_timeService   = $timeService;
-    }
-
-    public function convertToEntity(stdClass $data)
-    {
-        if (empty($data->description)) {
-            return null;
-        }
-
-        $task              = new TaskModel();
-        $task->description = $data->description;
-
-        if (!empty($data->taskId)) {
-            $task->taskId = $data->taskId;
-        }
-
-        if (!empty($data->times) && is_array($data->times)) {
-            foreach ($data->times as $timeObject) {
-                $time = $this->_timeService->convertToEntity($timeObject);
-                if ($time !== null) {
-                    $time->task = $task;
-                    $task->times->add($time);
-                }
-            }
-        }
-
-        return $task;
     }
 
     public function deleteById($taskId)

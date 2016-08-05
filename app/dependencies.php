@@ -107,8 +107,7 @@ $container[JsonConverter::class] = function ($container) {
 
 $container[TaskService::class] = function ($container) {
     return new TaskService(
-        $container->get(EntityManager::class),
-        $container->get(TimeService::class)
+        $container->get(EntityManager::class)
     );
 };
 
