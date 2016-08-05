@@ -4,7 +4,6 @@ namespace TimeManager\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use stdClass;
 use TimeManager\Model\Task as TaskModel;
 
 class Task

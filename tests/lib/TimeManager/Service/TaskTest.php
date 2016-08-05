@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use TimeManager\Model\Task as TaskModel;
-use TimeManager\Model\Time as TimeModel;
 
 /**
  * @SuppressWarnings(PMD.TooManyPublicMethods)
