@@ -27,6 +27,95 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testTransformToApiObject()
+    {
+        $task              = new TaskModel();
+        $task->taskId      = 5;
+        $task->description = 'bla';
+
+        $expected = (object) [
+            'taskId'      => 5,
+            'description' => 'bla',
+            'times'       => [],
+        ];
+
+        $this->assertEquals(
+            $expected,
+            $this->_object->transformToApiObject($task)
+        );
+    }
+
+    public function testTransformToApiObjectWithTime()
+    {
+        $this->_date
+            ->expects($this->once())
+            ->method('format')
+            ->with($this->equalTo(new DateTime('2015-10-10 10:10:10')))
+            ->will($this->returnValue('2015-10-10 10:10:10'));
+
+        $time        = new TimeModel();
+        $time->start = new DateTime('2015-10-10 10:10:10');
+
+        $task              = new TaskModel();
+        $task->taskId      = 5;
+        $task->description = 'bla';
+        $task->times->add($time);
+
+        $expected = (object) [
+            'taskId'      => 5,
+            'description' => 'bla',
+            'times'       => [
+                (object) [
+                    'start' => '2015-10-10 10:10:10',
+                ],
+            ],
+        ];
+
+        $this->assertEquals(
+            $expected,
+            $this->_object->transformToApiObject($task)
+        );
+    }
+
+    public function testTransformToApiObjectWithTimeWithEnd()
+    {
+        $this->_date
+            ->expects($this->at(0))
+            ->method('format')
+            ->with($this->equalTo(new DateTime('2015-10-10 10:10:10')))
+            ->will($this->returnValue('2015-10-10 10:10:10'));
+        $this->_date
+            ->expects($this->at(1))
+            ->method('format')
+            ->with($this->equalTo(new DateTime('2015-10-11 10:10:10')))
+            ->will($this->returnValue('2015-10-11 10:10:10'));
+
+        $time        = new TimeModel();
+        $time->start = new DateTime('2015-10-10 10:10:10');
+        $time->end   = new DateTime('2015-10-11 10:10:10');
+
+        $task              = new TaskModel();
+        $task->taskId      = 5;
+        $task->description = 'bla';
+        $task->times->add($time);
+
+        $expected = (object) [
+            'taskId'      => 5,
+            'description' => 'bla',
+            'times'       => [
+                (object) [
+                    'start' => '2015-10-10 10:10:10',
+                    'end'   => '2015-10-11 10:10:10',
+                ],
+            ],
+        ];
+
+        $this->assertEquals(
+            $expected,
+            $this->_object->transformToApiObject($task)
+        );
+    }
+
     /**
      * @dataProvider dataProviderForTestTransformToModel
      */

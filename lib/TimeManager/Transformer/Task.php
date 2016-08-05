@@ -17,6 +17,29 @@ class Task
         $this->_date = $date;
     }
 
+    public function transformToApiObject(TaskModel $task)
+    {
+        $data = (object) [
+            'taskId'      => $task->taskId,
+            'description' => $task->description,
+            'times'       => [],
+        ];
+
+        if (!$task->times->isEmpty()) {
+            foreach ($task->times as $time) {
+                $object        = new stdClass();
+                $object->start = $this->_date->format($time->start);
+
+                if (!empty($time->end)) {
+                    $object->end = $this->_date->format($time->end);
+                }
+                $data->times[] = $object;
+            }
+        }
+
+        return $data;
+    }
+
     public function transformToModel(stdClass $data)
     {
         if (empty($data->description)) {
