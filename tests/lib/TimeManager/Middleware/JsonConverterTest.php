@@ -40,9 +40,14 @@ class JsonConverterTest extends \PHPUnit_Framework_TestCase
             ->method('registerMediaTypeParser')
             ->with(
                 $this->equalTo('application/json'),
-                $this->equalTo(
-                    function ($input) {
-                        return json_decode($input);
+                $this->callback(
+                    function ($callback) {
+                        $this->assertTrue(is_callable($callback));
+                        $this->assertEquals(
+                            (object) ['test' => 'bla'],
+                            $callback('{"test": "bla"}')
+                        );
+                        return true;
                     }
                 )
             );
