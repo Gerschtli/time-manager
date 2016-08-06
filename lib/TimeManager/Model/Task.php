@@ -35,7 +35,7 @@ class Task
     public $description;
 
     /**
-     * @ManyToMany(targetEntity="Time", cascade={"persist"})
+     * @ManyToMany(targetEntity="Time", cascade={"merge", "persist", "remove"})
      * @JoinTable(name="tasks_times",
      *      joinColumns={@JoinColumn(name="task_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="time_id", referencedColumnName="id", unique=true)}
