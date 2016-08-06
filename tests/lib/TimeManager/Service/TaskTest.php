@@ -4,6 +4,7 @@ namespace TimeManager\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use TimeManager\Model\Task as TaskModel;
 
 /**
@@ -126,6 +127,26 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->method('flush');
 
         $this->assertEquals($modelTaskCopy, $this->_object->update($taskId, $modelTask));
+    }
+
+    public function testUpdateWhenEntityIsNew()
+    {
+        $taskId = (time() % 20) + 1;
+
+        $modelTask              = new TaskModel();
+        $modelTask->taskId      = $taskId;
+        $modelTask->description = 'bla';
+
+        $this->_entityManager
+            ->expects($this->once())
+            ->method('merge')
+            ->with($this->equalTo($modelTask))
+            ->will($this->throwException(new ORMInvalidArgumentException('exception')));
+        $this->_entityManager
+            ->expects($this->never())
+            ->method('flush');
+
+        $this->assertNull($this->_object->update($taskId, $modelTask));
     }
 
     /**

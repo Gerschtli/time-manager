@@ -46,9 +46,12 @@ class Task
         if (empty($task->taskId) || $task->taskId != $taskId) {
             return null;
         }
-
-        $copy = $this->_entityManager->merge($task);
-        $this->_entityManager->flush();
-        return $copy;
+        try {
+            $copy = $this->_entityManager->merge($task);
+            $this->_entityManager->flush();
+            return $copy;
+        } catch (ORMInvalidArgumentException $exception) {
+            return null;
+        }
     }
 }
