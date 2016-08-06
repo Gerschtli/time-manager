@@ -53,8 +53,9 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(new DateTime('2015-10-10 10:10:10')))
             ->will($this->returnValue('2015-10-10 10:10:10'));
 
-        $time        = new TimeModel();
-        $time->start = new DateTime('2015-10-10 10:10:10');
+        $time         = new TimeModel();
+        $time->timeId = 10;
+        $time->start  = new DateTime('2015-10-10 10:10:10');
 
         $task              = new TaskModel();
         $task->taskId      = 5;
@@ -66,7 +67,8 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             'description' => 'bla',
             'times'       => [
                 (object) [
-                    'start' => '2015-10-10 10:10:10',
+                    'timeId' => 10,
+                    'start'  => '2015-10-10 10:10:10',
                 ],
             ],
         ];
@@ -90,9 +92,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(new DateTime('2015-10-11 10:10:10')))
             ->will($this->returnValue('2015-10-11 10:10:10'));
 
-        $time        = new TimeModel();
-        $time->start = new DateTime('2015-10-10 10:10:10');
-        $time->end   = new DateTime('2015-10-11 10:10:10');
+        $time         = new TimeModel();
+        $time->timeId = 10;
+        $time->start  = new DateTime('2015-10-10 10:10:10');
+        $time->end    = new DateTime('2015-10-11 10:10:10');
 
         $task              = new TaskModel();
         $task->taskId      = 5;
@@ -104,8 +107,9 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             'description' => 'bla',
             'times'       => [
                 (object) [
-                    'start' => '2015-10-10 10:10:10',
-                    'end'   => '2015-10-11 10:10:10',
+                    'timeId' => 10,
+                    'start'  => '2015-10-10 10:10:10',
+                    'end'    => '2015-10-11 10:10:10',
                 ],
             ],
         ];
@@ -234,6 +238,39 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $time        = new TimeModel();
         $time->start = new DateTime('2015-10-10');
+
+        $expected              = new TaskModel();
+        $expected->description = 'bla';
+        $expected->times       = new ArrayCollection();
+        $expected->times->add($time);
+
+        $this->_date
+            ->expects($this->once())
+            ->method('convertToObject')
+            ->with($this->equalTo('2015-10-10'))
+            ->will($this->returnValue(new DateTime('2015-10-10')));
+
+        $this->assertEquals(
+            $expected,
+            $this->_object->transformToModel($data)
+        );
+    }
+
+    public function testTransformToModelWithTimeWithOutEndButId()
+    {
+        $data = (object) [
+            'description' => 'bla',
+            'times'       => [
+                (object) [
+                    'timeId' => 10,
+                    'start'  => '2015-10-10',
+                ],
+            ],
+        ];
+
+        $time         = new TimeModel();
+        $time->timeId = 10;
+        $time->start  = new DateTime('2015-10-10');
 
         $expected              = new TaskModel();
         $expected->description = 'bla';

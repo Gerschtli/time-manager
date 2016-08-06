@@ -27,8 +27,9 @@ class Task
 
         if (!$task->times->isEmpty()) {
             foreach ($task->times as $time) {
-                $object        = new stdClass();
-                $object->start = $this->_date->format($time->start);
+                $object         = new stdClass();
+                $object->timeId = $time->timeId;
+                $object->start  = $this->_date->format($time->start);
 
                 if (!empty($time->end)) {
                     $object->end = $this->_date->format($time->end);
@@ -77,6 +78,10 @@ class Task
         $time        = new TimeModel();
         $time->start = $start;
         $time->end   = $end;
+
+        if (!empty($data->timeId)) {
+            $time->timeId = $data->timeId;
+        }
 
         if ($time->start !== null) {
             $collection->add($time);

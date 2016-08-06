@@ -20,6 +20,7 @@
     "description": "Description",
     "times": [
         {
+            "timeId": 5,
             "start": "YYYY-MM-DD HH:MM:SS",
             "end": "YYYY-MM-DD HH:MM:SS"
         }
