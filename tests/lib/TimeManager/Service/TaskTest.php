@@ -107,7 +107,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $taskId = (time() % 20) + 1;
+        $taskId = time() % 20;
 
         $modelTask              = new TaskModel();
         $modelTask->taskId      = $taskId;
@@ -131,7 +131,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateWhenEntityIsNew()
     {
-        $taskId = (time() % 20) + 1;
+        $taskId = time() % 20;
 
         $modelTask              = new TaskModel();
         $modelTask->taskId      = $taskId;

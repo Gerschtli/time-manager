@@ -50,7 +50,8 @@ class Task
         $task              = new TaskModel();
         $task->description = $data->description;
 
-        if (!empty($data->taskId)) {
+        if (!empty($data->taskId)
+            || (isset($data->taskId) && $data->taskId === 0)) {
             $task->taskId = $data->taskId;
         }
 

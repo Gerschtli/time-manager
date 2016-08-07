@@ -43,7 +43,8 @@ class Task
 
     public function update($taskId, TaskModel $task)
     {
-        if (empty($task->taskId) || $task->taskId != $taskId) {
+        if ((empty($task->taskId) && $task->taskId !== 0)
+            || $task->taskId != $taskId) {
             return null;
         }
         try {
