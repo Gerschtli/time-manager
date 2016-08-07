@@ -46,7 +46,8 @@
         function updateTask(task) {
             taskService.update(task)
                 .then(function(data) {
-                    task = data;
+                    var index = getTaskIndex(task);
+                    vm.tasks[index] = data;
                     toastr.success('Updated Task');
                 });
         }
@@ -54,7 +55,7 @@
         function deleteTask(task) {
             taskService.delete(task)
                 .then(function(data) {
-                    var index = vm.tasks.indexOf(task);
+                    var index = getTaskIndex(task);
                     if (index > -1) {
                         vm.tasks.splice(index, 1);
                     }
@@ -70,6 +71,10 @@
         function deleteTime(task, time) {
             // TODO
             toastr.info('Delete Time');
+        }
+
+        function getTaskIndex(task) {
+            return vm.tasks.indexOf(task);
         }
     }
 })();
