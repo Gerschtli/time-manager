@@ -1,9 +1,9 @@
 var gulp         = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     concat       = require('gulp-concat'),
-    jade         = require('gulp-jade'),
+    pug          = require('gulp-pug'),
     jshint       = require('gulp-jshint'),
-    minifycss    = require('gulp-minify-css'),
+    minifycss    = require('gulp-clean-css'),
     rename       = require('gulp-rename'),
     sass         = require('gulp-ruby-sass'),
     uglify       = require('gulp-uglify'),
@@ -36,17 +36,17 @@ var config = {
   },
   templates : {
     src   : [
-      'src/**/*.jade',
-      '!src/**/_*.jade',
+      'src/**/*.pug',
+      '!src/**/_*.pug',
     ],
     dest  : 'dist',
-    watch : 'src/**/*.jade',
+    watch : 'src/**/*.pug',
   },
   static : {
     src  : [
       'src/**/*',
       'src/**/.*',
-      '!src/**/*.{sass,scss,js,jade}',
+      '!src/**/*.{sass,scss,js,pug}',
     ],
     dest : 'dist',
   },
@@ -93,7 +93,7 @@ gulp.task('templates', function() {
   }
 
   return gulp.src(config.templates.src)
-    .pipe(jade(options))
+    .pipe(pug(options))
     .pipe(gulp.dest(config.templates.dest));
 });
 
