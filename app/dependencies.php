@@ -81,9 +81,9 @@ $container[EntityManager::class] = function ($container) {
         [
             'driver'   => 'pdo_mysql',
             'host'     => $config['host'],
-            'user'     => $config['username'],
+            'user'     => $config['user'],
             'password' => $config['password'],
-            'dbname'   => $config['database'],
+            'dbname'   => $config['name'],
         ],
         Setup::createAnnotationMetadataConfiguration(
             [__DIR__ . '/../lib/TimeManager/Model'],

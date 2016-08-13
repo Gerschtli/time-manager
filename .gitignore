@@ -1,5 +1,6 @@
 .sass-cache/
 .vagrant/
+app/parameter.ini
 bin/
 dist/
 node_modules/

@@ -1,0 +1,6 @@
+database[name]     = 'time_manager'
+database[host]     = 'localhost'
+database[user]     = 'root'
+database[password] = 'root'
+
+logger[path] = '/var/log/php/time-manager.log'

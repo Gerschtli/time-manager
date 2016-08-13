@@ -2,29 +2,15 @@
 
 $mode = getenv('APPLICATION_ENV') ?: 'production';
 
-$database = [
-    'database' => '<$= database.name $>',
-    'host'     => '<$= database.host $>',
-    'username' => '<$= database.user $>',
-    'password' => '<$= database.password $>',
+$defaultSettings = [
+    'mode'     => $mode,
+    'logger'   => [
+        'name' => 'Default',
+    ],
 ];
 
-if ($mode == 'development') {
-    $database = [
-        'database' => 'time_manager',
-        'host'     => 'localhost',
-        'username' => 'root',
-        'password' => 'root',
-    ];
-}
+$customSettings = parse_ini_file('parameter.ini');
 
 return [
-    'settings' => [
-        'database' => $database,
-        'mode'     => $mode,
-        'logger'   => [
-            'name' => 'Default',
-            'path' => '/var/log/php/time-manager.log',
-        ],
-    ],
+    'settings' => array_replace_recursive($defaultSettings, $customSettings),
 ];
