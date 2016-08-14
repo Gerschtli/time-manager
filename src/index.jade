@@ -6,9 +6,6 @@ mixin time(time)
     span.input-group-label -
     input.input-group-field(type="text", ng-model="#{time}.end")
 
-mixin taskInfo(task)
-    input(type="text", ng-model="#{task}.description")
-
 doctype html
 html(lang="de", ng-app="timeManager")
     head
@@ -30,12 +27,14 @@ html(lang="de", ng-app="timeManager")
 
                         .task-list--item-info
                             .input-group
-                                +taskInfo("task")
+                                input(type="text", ng-model="task.description")
+                                span.task-list--item-info-time
+                                    {{ task.calculatedTime | formatMilliSeconds }}
                             .task-list--actions
                                 +icon("check", "main.updateTask(task)")
                                 +icon("trash", "main.deleteTask(task)")
 
-                        ul.task-list--times
+                        ul.task-list--times(ng-init="task.newTime = {}")
 
                             li.task-list--times-item(ng-repeat="time in task.times")
                                 .input-group
@@ -44,15 +43,15 @@ html(lang="de", ng-app="timeManager")
                                     +icon("times", "main.deleteTime(task, time)")
                             li.task-list--times-item
                                 .input-group
-                                    +time("newTime")
+                                    +time("task.newTime")
                                 .task-list--actions
-                                    +icon("plus", "main.addTime(task, newTime)")
+                                    +icon("plus", "main.addTime(task, task.newTime)")
 
                     .task-list--item
 
                         .task-list--item-info.task-list--item-info__new
                             .input-group
-                                +taskInfo("main.newTask")
+                                input(type="text", ng-model="main.newTask.description")
                             .task-list--actions
                                 +icon("plus", "main.createTask()")
 

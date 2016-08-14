@@ -5,10 +5,10 @@
         .module('timeManager')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['$http', 'toastr', 'taskService'];
+    MainController.$inject = ['$http', 'toastr', 'taskService', 'timeCalculator'];
 
     /* @ngInject */
-    function MainController($http, toastr, taskService) {
+    function MainController($http, toastr, taskService, timeCalculator) {
         var vm = this;
         vm.tasks = [];
         vm.newTask = {};
@@ -30,6 +30,9 @@
             taskService.getAll()
                 .then(function(data) {
                     vm.tasks = data;
+                    for (var i = 0; i < vm.tasks.length; i++) {
+                        calculateTime(vm.tasks[i]);
+                    }
                     toastr.success('Loaded all Tasks');
                 });
         }
@@ -48,6 +51,7 @@
                 .then(function(data) {
                     var index = getTaskIndex(task);
                     vm.tasks[index] = data;
+                    calculateTime(data);
                     toastr.success('Updated Task');
                 });
         }
@@ -75,6 +79,10 @@
                 task.times.splice(index, 1);
             }
             updateTask(task);
+        }
+
+        function calculateTime(task) {
+            task.calculatedTime = timeCalculator.calculatePerTask(task);
         }
 
         function getTaskIndex(task) {
