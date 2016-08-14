@@ -20,6 +20,7 @@
         ////////////////
 
         function add(task) {
+            task = clearTask(task);
             return $http(
                 {
                     method: 'POST',
@@ -48,6 +49,7 @@
         }
 
         function update(task) {
+            task = clearTask(task);
             return $http(
                 {
                     method: 'PUT',
@@ -55,6 +57,14 @@
                     data: task,
                 }
             ).then(success).catch(error);
+        }
+
+        function clearTask(task) {
+            return {
+                taskId: task.taskId,
+                description: task.description,
+                times: task.times,
+            };
         }
 
         function success(response) {

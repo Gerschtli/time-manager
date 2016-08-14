@@ -64,13 +64,17 @@
         }
 
         function addTime(task, time) {
-            // TODO
-            toastr.info('Add Time');
+            task.times.push(time);
+            task.newTime = {};
+            updateTask(task);
         }
 
         function deleteTime(task, time) {
-            // TODO
-            toastr.info('Delete Time');
+            var index = task.times.indexOf(time);
+            if (index > -1) {
+                task.times.splice(index, 1);
+            }
+            updateTask(task);
         }
 
         function getTaskIndex(task) {
