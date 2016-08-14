@@ -54,7 +54,7 @@ _composer() {
     popd 1> /dev/null
 
     pushd "${GIT_DIR}" 1> /dev/null
-    php "${WORK_DIR}/composer.phar" install --prefer-source --no-dev
+    php "${WORK_DIR}/composer.phar" install --prefer-source --no-plugins --no-scripts --no-dev
     popd 1> /dev/null
 }
 
