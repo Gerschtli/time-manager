@@ -15,7 +15,7 @@
     "gulp-autoprefixer"       : "*",
     "gulp-concat"             : "*",
     "gulp-if"                 : "*",
-    "gulp-pug"                : "*",
+    "gulp-jade"               : "*",
     "gulp-jshint"             : "*",
     "gulp-clean-css"          : "*",
     "gulp-rename"             : "*",
