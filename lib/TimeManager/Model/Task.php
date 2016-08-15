@@ -35,13 +35,17 @@ class Task
     public $description;
 
     /**
-     * @ManyToMany(targetEntity="Time", cascade={"merge", "persist", "remove"})
+     * @ManyToMany(targetEntity="Time", cascade={"merge", "persist"})
      * @JoinTable(name="tasks_times",
-     *      joinColumns={@JoinColumn(name="task_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="time_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={
+     *          @JoinColumn(name="task_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *          @JoinColumn(name="time_id", referencedColumnName="id", unique=true)
+     *      }
      * )
      *
-     * @var Time[]
+     * @var ArrayCollection
      */
     public $times;
 
