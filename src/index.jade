@@ -15,6 +15,10 @@ html(lang="de", ng-app="timeManager")
 
         link(rel="stylesheet", href="styles/main.min.css")
 
+        script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
+        script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+        script(src="scripts/main.min.js")
+
     body
 
         .container
@@ -53,7 +57,3 @@ html(lang="de", ng-app="timeManager")
                                 input(type="text", ng-model="main.newTask.description")
                             .task-list--actions
                                 +icon("plus", "main.createTask()")
-
-        script(src="//code.angularjs.org/1.5.0-rc.0/angular.min.js")
-        script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-        script(src="scripts/main.min.js")
