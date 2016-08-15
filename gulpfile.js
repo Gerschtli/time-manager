@@ -71,6 +71,7 @@ gulp.task('scripts', function() {
   if (offline) {
     src.push(config.scripts.offline);
   }
+  src.push(config.scripts.loadPath, 'src/scripts/app.js');
   src.push(config.scripts.loadPath, config.scripts.src);
 
   return gulp.src(src)
