@@ -52,6 +52,7 @@ class system {
 class httpserver {
   package { [
     "apache2",
+    "php5",
     "php5-mysql",
     "php5-xdebug"
   ]:
