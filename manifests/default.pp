@@ -113,12 +113,7 @@ class httpserver {
 
 class dbserver {
   $sqlQueryDrop   = "DROP DATABASE `${mysqlDatabase}`;"
-  $sqlQueryCreate = "
-    CREATE DATABASE `${mysqlDatabase}`;
-    GRANT ALL ON `${mysqlDatabase}`.* TO ${mysqlUser}@${mysqlServer} IDENTIFIED BY \"${mysqlPassword}\";
-    GRANT ALL ON `${mysqlDatabase}`.* TO ${mysqlUser}@\"${appName}.local\" IDENTIFIED BY \"${mysqlPassword}\";
-    FLUSH PRIVILEGES;
-  "
+  $sqlQueryCreate = "CREATE DATABASE `${mysqlDatabase}`;"
 
   file { "/root/.my.cnf":
     ensure  => present,
@@ -147,38 +142,15 @@ class dbserver {
   }
 
   package { [
-    "mysql-server",
-    "mysql-client",
-    "phpmyadmin"
+    "mysql-server"
   ]:
     ensure  => "latest",
     require => Exec["apt_update"]
   }
 
-  file { "/etc/apache2/conf-available/phpmyadmin.conf":
-    alias   => "phpmyadminconf",
-    ensure  => "link",
-    target  => "/etc/phpmyadmin/apache.conf",
-    require => Package['apache2']
-  }
-
-  exec { "enable-phpmyadmin":
-    command => "a2enconf phpmyadmin.conf",
-    unless  => "test -L /etc/apache2/conf-enabled/phpmyadmin.conf",
-    require => File["phpmyadminconf"],
-    notify  => Service["apache2"]
-  }
-
   service { "mysql":
     enable  => true,
     ensure  => running,
-    require => Package["mysql-server"]
-  }
-
-  exec { "external-access-to-mysql":
-    unless  => "egrep -q '^#bind-address' /etc/mysql/my.cnf >> /dev/null 2>&1",
-    command => "sed -i -e 's/^bind-address/#bind-address/' /etc/mysql/my.cnf",
-    notify  => Service["mysql"],
     require => Package["mysql-server"]
   }
 
@@ -190,36 +162,15 @@ class dbserver {
 
   exec { "drop-db":
     unless  => "mysql -u${mysqlUser} -p${mysqlPassword} ${mysqlDatabase} && exit 1 || exit 0",
-    command => "mysql -uroot -p${mysqlPassword} -e '$sqlQueryDrop'",
+    command => "mysql -uroot -p${mysqlPassword} -e '${sqlQueryDrop}'",
     require => Exec["set-mysql-password"]
   }
 
   exec { "create-db":
-    command => "mysql -uroot -p${mysqlPassword} -e '$sqlQueryCreate'",
+    command => "mysql -uroot -p${mysqlPassword} -e '${sqlQueryCreate}'",
     require => [
       Exec["set-mysql-password"],
       Exec["drop-db"]
     ]
-  }
-
-  exec { "create-tables":
-    command => "mysql -uroot -p${mysqlPassword} < ${resourcePath}/tables.sql",
-    require => [
-      Exec["set-mysql-password"],
-      Exec["drop-db"],
-      Exec["create-db"]
-    ],
-    onlyif  => "test -e ${resourcePath}/tables.sql"
-  }
-
-  exec { "insert-testdata":
-    command => "mysql -uroot -p${mysqlPassword} < ${resourcePath}/testdata.sql",
-    require => [
-      Exec["set-mysql-password"],
-      Exec["drop-db"],
-      Exec["create-db"],
-      Exec["create-tables"]
-    ],
-    onlyif  => "test -e ${resourcePath}/testdata.sql"
   }
 }
