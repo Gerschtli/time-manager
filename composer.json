@@ -4,6 +4,7 @@
         "php"            : ">=5.6",
         "doctrine/orm"   : "@stable",
         "monolog/monolog": "^1@stable",
+        "robmorgan/phinx": "@stable",
         "slim/slim"      : "@stable"
     },
     "require-dev": {
