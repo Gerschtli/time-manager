@@ -84,11 +84,25 @@ _build() {
 
 _updateConfig() {
     if [[ -f "${SHARED_DIR}/parameter.ini" ]]; then
-        _log "update config ..."
+        _log "update parameter.ini ..."
         cp "${SHARED_DIR}/parameter.ini" "${WORKSPACE_DIR}/app"
     else
         _log "parameter.ini does not exist!" "ERROR"
     fi
+
+    if [[ -f "${SHARED_DIR}/phinx.yml" ]]; then
+        _log "update phinx.yml ..."
+        cp "${SHARED_DIR}/phinx.yml" "${WORKSPACE_DIR}"
+    else
+        _log "phinx.yml does not exist!" "ERROR"
+    fi
+}
+
+_migrateDatabase() {
+    pushd "${WORKSPACE_DIR}" 1> /dev/null
+    _log "migrating database ..."
+    php bin/phinx migrate
+    popd 1> /dev/null
 }
 
 _cleanSource() {
@@ -127,7 +141,7 @@ _cleanup() {
     BUILDS=( $(find . -maxdepth 1 -type d -name "BUILD-*" -printf "%f\n" | sort -r ) )
     for B in "${!BUILDS[@]}"; do
         if [ "${BUILDS[${B}]}" != "BUILD-${BUILD}" ]; then
-            tar -jcpf ${BUILDS[${B}]}.tar.bz2 ${BUILDS[${B}]} --exclude='logs/*'
+            tar -jcpf ${BUILDS[${B}]}.tar.bz2 ${BUILDS[${B}]}
             rm -Rf ${INSTALL_DIR}/${BUILDS[${B}]}
         fi
     done
@@ -147,6 +161,7 @@ _main() {
     _gulp
     _build
     _updateConfig
+    _migrateDatabase
     _cleanSource
     _move
     _link
