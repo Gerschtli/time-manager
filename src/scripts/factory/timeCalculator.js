@@ -25,7 +25,8 @@
         }
 
         function calculate(time) {
-            if (! time instanceof Object || time.start === undefined || time.end === undefined) {
+            /* jshint -W018 */
+            if (!time instanceof Object || time.start === undefined || time.end === undefined) {
                 return 0;
             }
             var start = new Date(time.start);

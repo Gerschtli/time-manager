@@ -123,7 +123,7 @@ gulp.task('build', ['clean'], function() {
 
 gulp.task('watch', function() {
   gulp.watch(config.styles.watch, ['styles']);
-  gulp.watch(config.scripts.src, ['scripts']);
+  gulp.watch(config.scripts.src, ['jsLint', 'scripts']);
   gulp.watch(config.templates.watch, ['templates']);
   gulp.watch(config.static.src, ['static']);
 });
