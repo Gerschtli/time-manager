@@ -1,19 +1,17 @@
 #!/bin/bash
 
-SCRIPTPATH="$(dirname $(readlink -f "${0}"))"
+set -e
 
-if [ -r "${SCRIPTPATH}/install.conf" ]; then
-    source "${SCRIPTPATH}/install.conf"
-fi
+WORK_DIR="$(dirname $(readlink -f "${0}"))"
 
-GIT_URL="${GIT_URL:-git@github.com:Gerschtli/time-manager.git}"
-GIT_DIR="${GIT_DIR:-${SCRIPTPATH}/project}"
-GIT_BRANCH="${GIT_BRANCH:-master}"
+GIT_URL="git@github.com:Gerschtli/time-manager.git"
+GIT_BRANCH="master"
 
-WORK_DIR="${WORK_DIR:-${SCRIPTPATH}}"
-WORKSPACE_DIR="${SCRIPTPATH}/workspace"
-SHARED_DIR="${SCRIPTPATH}/shared"
-INSTALL_DIR="${INSTALL_DIR:-/var/www/time-manager}"
+GIT_DIR="${WORK_DIR}/project"
+SHARED_DIR="${WORK_DIR}/shared"
+WORKSPACE_DIR="${WORK_DIR}/workspace"
+
+INSTALL_DIR="/var/www/time-manager"
 
 BUILD=$(date '+%s')
 MAX_BACKUPS=10
@@ -26,14 +24,20 @@ _log() {
     fi
     echo ${1}
     echo -en "\033[0m"
+
+    if [ "${2}" = "ERROR" ]; then
+        _log "aborting ..."
+        exit 1
+    fi
 }
 export -f _log
 
 _export() {
-    if [ ! -d "${GIT_DIR}" ];then
+    if [ ! -d "${GIT_DIR}" ]; then
         _log "cloning the repository ..."
         git clone "${GIT_URL}" "${GIT_DIR}"
     fi
+
     pushd "${GIT_DIR}" 1> /dev/null
     _log "get latest code base [git pull origin ${GIT_BRANCH}]..."
     git fetch --prune
@@ -43,18 +47,17 @@ _export() {
 }
 
 _composer() {
-    pushd "${WORK_DIR}"
-    if [ ! -f "${WORK_DIR}/composer.phar" ];then
+    pushd "${GIT_DIR}" 1> /dev/null
+    if [ ! -f bin/composer.phar ]; then
         _log "Downloading composer ...."
-        curl -sS "https://getcomposer.org/installer" | php
+        mkdir -p bin
+        curl -sS "https://getcomposer.org/installer" | php -- --install-dir=bin
     else
         _log "Composer update...."
-        php composer.phar self-update
+        php bin/composer.phar self-update
     fi
-    popd 1> /dev/null
 
-    pushd "${GIT_DIR}" 1> /dev/null
-    php "${WORK_DIR}/composer.phar" install --prefer-source --no-plugins --no-scripts --no-dev
+    php bin/composer.phar install --prefer-source --no-plugins --no-scripts --no-dev
     popd 1> /dev/null
 }
 
@@ -69,17 +72,15 @@ _gulp() {
 }
 
 _build() {
-    if [ -d "${WORKSPACE_DIR}" ];then
+    if [ -d "${WORKSPACE_DIR}" ]; then
         _log "remove old workspace ... "
-        rm -R "${WORKSPACE_DIR}"
+        rm -r "${WORKSPACE_DIR}"
     fi
     _log "creating workspace ... "
-    mkdir -p ${WORKSPACE_DIR}
+    mkdir -p "${WORKSPACE_DIR}"
 
     _log "install code ..."
-    pushd "${GIT_DIR}" 1> /dev/null
-    cp -R * "${WORKSPACE_DIR}"
-    popd 1> /dev/null
+    cp -r "${GIT_DIR}/"* "${WORKSPACE_DIR}"
 }
 
 _updateConfig() {
@@ -107,20 +108,22 @@ _migrateDatabase() {
 
 _cleanSource() {
     _log 'cleaning workspace ...'
-    pushd "${WORKSPACE_DIR}" 1> /dev/null
-    find . -name ".git" -exec rm -Rf {} \+
-    find . -maxdepth 1 ! -name "." \
-        -and ! -name ".." \
-        -and ! -name "app" \
-        -and ! -name "dist" \
-        -and ! -name "lib" \
-        -and ! -name "vendor" \
-        -exec rm -Rf {} \+
-    popd 1> /dev/null
+    rm -rf "${WORKSPACE_DIR}/.git"
+    rm "${WORKSPACE_DIR}/"*
+    rm -r "${WORKSPACE_DIR}/bin" \
+        "${WORKSPACE_DIR}/db" \
+        "${WORKSPACE_DIR}/manifests" \
+        "${WORKSPACE_DIR}/node_modules" \
+        "${WORKSPACE_DIR}/scripts" \
+        "${WORKSPACE_DIR}/tests"
 }
 
 _move() {
     _log 'moving the source to ...'
+    if [ ! -d "${INSTALL_DIR}" ]; then
+        _log 'create install dir ...'
+        mkdir -p "${INSTALL_DIR}"
+    fi
     mv "${WORKSPACE_DIR}" "${INSTALL_DIR}/BUILD-${BUILD}"
 }
 
@@ -129,46 +132,36 @@ _link() {
     ln -snf "${INSTALL_DIR}/BUILD-${BUILD}" "${INSTALL_DIR}/current"
 }
 
-_reloadApache() {
-    _log 'Reload Apache ...'
-    service apache2 reload
-}
-
 _cleanup() {
     _log 'cleanup ...'
-    pushd ${INSTALL_DIR} 1> /dev/null
     _log 'packing previous build(s) ...'
-    BUILDS=( $(find . -maxdepth 1 -type d -name "BUILD-*" -printf "%f\n" | sort -r ) )
+    BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type d -name "BUILD-*" | sort -r ) )
+
     for B in "${!BUILDS[@]}"; do
         if [ "${BUILDS[${B}]}" != "BUILD-${BUILD}" ]; then
-            tar -jcpf ${BUILDS[${B}]}.tar.bz2 ${BUILDS[${B}]}
-            rm -Rf ${INSTALL_DIR}/${BUILDS[${B}]}
+            tar -jcpf "${BUILDS[${B}]}.tar.bz2" "${BUILDS[${B}]}"
+            rm -r "${BUILDS[${B}]}"
         fi
     done
+
     _log 'deleting old backup files ...'
-    BUILDS=( $(find . -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | sort -r ) )
+    BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | sort -r ) )
     for B in "${!BUILDS[@]}"; do
         if [ ${B} -ge ${MAX_BACKUPS} ]; then
-            rm -Rf ${INSTALL_DIR}/${BUILDS[${B}]}
+            rm "${BUILDS[${B}]}"
         fi
     done
-    popd 1> /dev/null
 }
 
-_main() {
-    _export
-    _composer
-    _gulp
-    _build
-    _updateConfig
-    _migrateDatabase
-    _cleanSource
-    _move
-    _link
-    _reloadApache
-    _cleanup
-}
-
-_main
+_export
+_composer
+_gulp
+_build
+_updateConfig
+_migrateDatabase
+_cleanSource
+_move
+_link
+_cleanup
 
 exit 0
