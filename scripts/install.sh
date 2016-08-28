@@ -116,7 +116,7 @@ _cleanSource() {
         "${WORKSPACE_DIR}/src" \
         "${WORKSPACE_DIR}/tests"
 
-    find "${WORKSPACE_DIR}" -type d -name '.git' -exec rm {} \+
+    find "${WORKSPACE_DIR}" -type d -name '.git' -exec rm -rf {} \+
     find "${WORKSPACE_DIR}" -maxdepth 1 -type f -exec rm {} \+
 }
 
