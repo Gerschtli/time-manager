@@ -146,9 +146,8 @@ _cleanup() {
     done
 
     _log 'deleting old backup files ...'
-    for B in $(find "${INSTALL_DIR}" -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | sort -r | tail -n +${MAX_BACKUPS}); do
-        rm "${BUILDS[${B}]}"
-    done
+    find "${INSTALL_DIR}" -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | \
+        sort -r | tail -n +${MAX_BACKUPS} | xargs rm
 }
 
 _export
