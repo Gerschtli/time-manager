@@ -137,9 +137,8 @@ _link() {
 _cleanup() {
     _log 'cleanup ...'
     _log 'packing previous build(s) ...'
-    BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type d -name "BUILD-*" | sort -r ) )
 
-    for B in "${BUILDS[@]}"; do
+    for B in $(find "${INSTALL_DIR}" -maxdepth 1 -type d -name "BUILD-*"); do
         if [ "${B}" != "${INSTALL_DIR}/BUILD-${BUILD}" ]; then
             tar -jcpPf "${B}.tar.bz2" "${B}"
             rm -r "${B}"
@@ -147,11 +146,8 @@ _cleanup() {
     done
 
     _log 'deleting old backup files ...'
-    BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | sort -r ) )
-    for B in "${!BUILDS[@]}"; do
-        if [ ${B} -ge ${MAX_BACKUPS} ]; then
-            rm "${BUILDS[${B}]}"
-        fi
+    for B in $(find "${INSTALL_DIR}" -maxdepth 1 -type f -name "BUILD-*.tar.bz2" | sort -r | tail -n +${MAX_BACKUPS}); do
+        rm "${BUILDS[${B}]}"
     done
 }
 
