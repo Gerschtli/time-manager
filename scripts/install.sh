@@ -74,7 +74,7 @@ _gulp() {
 _build() {
     if [ -d "${WORKSPACE_DIR}" ]; then
         _log "remove old workspace ... "
-        rm -r "${WORKSPACE_DIR}"
+        rm -rf "${WORKSPACE_DIR}"
     fi
     _log "creating workspace ... "
     mkdir -p "${WORKSPACE_DIR}"
@@ -108,14 +108,16 @@ _migrateDatabase() {
 
 _cleanSource() {
     _log 'cleaning workspace ...'
-    rm -rf "${WORKSPACE_DIR}/.git"
-    rm "${WORKSPACE_DIR}/"*
     rm -r "${WORKSPACE_DIR}/bin" \
         "${WORKSPACE_DIR}/db" \
         "${WORKSPACE_DIR}/manifests" \
         "${WORKSPACE_DIR}/node_modules" \
         "${WORKSPACE_DIR}/scripts" \
+        "${WORKSPACE_DIR}/src" \
         "${WORKSPACE_DIR}/tests"
+
+    find "${WORKSPACE_DIR}" -type d -name '.git' -exec rm {} \+
+    find "${WORKSPACE_DIR}" -maxdepth 1 -type f -exec rm {} \+
 }
 
 _move() {
@@ -137,10 +139,10 @@ _cleanup() {
     _log 'packing previous build(s) ...'
     BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type d -name "BUILD-*" | sort -r ) )
 
-    for B in "${!BUILDS[@]}"; do
-        if [ "${BUILDS[${B}]}" != "BUILD-${BUILD}" ]; then
-            tar -jcpf "${BUILDS[${B}]}.tar.bz2" "${BUILDS[${B}]}"
-            rm -r "${BUILDS[${B}]}"
+    for B in "${BUILDS[@]}"; do
+        if [ "${B}" != "BUILD-${BUILD}" ]; then
+            tar -jcpPf "${B}.tar.bz2" "${B}"
+            rm -r "${B}"
         fi
     done
 
