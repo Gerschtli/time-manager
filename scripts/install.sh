@@ -140,7 +140,7 @@ _cleanup() {
     BUILDS=( $(find "${INSTALL_DIR}" -maxdepth 1 -type d -name "BUILD-*" | sort -r ) )
 
     for B in "${BUILDS[@]}"; do
-        if [ "${B}" != "BUILD-${BUILD}" ]; then
+        if [ "${B}" != "${INSTALL_DIR}/BUILD-${BUILD}" ]; then
             tar -jcpPf "${B}.tar.bz2" "${B}"
             rm -r "${B}"
         fi
